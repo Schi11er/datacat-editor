@@ -177,7 +177,10 @@ export function ImportView() {
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
       if (index === 0) {
-        const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+        const content = line
+          .replaceAll('"', "")
+          .split(";")
+          .map((s) => s.trim());
         if (
           content.length !== header.length ||
           !content.every((val, i) => val === header[i])
@@ -192,7 +195,10 @@ export function ImportView() {
       .slice(1)
       .filter((line) => line && line.trim() !== "")
       .map((line) => {
-        const content = line.replaceAll('"', "").replace(/\s/g, "").split(";");
+        const content = line
+          .replaceAll('"', "")
+          .split(";")
+          .map((s) => s.trim());
         return {
           id: content[0] || uuidv4(),
           typ: content[1],
@@ -380,16 +386,23 @@ export function ImportView() {
   };
 
   function toRelType(input: string): RelationshipRecordType {
-    input = input
-      .replace(/[_\- ]+/g, " ")
-      .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join("");
+    // Input normalisieren
+    const normalizedInput = input
+      .toLowerCase()
+      .replace(/[_\- ]+/g, "");
 
-    if (input === "Groups") {
-      input = "RelationshipToSubject";
+    // Sonderfall "groups"
+    if (normalizedInput === "groups") {
+      return "RelationshipToSubject" as RelationshipRecordType;
     }
-    return input as RelationshipRecordType;
+
+    // Alle Enum-Werte dynamisch holen
+    const enumValues = Object.values(RelationshipRecordType) as string[];
+    const found = enumValues.find(type =>
+      type.toLowerCase().replace(/[_\- ]+/g, "") === normalizedInput
+    );
+    if (found) return found as RelationshipRecordType;
+    throw new Error(`Unknown relationship type: ${input}`);
   }
 
   // imports the relationships between the entities into database
