@@ -40,7 +40,11 @@ RUN echo '#!/bin/sh' > /docker-entrypoint.d/50-generate-config.sh && \
     echo '  MINIO_USE_SSL: "${MINIO_USE_SSL:-false}",' >> /docker-entrypoint.d/50-generate-config.sh && \
     echo '  MINIO_BUCKET_NAME: "${MINIO_BUCKET_NAME:-datacat-ids}",' >> /docker-entrypoint.d/50-generate-config.sh && \
     echo '  MINIO_ACCESS_KEY: "${MINIO_ACCESS_KEY:-}",' >> /docker-entrypoint.d/50-generate-config.sh && \
-    echo '  MINIO_SECRET_KEY: "${MINIO_SECRET_KEY:-}"' >> /docker-entrypoint.d/50-generate-config.sh && \
+    echo '  MINIO_SECRET_KEY: "${MINIO_SECRET_KEY:-}",' >> /docker-entrypoint.d/50-generate-config.sh && \
+    echo '  KEYCLOAK_ENABLED: "${KEYCLOAK_ENABLED:-false}",' >> /docker-entrypoint.d/50-generate-config.sh && \
+    echo '  KEYCLOAK_URL: "${KEYCLOAK_URL:-http://localhost:8091}",' >> /docker-entrypoint.d/50-generate-config.sh && \
+    echo '  KEYCLOAK_REALM: "${KEYCLOAK_REALM:-datacat}",' >> /docker-entrypoint.d/50-generate-config.sh && \
+    echo '  KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID:-datacat-api}"' >> /docker-entrypoint.d/50-generate-config.sh && \
     echo '};' >> /docker-entrypoint.d/50-generate-config.sh && \
     echo 'EOF' >> /docker-entrypoint.d/50-generate-config.sh && \
     chmod +x /docker-entrypoint.d/50-generate-config.sh
