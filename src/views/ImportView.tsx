@@ -407,8 +407,18 @@ export function ImportView() {
 
   // imports the relationships between the entities into database
   const importRelations = async (relations: relation[]) => {
+    // Group relations by (entity1, relationship) so all toIds are sent in one call
+    const grouped = new Map<string, { entity1: string; relationship: string; toIds: string[] }>();
     for (const rel of relations) {
-      const relType = toRelType(rel.relationship);
+      const key = `${rel.entity1}||${rel.relationship}`;
+      if (!grouped.has(key)) {
+        grouped.set(key, { entity1: rel.entity1, relationship: rel.relationship, toIds: [] });
+      }
+      grouped.get(key)!.toIds.push(rel.entity2);
+    }
+
+    for (const { entity1, relationship, toIds } of grouped.values()) {
+      const relType = toRelType(relationship);
       // Explicitly type properties as any to allow dynamic assignment
       const properties: any = {};
       if (relType === "RelationshipToSubject") {
@@ -416,15 +426,15 @@ export function ImportView() {
           relationshipType: "XTD_SCHEMA_LEVEL"
         };
       }
-      console.log("Importing relationship", relType, rel.entity1, rel.entity2, properties);
+      console.log("Importing relationship", relType, entity1, toIds, properties);
       try {
         await createRelationship({
           variables: {
             input: {
               relationshipType: relType,
               properties: properties,
-              fromId: rel.entity1,
-              toIds: [rel.entity2],
+              fromId: entity1,
+              toIds: toIds,
             },
           },
         });
@@ -432,9 +442,9 @@ export function ImportView() {
           <T
             keyName="import.created_relationship"
             params={{
-              relationshipType: rel.relationship,
-              entity1: rel.entity1,
-              entity2: rel.entity2,
+              relationshipType: relationship,
+              entity1: entity1,
+              entity2: toIds.join(", "),
             }}
           />
         );
@@ -443,9 +453,9 @@ export function ImportView() {
           <T
             keyName="import.error_creating_relationship"
             params={{
-              relationshipType: rel.relationship,
-              entity1: rel.entity1,
-              entity2: rel.entity2,
+              relationshipType: relationship,
+              entity1: entity1,
+              entity2: toIds.join(", "),
               error: e instanceof Error ? e.message : String(e),
             }}
           />
