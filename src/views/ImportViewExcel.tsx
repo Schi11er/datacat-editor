@@ -70,6 +70,84 @@ type CheckedRowsTable = {
   entities: CheckedRows;
   relations: CheckedRows;
 };
+
+const IMPORT_EXCEL_SESSION_KEY = "importExcelDraft";
+
+type ImportExcelDraft = {
+  importTag: string;
+  textFieldValues: { [key: string]: string };
+  selectedLetters: { [key: string]: string };
+  useTextField: { [key: string]: boolean };
+  checkedRows: CheckedRowsTable;
+  generatedUUIDs: { [entityType: string]: { [name: string]: string } };
+  sequentialUUIDs: {
+    [entityType: string]: Array<{ name: string; uuid: string; order: number }>
+  };
+  uuidGenerationNeeded: { [entityType: string]: boolean };
+};
+
+const createInitialCheckedRows = (): CheckedRowsTable => ({
+  entities: Array(9)
+    .fill(false)
+    .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
+  relations: Array(10)
+    .fill(false)
+    .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
+});
+
+const createEmptyImportExcelDraft = (): ImportExcelDraft => ({
+  importTag: "",
+  textFieldValues: {},
+  selectedLetters: {},
+  useTextField: {},
+  checkedRows: createInitialCheckedRows(),
+  generatedUUIDs: {},
+  sequentialUUIDs: {},
+  uuidGenerationNeeded: {},
+});
+
+const normalizeImportExcelDraft = (draft: ImportExcelDraft): ImportExcelDraft => ({
+  ...createEmptyImportExcelDraft(),
+  ...draft,
+  checkedRows: {
+    ...createInitialCheckedRows(),
+    ...draft.checkedRows,
+    entities: {
+      ...createInitialCheckedRows().entities,
+      ...(draft.checkedRows?.entities ?? {}),
+    },
+    relations: {
+      ...createInitialCheckedRows().relations,
+      ...(draft.checkedRows?.relations ?? {}),
+    },
+  },
+});
+
+const loadImportExcelDraft = (): ImportExcelDraft => {
+  try {
+    const rawDraft = window.sessionStorage.getItem(IMPORT_EXCEL_SESSION_KEY);
+    return rawDraft ? normalizeImportExcelDraft(JSON.parse(rawDraft)) : createEmptyImportExcelDraft();
+  } catch (error) {
+    console.warn(error);
+    return createEmptyImportExcelDraft();
+  }
+};
+
+const saveImportExcelDraft = (draft: ImportExcelDraft) => {
+  try {
+    window.sessionStorage.setItem(IMPORT_EXCEL_SESSION_KEY, JSON.stringify(draft));
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+const clearImportExcelDraft = () => {
+  try {
+    window.sessionStorage.removeItem(IMPORT_EXCEL_SESSION_KEY);
+  } catch (error) {
+    console.warn(error);
+  }
+};
 // Styled components for better organization and consistency
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(({ theme }) => ({
   marginTop: theme.spacing(1),
@@ -139,10 +217,17 @@ const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 export function ImportViewExcel() {
   const [entitiesFile, setEntitiesFile] = useState<File | null>(null);
-  const [importTag, setImportTag] = useState(""); // Changed from IMPORT_TAG_ID to empty string
-  const [textFieldValues, setTextFieldValues] = useState<{
-    [key: string]: string;
-  }>({});
+  const [importDraft, setImportDraft] = useState<ImportExcelDraft>(() => loadImportExcelDraft());
+  const {
+    importTag,
+    textFieldValues,
+    selectedLetters,
+    useTextField,
+    checkedRows,
+    generatedUUIDs,
+    sequentialUUIDs,
+    uuidGenerationNeeded,
+  } = importDraft;
   const { enqueueSnackbar } = useSnackbar();
   const [valid, setValid] = useState<boolean | null>(null); // Use null for uninitialized state
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -163,53 +248,120 @@ export function ImportViewExcel() {
   // Ref for abort controller
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // UUID Management for automatic ID generation
-  const [generatedUUIDs, setGeneratedUUIDs] = useState<{
-    [entityType: string]: { [name: string]: string }
-  }>({});
+  type ImportDraftUpdater =
+    | Partial<ImportExcelDraft>
+    | ((prev: ImportExcelDraft) => ImportExcelDraft);
 
-  // Sequential UUIDs for ordered entities (preserves Excel row order)
-  const [sequentialUUIDs, setSequentialUUIDs] = useState<{
-    [entityType: string]: Array<{ name: string; uuid: string; order: number }>
-  }>({});
-  
-  // State for managing UUID generation
-  const [uuidGenerationNeeded, setUuidGenerationNeeded] = useState<{
-    [entityType: string]: boolean
-  }>({});
-  
+  const updateImportDraft = (updater: ImportDraftUpdater) => {
+    setImportDraft((prev) => {
+      const next = typeof updater === "function" ? updater(prev) : { ...prev, ...updater };
+      saveImportExcelDraft(next);
+      return next;
+    });
+  };
+
+  const setImportTagDraft = (value: string) => {
+    updateImportDraft({ importTag: value });
+  };
+
+  const setTextFieldValuesDraft = (
+    value: { [key: string]: string } | ((prev: { [key: string]: string }) => { [key: string]: string })
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      textFieldValues: typeof value === "function" ? value(prev.textFieldValues) : value,
+    }));
+  };
+
+  const setSelectedLettersDraft = (
+    value: { [key: string]: string } | ((prev: { [key: string]: string }) => { [key: string]: string })
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      selectedLetters: typeof value === "function" ? value(prev.selectedLetters) : value,
+    }));
+  };
+
+  const setUseTextFieldDraft = (
+    value: { [key: string]: boolean } | ((prev: { [key: string]: boolean }) => { [key: string]: boolean })
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      useTextField: typeof value === "function" ? value(prev.useTextField) : value,
+    }));
+  };
+
+  const setCheckedRowsDraft = (
+    value: CheckedRowsTable | ((prev: CheckedRowsTable) => CheckedRowsTable)
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      checkedRows: typeof value === "function" ? value(prev.checkedRows) : value,
+    }));
+  };
+
+  const setGeneratedUUIDsDraft = (
+    value:
+      | { [entityType: string]: { [name: string]: string } }
+      | ((prev: { [entityType: string]: { [name: string]: string } }) => { [entityType: string]: { [name: string]: string } })
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      generatedUUIDs: typeof value === "function" ? value(prev.generatedUUIDs) : value,
+    }));
+  };
+
+  const setSequentialUUIDsDraft = (
+    value:
+      | { [entityType: string]: Array<{ name: string; uuid: string; order: number }> }
+      | ((
+          prev: { [entityType: string]: Array<{ name: string; uuid: string; order: number }> }
+        ) => { [entityType: string]: Array<{ name: string; uuid: string; order: number }> })
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      sequentialUUIDs: typeof value === "function" ? value(prev.sequentialUUIDs) : value,
+    }));
+  };
+
+  const setUuidGenerationNeededDraft = (
+    value:
+      | { [entityType: string]: boolean }
+      | ((prev: { [entityType: string]: boolean }) => { [entityType: string]: boolean })
+  ) => {
+    updateImportDraft((prev) => ({
+      ...prev,
+      uuidGenerationNeeded: typeof value === "function" ? value(prev.uuidGenerationNeeded) : value,
+    }));
+  };
+
   // Function to get or create UUID for a name in a specific entity type
   const getOrCreateUUID = (entityType: string, name: string): string => {
     if (!name || name.trim() === '') return '';
     
     const trimmedName = name.trim();
-    
-    // Initialize entity type if not exists
-    if (!generatedUUIDs[entityType]) {
-      const newUUID = uuidv4();
-      setGeneratedUUIDs(prev => ({
-        ...prev,
-        [entityType]: { [trimmedName]: newUUID }
-      }));
-      return newUUID;
-    }
-    
-    // Return existing UUID if name already has one
-    if (generatedUUIDs[entityType][trimmedName]) {
-      return generatedUUIDs[entityType][trimmedName];
-    }
-    
-    // Generate new UUID for new name
-    const newUUID = uuidv4();
-    setGeneratedUUIDs(prev => ({
-      ...prev,
-      [entityType]: {
-        ...prev[entityType],
-        [trimmedName]: newUUID
+    let existingOrNewUUID = "";
+
+    setGeneratedUUIDsDraft((prev) => {
+      const next: { [entityType: string]: { [name: string]: string } } = { ...prev };
+
+      if (!next[entityType]) {
+        existingOrNewUUID = uuidv4();
+        next[entityType] = { [trimmedName]: existingOrNewUUID };
+      } else if (!next[entityType][trimmedName]) {
+        existingOrNewUUID = uuidv4();
+        next[entityType] = {
+          ...next[entityType],
+          [trimmedName]: existingOrNewUUID
+        };
+      } else {
+        existingOrNewUUID = next[entityType][trimmedName];
       }
-    }));
+
+      return next;
+    });
     
-    return newUUID;
+    return existingOrNewUUID;
   };
 
   // Function to get all generated UUIDs for an entity type (for dropdowns in relations)
@@ -224,9 +376,9 @@ export function ImportViewExcel() {
 
   // Function to clear generated UUIDs (useful when starting a new import)
   const clearGeneratedUUIDs = () => {
-    setGeneratedUUIDs({});
-    setSequentialUUIDs({});
-    setUuidGenerationNeeded({});
+    setGeneratedUUIDsDraft({});
+    setSequentialUUIDsDraft({});
+    setUuidGenerationNeededDraft({});
   };
 
   // Function to generate UUIDs for a specific entity type from Excel data
@@ -250,10 +402,10 @@ export function ImportViewExcel() {
       const name = textFieldValues[`name${entityIndex}`] || "";
       if (name.trim()) {
         const uuid = uuidv4();
-        setSequentialUUIDs(prev => ({
-          ...prev,
+        setSequentialUUIDsDraft({
+          ...sequentialUUIDs,
           [entityType]: [{ name: name.trim(), uuid, order: 0 }]
-        }));
+        });
         // UUID-Generation visuell über Interface ersichtlich, keine Snackbar nötig
       }
       return;
@@ -308,15 +460,15 @@ export function ImportViewExcel() {
       generatedEntries.sort((a, b) => a.order - b.order);
 
       if (generatedEntries.length > 0) {
-        setSequentialUUIDs(prev => ({
-          ...prev,
+        setSequentialUUIDsDraft({
+          ...sequentialUUIDs,
           [entityType]: generatedEntries
-        }));
+        });
         
-        setUuidGenerationNeeded(prev => ({
-          ...prev,
+        setUuidGenerationNeededDraft({
+          ...uuidGenerationNeeded,
           [entityType]: false
-        }));
+        });
 
         const totalRows = Array.from(uniqueNames.keys()).length;
         const duplicateCount = (function() {
@@ -508,22 +660,6 @@ export function ImportViewExcel() {
     );
   };
 
-  // States for dropdown selections
-  const [selectedLetters, setSelectedLetters] = useState<{
-    [key: string]: string;
-  }>({});
-  const [useTextField, setUseTextField] = useState<{ [key: string]: boolean }>(
-    {}
-  );
-  const [checkedRows, setCheckedRows] = useState<CheckedRowsTable>({
-    entities: Array(9)
-      .fill(false)
-      .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
-    relations: Array(10)
-      .fill(false)
-      .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
-  });
-  const [selectAllEntities, setSelectAllEntities] = useState(false); // New state for "Select All" checkbox
 
   // get list of tags
   const { refetch } = useQuery(FindTagsDocument, {
@@ -558,14 +694,14 @@ export function ImportViewExcel() {
   };
 
   const handleImportTagChange = (event: any) => {
-    setImportTag(event.target.value);
+    setImportTagDraft(event.target.value);
   };
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     key: string
   ) => {
-    setTextFieldValues((prev) => ({ ...prev, [key]: event.target.value }));
+    setTextFieldValuesDraft((prev) => ({ ...prev, [key]: event.target.value }));
   };
 
   const handleimportExcel = async (
@@ -738,18 +874,9 @@ export function ImportViewExcel() {
   };
 
   const handleClearTable = () => {
-    setTextFieldValues({});
-    setSelectedLetters({});
-    setCheckedRows({
-      entities: Array(9)
-        .fill(false)
-        .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
-      relations: Array(10)
-        .fill(false)
-        .reduce((acc, _, index) => ({ ...acc, [index]: false }), {}),
-    });
+    clearImportExcelDraft();
+    setImportDraft(createEmptyImportExcelDraft());
     setValid(null); // Reset validation state
-    setSelectAllEntities(false); // Reset "Select All" checkbox
 
     // Reset file input
     if (fileInputRef.current) {
@@ -757,10 +884,7 @@ export function ImportViewExcel() {
     }
     setEntitiesFile(null); // Clear file state
     setProgress(0); // Reset progressBar
-    
-    // Clear generated UUIDs
-    clearGeneratedUUIDs();
-    
+
     // Reset import states
     setIsImporting(false);
     setImportAborted(false);
@@ -777,21 +901,21 @@ export function ImportViewExcel() {
     event: React.ChangeEvent<HTMLInputElement> | { target: { value: unknown } },
     key: string
   ) => {
-    setSelectedLetters((prev) => ({
+    setSelectedLettersDraft((prev) => ({
       ...prev,
       [key]: event.target.value as string,
     }));
   };
 
   const handleUseTextFieldToggle = (key: string) => {
-    setUseTextField((prev) => {
+    setUseTextFieldDraft((prev) => {
       const newValue = !prev[key];
       return { ...prev, [key]: newValue };
     });
 
     if (!useTextField[key]) {
-      setTextFieldValues((prev) => ({ ...prev, [key]: "" }));
-      setSelectedLetters((prev) => ({ ...prev, [key]: "" }));
+      setTextFieldValuesDraft((prev) => ({ ...prev, [key]: "" }));
+      setSelectedLettersDraft((prev) => ({ ...prev, [key]: "" }));
     }
   };
 
@@ -799,14 +923,14 @@ export function ImportViewExcel() {
     index: number,
     table: "entities" | "relations"
   ) => {
-    setCheckedRows((prev) => ({
+    setCheckedRowsDraft((prev) => ({
       ...prev,
       [table]: { ...prev[table], [index]: !prev[table][index] },
     }));
   };
 
   const handleSelectAll = (table: "entities" | "relations") => {
-    setCheckedRows((prev) => {
+    setCheckedRowsDraft((prev) => {
       const allChecked = Object.values(prev[table]).every(Boolean);
       const newCheckedRows: CheckedRows = {};
       for (let i = 0; i < (table === "entities" ? 9 : 10); i++) {
@@ -815,23 +939,6 @@ export function ImportViewExcel() {
       return { ...prev, [table]: newCheckedRows };
     });
   };
-
-  useEffect(() => {
-    // Initialize "Select All" checkbox state
-    setSelectAllEntities(false);
-  }, []);
-
-  useEffect(() => {
-    // Update all entities checkboxes based on the "Select All" checkbox
-    const newCheckedRows = { ...checkedRows.entities };
-    Object.keys(newCheckedRows).forEach((index) => {
-      newCheckedRows[parseInt(index)] = selectAllEntities;
-    });
-    setCheckedRows((prev) => ({
-      ...prev,
-      entities: newCheckedRows,
-    }));
-  }, [selectAllEntities]);
 
   const alphabet = Array.from(Array(26)).map((e, i) =>
     String.fromCharCode(i + 65)

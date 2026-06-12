@@ -1250,7 +1250,7 @@ export const IDSExportView: React.FC = () => {
         <Autocomplete
           multiple
           id="ifc-versions-select"
-          options={["IFC2X3", "IFC4", "IFC4X3"]}
+          options={["IFC2X3", "IFC4", "IFC4X3_ADD2"]}
           value={ifcVersions}
           onChange={(event, newValue) => {
             setIfcVersions(newValue);

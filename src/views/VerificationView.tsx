@@ -429,7 +429,7 @@ console.log(totalElements, " Total Elements");
           items={allItems}
           searchLabel={<T keyName="search.search_placeholder" />}
           onItemsRendered={handleScroll}
-          height={500}
+          height={Math.min(totalElements * 40, 600)}
           onSelect={onSelect}
         />
       </Box>
@@ -459,9 +459,11 @@ console.log(totalElements, " Total Elements");
       <Box sx={{
         width: '30%',
         flexShrink: 0,
-        alignSelf: 'flex-start' // Don't stretch vertically
+        alignSelf: 'flex-start', // Don't stretch vertically
+        maxHeight: 'calc(100vh - 180px)',
+        overflow: 'hidden'                
       }}>
-        <StyledPaper>
+        <StyledPaper sx={{ maxHeight: 'calc(100vh - 180px)', overflow: 'auto' }}>
           <Typography variant="h6">{title}</Typography>
           <Box sx={{
             flexGrow: title ? 1 : 0,

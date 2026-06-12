@@ -2,7 +2,6 @@ import {
   Button,
   Typography,
   Grid,
-  TextField,
   Paper,
   Box,
   Dialog,
@@ -18,7 +17,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import View from "./View";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import {
   SearchResultPropsFragment,
@@ -36,8 +35,11 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridRowSelectionModel,
+  GridPaginationModel,
 } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
+
+const SEARCH_PAGE_SIZE = 100;
 
 export function DeleteImportView() {
   const navigate = useNavigate();
@@ -45,7 +47,6 @@ export function DeleteImportView() {
   const [tag, setTag] = useState<string>("");
   const [tagId, setTagId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [output, setOutput] = useState<React.ReactNode>("");
   const [deleteEntry] = useMutation(DeleteEntryDocument);
@@ -54,7 +55,16 @@ export function DeleteImportView() {
     type: "include",
     ids: new Set<string>(),
   });
+  const [currentRecordIds, setCurrentRecordIds] = useState<string[]>([]);
+  const [excludedRecordIds, setExcludedRecordIds] = useState<Set<string>>(new Set());
+  const [selectAllPages, setSelectAllPages] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    pageSize: SEARCH_PAGE_SIZE,
+    page: 0,
+  });
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -66,64 +76,179 @@ export function DeleteImportView() {
   });
 
   // Search entries with properties
-  const { refetch, loading: searchLoading, error } = useQuery(FindItemDocument, {
+  const { data: searchData, refetch, loading: searchLoading, error, fetchMore } = useQuery(FindItemDocument, {
     variables: {
       input: {
         tagged: [tagId],
       },
-      pageSize: 10000,
+      pageSize: paginationModel.pageSize,
+      pageNumber,
     },
-    fetchPolicy: "no-cache"
+    skip: !tagId,
+    fetchPolicy: "cache-first",
   });
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(t("delete_import_view.search_error"), {
+        variant: "error",
+      });
+    }
+  }, [error, enqueueSnackbar, t]);
+
   const tagList = tagsData?.findTags.nodes ?? [];
 
-  // Search if tag exists, if yes, find all entries tagged with it
-  const handleSearch = async () => {
-    setIsFetching(true);
+  const normalizeSearchRecords = (nodes: any[]) =>
+    nodes.map((record: any) => {
+      if (record.recordType === "Dictionary" && record.dname?.texts?.length > 0) {
+        return {
+          ...record,
+          name: record.dname.texts[0].text,
+        };
+      }
+      return record;
+    });
 
-    try {
-      const result = await refetch({
-        input: {
-          tagged: [tagId],
-        },
-        pageSize: 10000,
-      });
+  useEffect(() => {
+    setPageNumber(0);
+    setTotalElements(0);
+    setPaginationModel({
+      pageSize: SEARCH_PAGE_SIZE,
+      page: 0,
+    });
+    setRecords([]);
+    setCurrentRecordIds([]);
+    setExcludedRecordIds(new Set());
+    setSelectAllPages(false);
+    setSelectedRows({ type: "include", ids: new Set<string>() });
+    setOutput("");
+  }, [tagId]);
 
-      const foundRecords = (result.data.search.nodes || []).map((record: any) => {
-        if (record.recordType === "Dictionary" && record.dname?.texts?.length > 0) {
-          return {
-            ...record,
-            name: record.dname.texts[0].text,
-          };
-        }
-        return record;
-      });
-      setRecords(foundRecords);
+  useEffect(() => {
+    if (!tagId || !searchData) return;
 
+    const foundRecords = normalizeSearchRecords(searchData.search?.nodes ?? []);
+    const foundRecordIds = foundRecords.map((record: SearchResultPropsFragment) => record.id);
+    setRecords(foundRecords);
+    setCurrentRecordIds(foundRecordIds);
+    setTotalElements(searchData.search?.totalElements ?? 0);
+    setSelectAllPages(true);
+
+    if (foundRecords.length === 0) {
+      setOutput(
+        <Alert severity="info">
+          <T keyName="delete_import_view.no_entries_found" />
+        </Alert>
+      );
+    } else {
+      setOutput("");
+      selectAllCurrentPage(foundRecords);
       setSelectedRows({
         type: "include",
-        ids: new Set(foundRecords.map((record: SearchResultPropsFragment) => record.id)),
+        ids: new Set(getVisibleSelectedIds(foundRecordIds)),
+      });
+    }
+  }, [searchData, tagId]);
+
+  const selectAllCurrentPage = (currentRecords: SearchResultPropsFragment[]) => {
+    setSelectedRows({
+      type: "include",
+      ids: new Set(currentRecords.map((record: SearchResultPropsFragment) => record.id)),
+    });
+  };
+
+  const getVisibleSelectedIds = (ids: string[]) =>
+    ids.filter((id) => !excludedRecordIds.has(id));
+
+  const getDeleteCount = () => {
+    if (!selectAllPages) return selectedRows.ids.size;
+    return Math.max(totalElements - excludedRecordIds.size, 0);
+  };
+
+  const handlePaginationModelChange = async (model: GridPaginationModel) => {
+    setPaginationModel(model);
+    setPageNumber(model.page);
+    setSelectedRows({ type: "include", ids: new Set<string>() });
+
+    if (!tagId) return;
+
+    try {
+      const result = await fetchMore({
+        variables: {
+          input: {
+            tagged: [tagId],
+          },
+          pageSize: model.pageSize,
+          pageNumber: model.page,
+        },
       });
 
-      if (foundRecords.length === 0) {
-        setOutput(
-          <Alert severity="info">
-            <T keyName="delete_import_view.no_entries_found" />
-          </Alert>
-        );
-      } else {
-        setOutput("");
+      const foundRecords = normalizeSearchRecords(result.data?.search?.nodes ?? []);
+      const foundRecordIds = foundRecords.map((record: SearchResultPropsFragment) => record.id);
+      setCurrentRecordIds(foundRecordIds);
+      setRecords(foundRecords);
+
+      if (selectAllPages) {
+        setSelectedRows({
+          type: "include",
+          ids: new Set(getVisibleSelectedIds(foundRecordIds)),
+        });
       }
     } catch (error) {
-      console.error("Error searching for records:", error);
+      console.error("Error fetching search page:", error);
       setOutput(
         <Alert severity="error">
           <T keyName="delete_import_view.search_error" />
         </Alert>
       );
-    } finally {
-      setIsFetching(false);
     }
+  };
+
+  const handleRowSelectionModelChange = (newModel: GridRowSelectionModel) => {
+    setSelectedRows(newModel);
+
+    if (!selectAllPages) return;
+
+    const selectedIds = new Set(Array.from(newModel.ids));
+    const currentIds = new Set(currentRecordIds);
+
+    setExcludedRecordIds((prev) => {
+      const next = new Set(prev);
+
+      currentIds.forEach((id) => {
+        if (selectedIds.has(id)) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+      });
+
+      return next;
+    });
+  };
+
+  const fetchAllRecordIds = async (): Promise<string[]> => {
+    if (!tagId) return [];
+
+    const ids: string[] = [];
+    let currentPage = 0;
+    let hasNextPage = true;
+
+    while (hasNextPage) {
+      const result = await refetch({
+        input: {
+          tagged: [tagId],
+        },
+        pageSize: SEARCH_PAGE_SIZE,
+        pageNumber: currentPage,
+      });
+
+      const nodes = result.data?.search?.nodes ?? [];
+      ids.push(...nodes.map((record: SearchResultPropsFragment) => record.id));
+      hasNextPage = result.data?.search?.pageInfo?.hasNext ?? false;
+      currentPage++;
+    }
+
+    return ids;
   };
 
   // Open confirmation dialog before deletion
@@ -131,11 +256,13 @@ export function DeleteImportView() {
     setIsDeleteDialogOpen(true);
   };
 
-  // Delete only selected entries with the given tag
+  // Delete selected entries, including records that were not loaded in the table
   const handleDeleteEntries = async () => {
     setIsDeleteDialogOpen(false);
 
-    if (selectedRows.ids.size === 0) {
+    const deleteCount = getDeleteCount();
+
+    if (deleteCount === 0) {
       enqueueSnackbar(t("delete_import.no_entries_selected"), {
         variant: "info",
       });
@@ -146,54 +273,52 @@ export function DeleteImportView() {
     setProgress(0);
 
     try {
+      const allRecordIds = await fetchAllRecordIds();
+      const recordIds = selectAllPages
+        ? allRecordIds.filter((id) => !excludedRecordIds.has(id))
+        : Array.from(selectedRows.ids).filter((id) => allRecordIds.includes(id));
+
+      if (recordIds.length === 0) {
+        enqueueSnackbar(t("delete_import.no_entries_selected"), {
+          variant: "info",
+        });
+        return;
+      }
+
       let successCount = 0;
       let errorCount = 0;
 
-      // Create a map of records by ID for efficient lookup
-      const recordsById = Object.fromEntries(
-        records.map((record) => [record.id, record])
-      );
-
-      for (let i = 0; i < selectedRows.ids.size; i++) {
-        const recordId = Array.from(selectedRows.ids)[i];
-        const record = recordsById[recordId];
-
-        if (!record) continue;
+      for (let i = 0; i < recordIds.length; i++) {
+        const recordId = recordIds[i];
 
         try {
           await deleteEntry({
             variables: { id: String(recordId) },
           });
           successCount++;
-          enqueueSnackbar(
-            <T
-              keyName="delete_import_view.delete_success"
-            />,
-            { variant: "success" }
-          );
+          // enqueueSnackbar(
+          //   <T
+          //     keyName="delete_import_view.delete_success"
+          //   />,
+          //   { variant: "success" }
+          // );
         } catch (error) {
           errorCount++;
           console.error(`Error deleting entry: `, error);
         }
 
-        // Update progress
-        setProgress(Math.round(((i + 1) / selectedRows.ids.size) * 100));
+        setProgress(Math.round(((i + 1) / recordIds.length) * 100));
       }
 
-      // Final summary notification
       if (successCount > 0) {
         enqueueSnackbar(
           <T
             keyName="delete_import_view.delete_summary"
-            params={{ count: successCount, total: selectedRows.ids.size }}
+            params={{ count: successCount, total: recordIds.length }}
           />,
           { variant: "success" }
         );
 
-        // Remove deleted records from the list
-        setRecords(
-          records.filter((record) => !selectedRows.ids.has(record.id))
-        );
         setSelectedRows({ type: "include", ids: new Set<string>() });
       }
 
@@ -202,13 +327,18 @@ export function DeleteImportView() {
           <Alert severity="warning">
             <T
               keyName="delete_import_view.delete_error_summary"
-              params={{ count: errorCount, total: records.length }}
+              params={{ count: errorCount, total: recordIds.length }}
             />
           </Alert>
         );
       } else {
         setRecords([]);
+        setCurrentRecordIds([]);
+        setExcludedRecordIds(new Set());
+        setSelectAllPages(false);
+        setTotalElements(0);
         setTag("");
+        setTagId("");
       }
     } catch (error) {
       console.error("Error in delete operation:", error);
@@ -311,29 +441,19 @@ export function DeleteImportView() {
             </FormControl>
           </Grid>
           <Grid>
-            <Box display="flex" gap={2}>
-              <Button
-                variant="contained"
-                onClick={handleSearch}
-                disabled={!tag.trim() || isLoading || isFetching}
-              >
-                <T keyName="delete_import_view.search_button" />
-              </Button>
-
-              <Button
-                variant="contained"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={handleOpenDeleteDialog}
-                disabled={records.length === 0 || isLoading || isFetching}
-              >
-                <T keyName="delete_import_view.delete_button" />
-              </Button>
-            </Box>
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={handleOpenDeleteDialog}
+              disabled={getDeleteCount() === 0 || isLoading || searchLoading}
+            >
+              <T keyName="delete_import_view.delete_button" />
+            </Button>
           </Grid>
         </Grid>
 
-        {(isLoading || isFetching || tagsLoading || searchLoading) && (
+        {(isLoading || tagsLoading || searchLoading) && (
           <Box sx={{ width: "100%", mt: 2 }}>
             <LinearProgress
               variant={isLoading ? "determinate" : "indeterminate"}
@@ -348,7 +468,10 @@ export function DeleteImportView() {
           <Box mt={3}>
             <Typography variant="h6" gutterBottom>
               <T keyName="delete_import_view.entries_to_delete" />
-              {` (${records.length})`}
+              {` (${getDeleteCount()} / ${totalElements})`}
+            </Typography>
+            <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+              Alle Einträge mit diesem Tag sind ausgewählt, auch Einträge auf nicht geladenen Seiten.
             </Typography>
 
             <Box sx={{ height: 400, width: "100%" }}>
@@ -362,10 +485,11 @@ export function DeleteImportView() {
                 }}
                 checkboxSelection
                 disableRowSelectionOnClick
-                onRowSelectionModelChange={(newModel) => {
-                  setSelectedRows(newModel);
-                }}
+                onRowSelectionModelChange={handleRowSelectionModelChange}
                 rowSelectionModel={selectedRows}
+                paginationModel={paginationModel}
+                onPaginationModelChange={handlePaginationModelChange}
+                rowCount={totalElements}
                 pageSizeOptions={[10, 25, 50, 100]}
                 getRowId={(row) => row.id}
                 sx={{
@@ -379,27 +503,6 @@ export function DeleteImportView() {
               />
             </Box>
 
-            <Box mt={2} display="flex" justifyContent="space-between">
-              <Button
-                variant="outlined"
-                onClick={() =>
-                  setSelectedRows({
-                    type: "include",
-                    ids: new Set(records.map((record) => record.id)),
-                  })
-                }
-              >
-                Select All
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() =>
-                  setSelectedRows({ type: "include", ids: new Set<string>() })
-                }
-              >
-                Deselect All
-              </Button>
-            </Box>
           </Box>
         )}
       </Paper>
@@ -417,7 +520,7 @@ export function DeleteImportView() {
           <DialogContentText>
             <T
               keyName="delete_import_view.confirm_delete_message"
-              params={{ tag, count: selectedRows.ids.size }}
+              params={{ tag, count: getDeleteCount() }}
             />
           </DialogContentText>
         </DialogContent>
@@ -429,7 +532,7 @@ export function DeleteImportView() {
             color="error"
             variant="contained"
             onClick={handleDeleteEntries}
-            disabled={selectedRows.ids.size === 0}
+            disabled={getDeleteCount() === 0 || isLoading || searchLoading}
           >
             <T keyName="delete_import_view.confirm_delete" />
           </Button>

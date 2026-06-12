@@ -19,7 +19,7 @@ export default function FilterableList(props: FilterableListProps) {
     const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
     const { t } = useTranslate();
     const debouncedSearchTerm = useDebounce(searchTerm, searchDelay);
-    const predicate = (x: CatalogRecord) => (x.name?.toLowerCase().indexOf(debouncedSearchTerm) !== -1);
+    const predicate = (x: CatalogRecord) => (x.name?.toLowerCase().indexOf(debouncedSearchTerm.toLowerCase()) !== -1);
     const visibleItems = items.filter(predicate);
     const searchLabel = t("search.filter_list", { count: visibleItems.length, total: items.length });
 
