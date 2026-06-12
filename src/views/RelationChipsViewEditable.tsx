@@ -241,7 +241,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 await createRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToSubject,
+                            relationshipType: 'RelationshipToSubject',
                             fromId: entry.id,
                             toIds: [selectedItem.id],
                             properties: {
@@ -264,7 +264,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 await createRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToSubject,
+                            relationshipType: 'RelationshipToSubject',
                             fromId: selectedItem.id,
                             toIds: [entry.id],
                             properties: {
@@ -304,7 +304,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 await deleteRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToSubject,
+                            relationshipType: 'RelationshipToSubject',
                             fromId: entry.id,
                             toId: targetId,
                             name: relationName
@@ -316,7 +316,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 await deleteRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToSubject,
+                            relationshipType: 'RelationshipToSubject',
                             fromId: targetId,
                             toId: entry.id,
                             name: relationName

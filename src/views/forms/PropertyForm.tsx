@@ -313,7 +313,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName="valuelist.titlePlural" /></b><T keyName="property.assigned_concepts" /></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.PossibleValues}
+                relationshipType={'PossibleValues'}
                 relationships={entry.possibleValues ?? []}
                 searchInput={{
                     entityTypeIn: [ValueListEntity.recordType]
@@ -327,7 +327,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName="unit.titlePlural" /></b><T keyName="property.assigned_concepts" /></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.Units}
+                relationshipType={'Units'}
                 relationships={entry.units ?? []}
                 searchInput={{
                     entityTypeIn: [UnitEntity.recordType],
@@ -341,7 +341,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationshipType={'ReferenceDocuments'}
                 relationships={entry.referenceDocuments ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
@@ -355,7 +355,7 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.SimilarTo}
+                relationshipType={'SimilarTo'}
                 relationships={entry.similarTo ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],

@@ -541,6 +541,13 @@
     "assigned_valuelists": "分配给该值的值列表",
     "no_assigned_valuelists": "该值未被任何值列表使用"
   },
+  "dataTemplate": {
+    "title": "数据模板",
+    "titlePlural": "数据模板",
+    "edit": "编辑数据模板",
+    "loading": "正在加载数据模板...",
+    "delete_success": "数据模板已删除。"
+  },
   "concept": {
     "title": "概念",
     "titlePlural": "概念",

@@ -176,7 +176,7 @@ export default function DomainClassForm(
       <TransferListViewRelationshipToSubject
         title={<span><b><T keyName="propertyGroup.titlePlural" /></b><T keyName={"class.assigned_concepts"} /></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.RelationshipToSubject}
+        relationshipType={'RelationshipToSubject'}
         relationships={relatedPropertyGroups}
         searchInput={{
           entityTypeIn: [PropertyGroupEntity.recordType],
@@ -190,7 +190,7 @@ export default function DomainClassForm(
       <TransferListView
         title={<span><b><T keyName="property.titlePlural" /></b><T keyName={"class.assigned_concepts"} /></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.Properties}
+        relationshipType={'Properties'}
         relationships={relatedProperties}
         searchInput={{
           entityTypeIn: [PropertyEntity.recordType],
@@ -207,7 +207,7 @@ export default function DomainClassForm(
       <TransferListView
         title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.ReferenceDocuments}
+        relationshipType={'ReferenceDocuments'}
         relationships={relatedDocuments}
         searchInput={{
           entityTypeIn: [DocumentEntity.recordType],
@@ -221,7 +221,7 @@ export default function DomainClassForm(
       <TransferListView
         title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
         relatingItemId={id}
-        relationshipType={RelationshipRecordType.SimilarTo}
+        relationshipType={'SimilarTo'}
         relationships={entry.similarTo ?? []}
         searchInput={{
           entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],

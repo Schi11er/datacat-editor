@@ -155,7 +155,7 @@ export default function OtherRelationsView(props: OtherRelationsViewProps) {
             await createRelationship({
                 variables: {
                     input: {
-                        relationshipType: RelationshipRecordType.RelationshipToSubject,
+                        relationshipType: 'RelationshipToSubject',
                         fromId: relatingItemId,
                         toIds: selectedTargets.map(t => t.id),
                         properties: {
@@ -180,7 +180,7 @@ export default function OtherRelationsView(props: OtherRelationsViewProps) {
             await deleteRelationship({
                 variables: {
                     input: {
-                        relationshipType: RelationshipRecordType.RelationshipToSubject,
+                        relationshipType: 'RelationshipToSubject',
                         fromId: relatingItemId,
                         toId: targetId,
                         name: relationshipName

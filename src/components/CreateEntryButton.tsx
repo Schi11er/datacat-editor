@@ -25,7 +25,8 @@ import {
     PropertyGroupEntity,
     UnitEntity,
     ValueEntity,
-    DictionaryEntity
+    DictionaryEntity,
+    DataTemplateEntity
 } from "../domain";
 import { T } from "@tolgee/react";
 
@@ -38,7 +39,8 @@ const options = [
     ValueListEntity,
     UnitEntity,
     ValueEntity,
-    DictionaryEntity
+    DictionaryEntity,
+    DataTemplateEntity
 ];
 
 type CreateEntryProps = {
@@ -199,7 +201,7 @@ const CreateEntryButton = (props: CreateEntryProps) => {
                         input: {
                             fromId: newConceptId,
                             toIds: [formValues.dictionary], 
-                            relationshipType: RelationshipRecordType.Dictionary
+                            relationshipType: 'Dictionary'
                         }
                     }
                 }).catch(error => {

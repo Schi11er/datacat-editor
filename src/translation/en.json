@@ -555,6 +555,13 @@
     "assigned_valuelists": "to which this value is assigned",
     "no_assigned_valuelists": "The value is not used by any value list"
   },
+  "dataTemplate": {
+    "title": "Data template",
+    "titlePlural": "Data templates",
+    "edit": "Edit data template",
+    "loading": "Loading data template...",
+    "delete_success": "Data template deleted."
+  },
   "concept": {
     "title": "Concept",
     "titlePlural": "Concepts",

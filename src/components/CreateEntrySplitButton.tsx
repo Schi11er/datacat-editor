@@ -220,7 +220,7 @@ const CreateEntrySplitButton: FC<CreateEntrySplitButtonProps> = (props) => {
                   input: {
                       fromId: newConceptId,
                       toIds: [formValues.dictionary], 
-                      relationshipType: RelationshipRecordType.Dictionary
+                      relationshipType: 'Dictionary'
                   }
               }
           }).catch(error => {

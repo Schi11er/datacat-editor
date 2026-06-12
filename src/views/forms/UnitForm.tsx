@@ -185,7 +185,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationshipType={'ReferenceDocuments'}
                 relationships={relatedDocuments}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
@@ -199,7 +199,7 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.SimilarTo}
+                relationshipType={'SimilarTo'}
                 relationships={entry.similarTo ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],

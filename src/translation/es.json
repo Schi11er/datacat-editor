@@ -541,6 +541,13 @@
     "assigned_valuelists": "a las que se ha asignado este valor",
     "no_assigned_valuelists": "El valor no es utilizado por ninguna lista de valores"
   },
+  "dataTemplate": {
+    "title": "Plantilla de datos",
+    "titlePlural": "Plantillas de datos",
+    "edit": "Editar plantilla de datos",
+    "loading": "Cargando plantilla de datos...",
+    "delete_success": "Plantilla de datos eliminada."
+  },
   "concept": {
     "title": "Concepto",
     "titlePlural": "Conceptos",

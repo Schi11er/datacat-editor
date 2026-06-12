@@ -78,7 +78,7 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
   const { data: allPropertiesData, loading: allPropertiesLoading } = useQuery(FindPropertiesMinimalDocument, {
     variables: {
       input: {
-        entityTypeIn: [CatalogRecordType.Property],
+        entityTypeIn: ['Property'],
       },
       pageSize: 1000, // Reduziert von 10000 wegen Backend Connection Pool Limits
       pageNumber: 0,
@@ -97,7 +97,7 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
     if (!allPropertiesData?.search?.nodes) return [];
     
     return allPropertiesData.search.nodes
-      .filter((node: any) => node.recordType === CatalogRecordType.Property)
+      .filter((node: any) => node.recordType === 'Property')
       .map((node: any) => ({
         id: node.id,
         name: node.name || `Property ${node.id}`,

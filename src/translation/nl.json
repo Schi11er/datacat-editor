@@ -540,6 +540,13 @@
     "assigned_valuelists": "waaraan deze waarde is toegewezen",
     "no_assigned_valuelists": "De waarde wordt door geen enkele waardelijst gebruikt"
   },
+  "dataTemplate": {
+    "title": "Gegevenssjabloon",
+    "titlePlural": "Gegevenssjablonen",
+    "edit": "Gegevenssjabloon bewerken",
+    "loading": "Gegevenssjabloon laden...",
+    "delete_success": "Gegevenssjabloon verwijderd."
+  },
   "concept": {
     "title": "Concept",
     "titlePlural": "Concepten",

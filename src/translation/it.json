@@ -541,6 +541,13 @@
     "assigned_valuelists": "a cui questo valore è assegnato",
     "no_assigned_valuelists": "Il valore non è utilizzato da nessuna lista di valori"
   },
+  "dataTemplate": {
+    "title": "Modello di dati",
+    "titlePlural": "Modelli di dati",
+    "edit": "Modifica modello di dati",
+    "loading": "Caricamento modello di dati...",
+    "delete_success": "Modello di dati eliminato."
+  },
   "concept": {
     "title": "Concetto",
     "titlePlural": "Concetti",

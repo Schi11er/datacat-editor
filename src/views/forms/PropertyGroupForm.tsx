@@ -130,7 +130,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName="property.titlePlural" /></b><T keyName="propertyGroup.grouped_properties"></T></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.Properties}
+                relationshipType={'Properties'}
                 relationships={entry.properties ?? []}
                 searchInput={{ entityTypeIn: [PropertyEntity.recordType] }}
                 onCreate={handleOnUpdate}
@@ -141,7 +141,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationshipType={'ReferenceDocuments'}
                 relationships={relatedDocuments}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
@@ -155,7 +155,7 @@ const PropertyGroupForm = (props: FormProps<SubjectDetailPropsFragment>) => {
             <TransferListView
                 title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.SimilarTo}
+                relationshipType={'SimilarTo'}
                 relationships={entry.similarTo ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],

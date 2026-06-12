@@ -117,7 +117,7 @@ const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => 
             await createRelationship({
                 variables: {
                     input: {
-                        relationshipType: RelationshipRecordType.Unit,
+                        relationshipType: 'Unit',
                         fromId: id,
                         toIds: [unitId]
                     }
@@ -138,7 +138,7 @@ const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => 
             await deleteRelationship({
                 variables: {
                     input: {
-                        relationshipType: RelationshipRecordType.Unit,
+                        relationshipType: 'Unit',
                         fromId: id,
                         toId: entry.unit.id
                     }
@@ -277,7 +277,7 @@ const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => 
             <TransferListViewOrderedValues
                 title={<span><b><T keyName="value.titlePlural" /></b><T keyName="valuelist.value_range"></T></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.Values}
+                relationshipType={'Values'}
                 relationships={values}
                 searchInput={{
                     entityTypeIn: [ValueEntity.recordType],
@@ -290,7 +290,7 @@ const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => 
             <TransferListView
                 title={<span><b><T keyName="document.titlePlural" /></b><T keyName={"concept.reference_documents"} /></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.ReferenceDocuments}
+                relationshipType={'ReferenceDocuments'}
                 relationships={entry.referenceDocuments ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType],
@@ -304,7 +304,7 @@ const ValueListForm: FC<FormProps<GetValueListEntryQuery['node']>> = (props) => 
             <TransferListView
                 title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.SimilarTo}
+                relationshipType={'SimilarTo'}
                 relationships={entry.similarTo ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],

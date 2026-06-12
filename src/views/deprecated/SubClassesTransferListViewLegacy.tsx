@@ -77,7 +77,7 @@ export default function SubClassesTransferListView(props: SubClassesTransferList
         await createRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: relatingItemId,
                     toIds,
                     properties: {
@@ -97,7 +97,7 @@ export default function SubClassesTransferListView(props: SubClassesTransferList
         await deleteRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: relatingItemId,
                     toId,
                     name: "specializes"

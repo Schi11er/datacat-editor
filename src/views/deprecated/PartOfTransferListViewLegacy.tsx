@@ -76,7 +76,7 @@ export default function PartOfTransferListView(props: PartOfTransferListViewProp
         await createRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: relatingItemId,
                     toIds,
                     properties: {
@@ -96,7 +96,7 @@ export default function PartOfTransferListView(props: PartOfTransferListViewProp
         await deleteRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: relatingItemId,
                     toId,
                     name: "partOf"

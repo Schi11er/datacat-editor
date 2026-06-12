@@ -79,7 +79,7 @@ export default function SuperClassesTransferListView(props: SuperClassesTransfer
         await createRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: toIds[0], // Superclass as source
                     toIds: [relatingItemId], // This class as target
                     properties: {
@@ -99,7 +99,7 @@ export default function SuperClassesTransferListView(props: SuperClassesTransfer
         await deleteRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: superClassId, // Superclass as source
                     toId: relatingItemId, // This class as target
                     name: "specializes"

@@ -8,6 +8,7 @@ import ValueListForm from "../views/forms/ValueListForm";
 import UnitForm from "../views/forms/UnitForm";
 import ValueForm from "../views/forms/ValueForm";
 import DictionaryForm from "../views/forms/DictionaryForm";
+import DataTemplateForm from "../views/forms/DataTemplateForm";
 import {
   ClassEntity,
   DocumentEntity,
@@ -17,7 +18,8 @@ import {
   PropertyEntity,
   PropertyGroupEntity,
   UnitEntity,
-  ValueEntity
+  ValueEntity,
+  DataTemplateEntity
 } from "../domain";
 
 export const catalogEntryRoutes = [
@@ -116,6 +118,17 @@ export const catalogEntryRoutes = [
         entryType={ValueEntity}
         renderForm={(id) => (
           <ValueForm id={id}/>
+        )}
+      />
+    ),
+  },
+  {
+    path: `/${DataTemplateEntity.path}/:id?`,
+    element: (
+      <CompositeCatalogEntryView
+        entryType={DataTemplateEntity}
+        renderForm={(id) => (
+          <DataTemplateForm id={id}/>
         )}
       />
     ),

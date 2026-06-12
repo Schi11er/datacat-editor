@@ -145,7 +145,7 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
             <TransferListView
                 title={<span><b><T keyName={"concept.similar_concepts"} /></b></span>}
                 relatingItemId={id}
-                relationshipType={RelationshipRecordType.SimilarTo}
+                relationshipType={'SimilarTo'}
                 relationships={entry.similarTo ?? []}
                 searchInput={{
                     entityTypeIn: [DocumentEntity.recordType, PropertyEntity.recordType, ValueListEntity.recordType, UnitEntity.recordType, ClassEntity.recordType],

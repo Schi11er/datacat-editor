@@ -1380,39 +1380,39 @@ export function ImportViewExcel() {
       [key: string]: { recordType: CatalogRecordType; tag: string };
     } = {
       Referenzdokument: {
-        recordType: CatalogRecordType.ExternalDocument,
+        recordType: 'ExternalDocument',
         tag: "Referenzdokument",
       },
       Dictionary: {
-        recordType: CatalogRecordType.Dictionary,
+        recordType: 'Dictionary',
         tag: "Dictionary",
       },
       Thema: {
-        recordType: CatalogRecordType.Subject,
+        recordType: 'Subject',
         tag: "Thema",
       },
       Klasse: {
-        recordType: CatalogRecordType.Subject,
+        recordType: 'Subject',
         tag: "Klasse",
       },
       Merkmal: {
-        recordType: CatalogRecordType.Property,
+        recordType: 'Property',
         tag: "Merkmal",
       },
       Merkmalsgruppe: {
-        recordType: CatalogRecordType.Subject,
+        recordType: 'Subject',
         tag: "Merkmalsgruppe",
       },
       Werteliste: {
-        recordType: CatalogRecordType.ValueList,
+        recordType: 'ValueList',
         tag: "Werteliste",
       },
       Maßeinheit: {
-        recordType: CatalogRecordType.Unit,
+        recordType: 'Unit',
         tag: "Maßeinheit",
       },
       Wert: {
-        recordType: CatalogRecordType.Value,
+        recordType: 'Value',
         tag: "Wert",
       },
     };
@@ -1547,17 +1547,17 @@ export function ImportViewExcel() {
   }) => {
     // Define relationship types mapping directly to RelationshipRecordType
     const relTypes: { [key: string]: RelationshipRecordType } = {
-      Rel_Concept_Referenzdokument: RelationshipRecordType.ReferenceDocuments,
-      Rel_Concept_Dictionary: RelationshipRecordType.Dictionary,
-      Rel_Thema_Klasse: RelationshipRecordType.RelationshipToSubject,
-      Rel_Klasse_Merkmal: RelationshipRecordType.Properties,
-      Rel_Merkmal_Maßeinheit: RelationshipRecordType.Units,
-      Rel_Merkmal_Werteliste: RelationshipRecordType.PossibleValues,
-      Rel_Werteliste_Maßeinheit: RelationshipRecordType.Unit,
-      Rel_Werteliste_Wert: RelationshipRecordType.Values,
-      Rel_Klasse_Merkmalsgruppe: RelationshipRecordType.RelationshipToSubject,
-      Rel_Merkmalsgruppe_Merkmal: RelationshipRecordType.Properties
-      // Rel_Thema_Thema: RelationshipRecordType.RelationshipToSubject 
+      Rel_Concept_Referenzdokument: 'ReferenceDocuments',
+      Rel_Concept_Dictionary: 'Dictionary',
+      Rel_Thema_Klasse: 'RelationshipToSubject',
+      Rel_Klasse_Merkmal: 'Properties',
+      Rel_Merkmal_Maßeinheit: 'Units',
+      Rel_Merkmal_Werteliste: 'PossibleValues',
+      Rel_Werteliste_Maßeinheit: 'Unit',
+      Rel_Werteliste_Wert: 'Values',
+      Rel_Klasse_Merkmalsgruppe: 'RelationshipToSubject',
+      Rel_Merkmalsgruppe_Merkmal: 'Properties'
+      // Rel_Thema_Thema: 'RelationshipToSubject' 
     };
 
     // Import status
@@ -1607,7 +1607,7 @@ export function ImportViewExcel() {
 
         try {
           let properties: any = {};
-          if (relationshipType === RelationshipRecordType.RelationshipToSubject) {
+          if (relationshipType === 'RelationshipToSubject') {
             properties = {
               relationshipToSubjectProperties: {
                 relationshipType: "XTD_SCHEMA_LEVEL"

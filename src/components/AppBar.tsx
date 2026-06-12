@@ -69,6 +69,7 @@ const AppBreadcrumbs = () => {
       'value': t('value.titlePlural'),
       'valuelist': t('valuelist.titlePlural'),
       'unit': t('unit.titlePlural'),
+      'data-template': t('dataTemplate.titlePlural'),
       'import': t('app_drawer.import'),
       'export': t('app_drawer.export'),
       'search': t('app_drawer.search_catalog'),

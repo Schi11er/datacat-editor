@@ -185,7 +185,7 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                 await createRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToProperty,
+                            relationshipType: 'RelationshipToProperty',
                             fromId: entry.id,
                             toIds: [selectedItem.id],
                             properties: {
@@ -202,7 +202,7 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                 await createRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToProperty,
+                            relationshipType: 'RelationshipToProperty',
                             fromId: selectedItem.id,
                             toIds: [entry.id],
                             properties: {
@@ -234,7 +234,7 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                 await deleteRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToProperty,
+                            relationshipType: 'RelationshipToProperty',
                             fromId: entry.id,
                             toId: targetId,
                         }
@@ -245,7 +245,7 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                 await deleteRelationship({
                     variables: {
                         input: {
-                            relationshipType: RelationshipRecordType.RelationshipToProperty,
+                            relationshipType: 'RelationshipToProperty',
                             fromId: targetId,
                             toId: entry.id,
                         }

@@ -421,6 +421,19 @@ query FindPropertyGroups($input: FilterInput!) {
   }
 }
 
+query FindDataTemplates($input: FilterInput!) {
+  findSubjects(input: $input) {
+    totalElements
+    nodes {
+      id
+      name
+      tags {
+        ...TagProps
+      }
+    }
+  }
+}
+
 # IDS-spezifische Queries mit minimalen Feldern für bessere Performance
 # OHNE connectingSubjects um Backend-Überlastung zu vermeiden
 query FindSubjectsForIDS($input: FilterInput!) {
@@ -691,6 +704,12 @@ query GetSubjectEntry($id: ID!) {
 query GetSubjectEntryMinimal($id: ID!) {
   node: getSubject(id: $id) {
     ...SubjectRelationsMinimalProps
+  }
+}
+
+query GetDataTemplateEntry($id: ID!) {
+  node: getSubject(id: $id) {
+    ...SubjectDetailProps
   }
 }
 

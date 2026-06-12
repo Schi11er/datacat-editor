@@ -78,7 +78,7 @@ export default function PartsTransferListView(props: PartsTransferListViewProps)
         await createRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: toIds[0], // The part is the source
                     toIds: [relatingItemId], // This class is the target (whole)
                     properties: {
@@ -98,7 +98,7 @@ export default function PartsTransferListView(props: PartsTransferListViewProps)
         await deleteRelationship({
             variables: {
                 input: {
-                    relationshipType: RelationshipRecordType.RelationshipToSubject,
+                    relationshipType: 'RelationshipToSubject',
                     fromId: partId, // Part as source
                     toId: relatingItemId, // This class as target (whole)
                     name: "partOf"

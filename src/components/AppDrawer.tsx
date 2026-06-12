@@ -31,7 +31,8 @@ import {
   PropertyGroupEntity,
   UnitEntity,
   ValueEntity,
-  DictionaryEntity
+  DictionaryEntity,
+  DataTemplateEntity
 } from "../domain";
 import AppTitle from "./AppTitle";
 import { useAdminAccess } from "../hooks/useAuthContext";
@@ -311,6 +312,13 @@ const AppDrawer: FunctionComponent<DrawerProps> = (props) => {
             icon={<ValueEntity.Icon />}
             primary={<T keyName="value.titlePlural">Werte</T>}
             to={`/${ValueEntity.path}`}
+            onClick={handleItemClick}
+          />
+
+          <AppDrawerItem
+            icon={<DataTemplateEntity.Icon />}
+            primary={<T keyName="dataTemplate.titlePlural">Datenvorlagen</T>}
+            to={`/${DataTemplateEntity.path}`}
             onClick={handleItemClick}
           />
         </List>

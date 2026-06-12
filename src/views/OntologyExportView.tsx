@@ -29,7 +29,7 @@ export const OntologyExportView: React.FC = () => {
   const { data, loading, error } = useQuery(FindConceptsForOntoExportDocument, {
     variables: {
       input: {
-        entityTypeIn: [CatalogRecordType.Property, CatalogRecordType.Value],
+        entityTypeIn: ['Property', 'Value'],
       },
       pageSize: 1000,
       pageNumber: 0

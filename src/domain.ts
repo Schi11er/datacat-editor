@@ -46,7 +46,7 @@ export const DocumentEntity: Entity = {
   get title() { return tolgee.t('document.title'); },         
   get titlePlural() { return tolgee.t("document.titlePlural"); },  
   get description() { return tolgee.t("document.description"); },   
-  recordType: CatalogRecordType.ExternalDocument,
+  recordType: 'ExternalDocument',
   path: "document",
   Icon: ReferenceDocumentIcon,
   export: true
@@ -56,7 +56,7 @@ export const DictionaryEntity: Entity = {
   tags: ["c1c7016b-f85c-43c7-a696-71e75555062b"],
   get title() { return tolgee.t("dictionary.title"); },
   get titlePlural() { return tolgee.t("dictionary.titlePlural"); },
-  recordType: CatalogRecordType.Dictionary,
+  recordType: 'Dictionary',
   path: "dictionary",
   Icon: DictionaryIcon,
   export: true
@@ -66,7 +66,7 @@ export const ThemeEntity: Entity = {
   tags: ["5997da9b-a716-45ae-84a9-e2a7d186bcf9"],
   get title() { return tolgee.t("theme.title"); },
   get titlePlural() { return tolgee.t("theme.titlePlural"); },
-  recordType: CatalogRecordType.Subject,
+  recordType: 'Subject',
   path: "theme",
   Icon: ThemeIcon,
   export: true
@@ -76,7 +76,7 @@ export const ClassEntity: Entity = {
   tags: ["e9b2cd6d-76f7-4c55-96ab-12d084d21e96"],
   get title() { return tolgee.t("class.title"); },
   get titlePlural() { return tolgee.t("class.titlePlural"); },
-  recordType: CatalogRecordType.Subject,
+  recordType: 'Subject',
   path: "class",
   Icon: DomainClassIcon,
   export: true
@@ -86,7 +86,7 @@ export const PropertyGroupEntity: Entity = {
   tags: ["7c9ffe6e-3c8b-4cd2-b57b-4cd102325603"],
   get title() { return tolgee.t("propertyGroup.title"); },
   get titlePlural() { return tolgee.t("propertyGroup.titlePlural"); },
-  recordType: CatalogRecordType.Subject,
+  recordType: 'Subject',
   path: "property-group",
   Icon: PropertyGroupIcon,
   export: true
@@ -96,7 +96,7 @@ export const PropertyEntity: Entity = {
   tags: ["d4b0ba83-eb40-4997-85e0-9d6181e85639"],
   get title() { return tolgee.t("property.title"); },
   get titlePlural() { return tolgee.t("property.titlePlural"); },
-  recordType: CatalogRecordType.Property,
+  recordType: 'Property',
   path: "property",
   Icon: PropertyIcon,
   export: true
@@ -106,7 +106,7 @@ export const ValueListEntity: Entity = {
   tags: ["57172977-a42f-4e05-8109-cd906ec7f43c"],
   get title() { return tolgee.t("valuelist.title"); },
   get titlePlural() { return tolgee.t("valuelist.titlePlural"); },
-  recordType: CatalogRecordType.ValueList,
+  recordType: 'ValueList',
   path: "valuelist",
   Icon: MeasureIcon,
   export: true
@@ -116,7 +116,7 @@ export const UnitEntity: Entity = {
   tags: ["09da1ebb-8641-47fa-b82e-8588c7fef09e"],
   get title() { return tolgee.t("unit.title"); },
   get titlePlural() { return tolgee.t("unit.titlePlural"); },
-  recordType: CatalogRecordType.Unit,
+  recordType: 'Unit',
   path: "unit",
   Icon: UnitIcon,
   export: true
@@ -126,9 +126,29 @@ export const ValueEntity: Entity = {
   tags: ["a5d13c88-7d83-42c1-8da2-5dc6d8e8a749"],
   get title() { return tolgee.t("value.title"); },
   get titlePlural() { return tolgee.t("value.titlePlural"); },
-  recordType: CatalogRecordType.Value,
+  recordType: 'Value',
   path: "value",
   Icon: ValueIcon,
+  export: true
+};
+
+// export const ObjectTypeEntity: Entity = {
+//   tags: ["b7b1cd0b-b515-4252-a083- bb5d-dee073c8"],
+//   get title() { return tolgee.t("objectType.title"); },
+//   get titlePlural() { return tolgee.t("objectType.titlePlural"); },
+//   recordType: 'Subject',
+//   path: "object-type",
+//   Icon: ObjectTypeIcon,
+//   export: true
+// };
+
+export const DataTemplateEntity: Entity = {
+  tags: ["f72aefe1-cb39-4af3-8455-2fd-fe891734c"],
+  get title() { return tolgee.t("dataTemplate.title"); },
+  get titlePlural() { return tolgee.t("dataTemplate.titlePlural"); },
+  recordType: 'Subject',
+  path: "data-template",
+  Icon: DataTemplateIcon,
   export: true
 };
 
@@ -141,7 +161,8 @@ export const Domain = [
   PropertyEntity,
   ValueListEntity,
   UnitEntity,
-  ValueEntity
+  ValueEntity,
+  DataTemplateEntity
 ];
 
 export function getEntityType(recordType: string, tags?: string[]): Entity {

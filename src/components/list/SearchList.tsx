@@ -66,7 +66,7 @@ export default function SearchList(props: SearchListProps) {
         query: debouncedSearchTerm,
     }), [searchInput, debouncedSearchTerm]);
 
-    const isDictionary = searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary);
+    const isDictionary = searchInput?.entityTypeIn?.includes('Dictionary');
     
     // Load available Dictionaries for filter dropdown ONLY when needed
     const { data: dictionariesData } = useQuery(FindDictionariesDocument, {
@@ -181,8 +181,8 @@ export default function SearchList(props: SearchListProps) {
 
     // Determine if dictionary filter should be shown
     const shouldShowDictionaryFilter = showDictionaryFilter && 
-        !searchInput?.entityTypeIn?.includes(CatalogRecordType.Dictionary) &&
-        !searchInput?.entityTypeIn?.includes(CatalogRecordType.Unit);
+        !searchInput?.entityTypeIn?.includes('Dictionary') &&
+        !searchInput?.entityTypeIn?.includes('Unit');
 
     // Check if dictionary filter is active
     const isDictionaryFilterActive = shouldShowDictionaryFilter && selectedDictionaryId !== null;

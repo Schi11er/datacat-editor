@@ -553,6 +553,13 @@
     "assigned_valuelists": "denen dieser Wert zugewiesen wurde",
     "no_assigned_valuelists": "Der Wert wird durch keine Werteliste genutzt"
   },
+  "dataTemplate": {
+    "title": "Datenvorlage",
+    "titlePlural": "Datenvorlagen",
+    "edit": "Datenvorlage bearbeiten",
+    "loading": "Lade Datenvorlage...",
+    "delete_success": "Datenvorlage gelöscht."
+  },
   "concept": {
     "title": "Konzept",
     "titlePlural": "Konzepte",

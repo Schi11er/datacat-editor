@@ -107,14 +107,14 @@ const DictionaryFormSet: FC<DictionaryFormSetProps> = (props) => {
       const deletePromise = validDictionaryId 
         ? deleteDictionary({
             variables: {
-              input: { fromId: catalogEntryId, toId: validDictionaryId, relationshipType: RelationshipRecordType.Dictionary }
+              input: { fromId: catalogEntryId, toId: validDictionaryId, relationshipType: 'Dictionary' }
             }
           })
         : Promise.resolve();
 
       const createPromise = newDictionaryId ? setDictionary({
         variables: {
-          input: { fromId: catalogEntryId, toIds: [newDictionaryId], relationshipType: RelationshipRecordType.Dictionary }
+          input: { fromId: catalogEntryId, toIds: [newDictionaryId], relationshipType: 'Dictionary' }
         }
       }) : Promise.resolve();
 
