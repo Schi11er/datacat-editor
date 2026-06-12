@@ -35,7 +35,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate } from 'react-router-dom';
-import { getEntityType, ClassEntity } from '../domain';
+import { getEntityType, ClassEntity, DataTemplateEntity } from '../domain';
 import { T } from '@tolgee/react';
 import FormSet, { FormSetTitle } from '../components/forms/FormSet';
 import { ApolloCache } from '@apollo/client';
@@ -53,6 +53,7 @@ const RELATION_COLORS = {
 
 export type RelationChipsViewEditableProps = {
     entry: SubjectDetailPropsFragment;
+    context?: 'class' | 'dataTemplate';
     onUpdate?: () => void;
 };
 
@@ -65,16 +66,73 @@ type RelationData = {
 };
 type RelationCategory = 'superClass' | 'subClass' | 'part' | 'partOf' | 'other';
 
+// Context-specific configuration
+type ContextConfig = {
+    entityType: typeof ClassEntity | typeof DataTemplateEntity;
+    categories: RelationCategory[];
+    labelKeys: Record<RelationCategory, string>;
+    addDialogKeys: Record<RelationCategory, string>;
+    titleKey: string;
+    searchLabelKey: string;
+    searchPlaceholder: string;
+};
+
+const CONTEXT_CONFIGS: Record<'class' | 'dataTemplate', ContextConfig> = {
+    class: {
+        entityType: ClassEntity,
+        categories: ['superClass', 'subClass', 'part', 'partOf', 'other'],
+        labelKeys: {
+            superClass: 'class.superclasses',
+            subClass: 'class.subclasses',
+            part: 'class.parts',
+            partOf: 'class.partof',
+            other: 'class.otherRelations',
+        },
+        addDialogKeys: {
+            superClass: 'class.add_superclass',
+            subClass: 'class.add_subclass',
+            part: 'class.add_part',
+            partOf: 'class.add_partof',
+            other: 'class.add_other_relation',
+        },
+        titleKey: 'class.relations',
+        searchLabelKey: 'search.search_classes',
+        searchPlaceholder: 'Klassen suchen',
+    },
+    dataTemplate: {
+        entityType: DataTemplateEntity,
+        categories: ['superClass', 'subClass', 'part', 'partOf'],
+        labelKeys: {
+            superClass: 'dataTemplate.supertemplates',
+            subClass: 'dataTemplate.subtemplates',
+            part: 'dataTemplate.parts',
+            partOf: 'dataTemplate.partof',
+                    other: '',
+        },
+        addDialogKeys: {
+            superClass: 'dataTemplate.add_supertemplate',
+            subClass: 'dataTemplate.add_subtemplate',
+            part: 'dataTemplate.add_part',
+            partOf: 'dataTemplate.add_partof',
+                    other: '',
+        },
+        titleKey: 'dataTemplate.relations',
+        searchLabelKey: 'search.search_templates',
+        searchPlaceholder: 'Datenvorlagen suchen',
+    },
+};
+
 export default function RelationChipsViewEditable(props: RelationChipsViewEditableProps) {
-    const { entry, onUpdate } = props;
+    const { entry, context = 'class', onUpdate } = props;
     const navigate = useNavigate();
+    const config = CONTEXT_CONFIGS[context];
     
     // Edit states for each category
     const [editingCategory, setEditingCategory] = useState<RelationCategory | null>(null);
     const [searchValue, setSearchValue] = useState('');
     const [selectedItems, setSelectedItems] = useState<CatalogRecord[]>([]);
     
-    // State for "other" relations
+    // State for "other" relations (class context only)
     const [selectedRelationType, setSelectedRelationType] = useState<string>('');
     const [relationTypeSearchValue, setRelationTypeSearchValue] = useState<string>('');
     
@@ -113,8 +171,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
     useEffect(() => {
         if (debouncedSearchValue.length >= 2) {
             const input: SearchInput = {
-                entityTypeIn: [ClassEntity.recordType],
-                tagged: ClassEntity.tags,
+                entityTypeIn: [config.entityType.recordType],
+                tagged: config.entityType.tags,
                 query: debouncedSearchValue
             };
             findItems({
@@ -125,7 +183,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 }
             });
         }
-    }, [debouncedSearchValue, findItems]);
+    }, [debouncedSearchValue, findItems, config]);
 
     // Mutations
     const update = (cache: ApolloCache) => cache.modify({
@@ -235,8 +293,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 // Outgoing relation: this class -> target
                 // Use XtdInstanceLevel for partOf and other relations, XtdSchemaLevel for subClass
                 const relationshipKind = (editingCategory === 'partOf' || editingCategory === 'other') 
-                    ? XtdRelationshipKindEnum.XtdInstanceLevel 
-                    : XtdRelationshipKindEnum.XtdSchemaLevel;
+                    ? 'XTD_INSTANCE_LEVEL'
+                    : 'XTD_SCHEMA_LEVEL';
                 
                 await createRelationship({
                     variables: {
@@ -258,8 +316,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                 // Incoming relation: target -> this class (superClass, part)
                 // superClass uses XtdSchemaLevel, part uses XtdInstanceLevel
                 const relationshipKind = editingCategory === 'part' 
-                    ? XtdRelationshipKindEnum.XtdInstanceLevel 
-                    : XtdRelationshipKindEnum.XtdSchemaLevel;
+                    ? 'XTD_INSTANCE_LEVEL'
+                    : 'XTD_SCHEMA_LEVEL';
                 
                 await createRelationship({
                     variables: {
@@ -343,8 +401,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
         title: React.ReactNode,
         icon: React.ReactNode,
         relations: RelationData[],
-        color: string,
-        tooltipText: string
+        color: string
     ) => {
         return (
             <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: 280 }}>
@@ -360,11 +417,9 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-                        <Tooltip title={tooltipText}>
-                            <Box sx={{ color, display: 'flex', alignItems: 'center' }}>
-                                {icon}
-                            </Box>
-                        </Tooltip>
+                        <Box sx={{ color, display: 'flex', alignItems: 'center' }}>
+                            {icon}
+                        </Box>
                         <Typography variant="subtitle2" fontWeight={600}>
                             {title}
                         </Typography>
@@ -450,153 +505,67 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
 
     // Get title for dialog based on category
     const getDialogTitle = (category: RelationCategory | null): React.ReactNode => {
-        switch (category) {
-            case 'superClass': return <T keyName="class.add_superclass">Superklasse hinzufügen</T>;
-            case 'subClass': return <T keyName="class.add_subclass">Subklasse hinzufügen</T>;
-            case 'part': return <T keyName="class.add_part">Teil hinzufügen</T>;
-            case 'partOf': return <T keyName="class.add_partof">Teil von hinzufügen</T>;
-            case 'other': return <T keyName="class.add_other_relation">Andere Beziehungen hinzufügen</T>;
-            default: return '';
-        }
+        if (!category) return '';
+        const keyName = config.addDialogKeys[category];
+        return <T keyName={keyName} />;
     };
 
     return (
         <FormSet>
             <FormSetTitle>
-                <b><T keyName="class.relations">Klassenbeziehungen</T></b>
+                <b><T keyName={config.titleKey} /></b>
             </FormSetTitle>
             
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                {/* Superklassen */}
-                {renderRelationCard(
-                    'superClass',
-                    <T keyName="class.superclasses">Superklassen</T>,
-                    <ArrowUpwardIcon fontSize="small" />,
-                    superClasses,
-                    RELATION_COLORS.superClass,
-                    'Diese Klasse spezialisiert diese Klassen' // T keyName would break Tooltip
-                )}
+                {config.categories.map((category) => {
+                    // Get icon for category
+                    const getIcon = () => {
+                        switch (category) {
+                            case 'superClass': return <ArrowUpwardIcon fontSize="small" />;
+                            case 'subClass': return <ArrowDownwardIcon fontSize="small" />;
+                            case 'part': return <CallSplitIcon fontSize="small" />;
+                            case 'partOf': return <CallMergeIcon fontSize="small" />;
+                            case 'other': return <LinkIcon fontSize="small" />;
+                        }
+                    };
 
-                {/* Subklassen */}
-                {renderRelationCard(
-                    'subClass',
-                    <T keyName="class.subclasses">Subklassen</T>,
-                    <ArrowDownwardIcon fontSize="small" />,
-                    subClasses,
-                    RELATION_COLORS.subClass,
-                    'Diese Klassen spezialisieren diese Klasse' // T keyName would break Tooltip
-                )}
+                    // Get relations for category
+                    const getRelations = () => {
+                        switch (category) {
+                            case 'superClass': return superClasses;
+                            case 'subClass': return subClasses;
+                            case 'part': return parts;
+                            case 'partOf': return partOf;
+                            case 'other': return otherRelations;
+                        }
+                    };
 
-                {/* Hat Teile */}
-                {renderRelationCard(
-                    'part',
-                    <T keyName="class.parts">Hat Teile</T>,
-                    <CallSplitIcon fontSize="small" />,
-                    parts,
-                    RELATION_COLORS.part,
-                    'Diese Klassen sind Teil von dieser Klasse' // T keyName would break Tooltip
-                )}
+                    const relations = getRelations() || [];
 
-                {/* Teil von */}
-                {renderRelationCard(
-                    'partOf',
-                    <T keyName="class.partof">Teil von</T>,
-                    <CallMergeIcon fontSize="small" />,
-                    partOf,
-                    RELATION_COLORS.partOf,
-                    'Diese Klasse ist Teil von diesen Klassen' // T keyName would break Tooltip
-                )}
+                    // For 'other' category: render full width
+                    if (category === 'other') {
+                        return (
+                            <Box key={category} sx={{ width: '100%' }}>
+                                {renderRelationCard(
+                                    category,
+                                    <T keyName={config.labelKeys[category]} />,
+                                    getIcon(),
+                                    relations,
+                                    RELATION_COLORS[category],
+                                )}
+                            </Box>
+                        );
+                    }
 
-                {/* Andere Relationen - Volle Breite */}
-                <Box sx={{ width: '100%' }}>
-                    <Paper
-                        variant="outlined"
-                        sx={{
-                            p: 1.5,
-                            height: '100%',
-                            borderLeft: `4px solid ${RELATION_COLORS.other}`,
-                            position: 'relative',
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-                            <Tooltip title="Weitere Beziehungen zu anderen Klassen">
-                                <Box sx={{ color: RELATION_COLORS.other, display: 'flex', alignItems: 'center' }}>
-                                    <LinkIcon fontSize="small" />
-                                </Box>
-                            </Tooltip>
-                            <Typography variant="subtitle2" fontWeight={600}>
-                                <T keyName="class.otherRelations">Andere Beziehungen</T>
-                            </Typography>
-                            <Chip 
-                                label={otherRelations.length} 
-                                size="small" 
-                                sx={{ 
-                                    height: 20, 
-                                    fontSize: '0.7rem',
-                                    backgroundColor: RELATION_COLORS.other,
-                                    color: 'white',
-                                }} 
-                            />
-                        </Box>
-                        
-                        <Box sx={{ 
-                            display: 'flex', 
-                            flexWrap: 'wrap', 
-                            gap: 0.5, 
-                            flex: 1, 
-                            minHeight: 32,
-                            maxHeight: 120,
-                            overflowY: 'auto',
-                            alignContent: 'flex-start',
-                        }}>
-                            {otherRelations.length === 0 ? (
-                                <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                                    <T keyName="relation.none">Keine</T>
-                                </Typography>
-                            ) : (
-                                otherRelations.map((rel) => (
-                                    <Chip
-                                        key={`${rel.relationName}-${rel.id}`}
-                                        label={`${rel.relationName} → ${rel.name}`}
-                                        size="small"
-                                        onClick={() => handleChipClick(rel)}
-                                        onDelete={() => handleDelete('other', rel.id, rel.relationName)}
-                                        deleteIcon={
-                                            <Tooltip title={<T keyName="dialog.remove">Entfernen</T>}>
-                                                <DeleteIcon fontSize="small" />
-                                            </Tooltip>
-                                        }
-                                        sx={{
-                                            cursor: 'pointer',
-                                            '&:hover': {
-                                                backgroundColor: RELATION_COLORS.other,
-                                                color: 'white',
-                                            },
-                                        }}
-                                    />
-                                ))
-                            )}
-                        </Box>
-
-                        {/* Edit Button */}
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                            <Tooltip title={<T keyName="dialog.add">Hinzufügen</T>}>
-                                <IconButton 
-                                    size="small" 
-                                    onClick={() => setEditingCategory('other')}
-                                    sx={{ 
-                                        backgroundColor: `${RELATION_COLORS.other}20`,
-                                        '&:hover': { backgroundColor: `${RELATION_COLORS.other}40` }
-                                    }}
-                                >
-                                    <AddIcon fontSize="small" sx={{ color: RELATION_COLORS.other }} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    </Paper>
-                </Box>
+                    // Standard categories: flex layout
+                    return renderRelationCard(
+                        category,
+                                <T keyName={config.labelKeys[category]} />,
+                        getIcon(),
+                        relations,
+                        RELATION_COLORS[category],
+                    );
+                })}
             </Box>
 
             {/* Add Dialog */}
@@ -614,8 +583,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
             >
                 <DialogTitle>{getDialogTitle(editingCategory)}</DialogTitle>
                 <DialogContent>
-                    {/* Relation Type Selection - nur für "other" */}
-                    {editingCategory === 'other' && (
+                    {/* Relation Type Selection - nur für "other" category (class context only) */}
+                    {context === 'class' && editingCategory === 'other' && (
                         <Autocomplete
                             freeSolo
                             sx={{ mt: 1, mb: 2 }}
@@ -652,10 +621,10 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                         />
                     )}
                     
-                    {/* Zielklassen-Suche */}
+                    {/* Zielsuche */}
                     <Autocomplete
                         multiple
-                        sx={{ mt: editingCategory === 'other' ? 0 : 1 }}
+                        sx={{ mt: context === 'class' && editingCategory === 'other' ? 0 : 1 }}
                         options={searchOptions}
                         getOptionLabel={(option) => option.name ?? ''}
                         loading={searchLoading}
@@ -683,8 +652,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label={<T keyName="search.search_classes">Zielklassen suchen</T>}
-                                placeholder={selectedItems.length === 0 ? "Klassen suchen..." : "Weitere suchen..."}
+                                label={<T keyName={config.searchLabelKey}>{config.searchPlaceholder}</T>}
+                                placeholder={selectedItems.length === 0 ? `${config.searchPlaceholder}...` : "Weitere suchen..."}
                                 InputProps={{
                                     ...params.InputProps,
                                     endAdornment: (
@@ -727,7 +696,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                     <Button 
                         onClick={handleCreate} 
                         variant="contained"
-                        disabled={selectedItems.length === 0 || (editingCategory === 'other' && !selectedRelationType.trim())}
+                        disabled={selectedItems.length === 0 || (context === 'class' && editingCategory === 'other' && !selectedRelationType.trim())}
                     >
                         <T keyName="dialog.add">Hinzufügen</T>
                         {selectedItems.length > 0 && ` (${selectedItems.length})`}

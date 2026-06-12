@@ -4,7 +4,6 @@ import {
     PropertyDetailPropsFragment,
     SearchInput,
     RelationshipRecordType,
-    XtdPropertyRelationshipTypeEnum,
     CreateRelationshipDocument,
     DeleteRelationshipDocument,
     FindItemDocument,
@@ -124,9 +123,9 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                     tags: target.tags ?? [],
                 };
                 
-                if (relationshipType === XtdPropertyRelationshipTypeEnum.XtdSpecializes) {
+                if (relationshipType === 'XTD_SPECIALIZES') {
                     subProperties.push(data);
-                } else if (relationshipType === XtdPropertyRelationshipTypeEnum.XtdDepends) {
+                } else if (relationshipType === 'XTD_DEPENDS') {
                     dependsOn.push(data);
                 }
             });
@@ -145,7 +144,7 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                 tags: connectingProperty.tags ?? [],
             };
             
-            if (relationshipType === XtdPropertyRelationshipTypeEnum.XtdSpecializes) {
+            if (relationshipType === 'XTD_SPECIALIZES') {
                 superProperties.push(data);
             }
         });
@@ -156,9 +155,9 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
     // Get existing relationship ID for a category
     const getRelationshipId = useCallback((category: RelationCategory): string | undefined => {
         if (category === 'subProperty' || category === 'dependsOn') {
-            const relationshipType = category === 'subProperty' 
-                ? XtdPropertyRelationshipTypeEnum.XtdSpecializes 
-                : XtdPropertyRelationshipTypeEnum.XtdDepends;
+            const relationshipType = category === 'subProperty'
+                ? 'XTD_SPECIALIZES'
+                : 'XTD_DEPENDS';
             const rel = (entry.connectedProperties ?? []).find(r => r.relationshipType === relationshipType);
             return rel?.id;
         }
@@ -175,8 +174,8 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
         if (selectedItems.length === 0 || !editingCategory) return;
 
         const relationshipType = (editingCategory === 'subProperty' || editingCategory === 'superProperty') 
-            ? XtdPropertyRelationshipTypeEnum.XtdSpecializes 
-            : XtdPropertyRelationshipTypeEnum.XtdDepends;
+            ? 'XTD_SPECIALIZES' 
+            : 'XTD_DEPENDS';
 
         // Create relationships for all selected items
         for (const selectedItem of selectedItems) {
@@ -224,9 +223,9 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
 
     // Handle delete relationship
     const handleDelete = async (category: RelationCategory, targetId: string) => {
-        const relationshipType = (category === 'subProperty' || category === 'superProperty') 
-            ? XtdPropertyRelationshipTypeEnum.XtdSpecializes 
-            : XtdPropertyRelationshipTypeEnum.XtdDepends;
+            const relationshipType = (category === 'subProperty' || category === 'superProperty') 
+            ? 'XTD_SPECIALIZES' 
+            : 'XTD_DEPENDS';
 
         try {
             if (category === 'subProperty' || category === 'dependsOn') {

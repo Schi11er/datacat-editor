@@ -5,7 +5,7 @@ import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { T } from "@tolgee/react";
-import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity, DictionaryEntity } from "../../domain";
+import { Entity, DocumentEntity, ValueEntity, PropertyEntity, UnitEntity, ValueListEntity, DictionaryEntity, DataTemplateEntity } from "../../domain";
 import LanguageSelectField from "./LanguageSelectField";
 import CountrySelectField from "./CountrySelectField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -597,7 +597,7 @@ const CreateEntryForm: FC<CreateEntryFormProps> = (props) => {
         />
       )}
 
-      {entityType !== UnitEntity && entityType !== DictionaryEntity && (
+      {entityType !== UnitEntity && entityType !== DictionaryEntity && entityType !== DataTemplateEntity && (
         <Controller
           name="dictionary"
           control={control}

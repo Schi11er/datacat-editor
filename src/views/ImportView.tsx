@@ -10,6 +10,7 @@ import {
   CreateTagDocument,
   FindTagsDocument,
 } from "../generated/graphql";
+import { RelationshipRecordTypeValues } from "../generated/runtimeEnums";
 import { v4 as uuidv4 } from "uuid";
 import { ApolloCache } from "@apollo/client";
 import { useSnackbar } from "notistack";
@@ -396,9 +397,9 @@ export function ImportView() {
       return "RelationshipToSubject" as RelationshipRecordType;
     }
 
-    // Alle Enum-Werte dynamisch holen
-    const enumValues = Object.values(RelationshipRecordType) as string[];
-    const found = enumValues.find(type =>
+    // Runtime-Werte aus zentraler Liste holen (codegen liefert nur Typen)
+    const enumValues = RelationshipRecordTypeValues as string[];
+    const found = enumValues.find((type) =>
       type.toLowerCase().replace(/[_\- ]+/g, "") === normalizedInput
     );
     if (found) return found as RelationshipRecordType;

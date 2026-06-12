@@ -13,7 +13,7 @@ import {
     Handle,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { PropertyDetailPropsFragment, XtdPropertyRelationshipTypeEnum } from '../generated/graphql';
+import { PropertyDetailPropsFragment } from '../generated/graphql';
 import { Box, Paper, Typography, IconButton, Collapse, Chip, useTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -150,7 +150,7 @@ export default function PropertyRelationGraphView(props: PropertyRelationGraphVi
                     name: target.name ?? 'Unknown',
                     recordType: (target as any).recordType,
                     tags: target.tags ?? [],
-                    relationType: relationshipType === XtdPropertyRelationshipTypeEnum.XtdSpecializes 
+                    relationType: relationshipType === 'XTD_SPECIALIZES' 
                         ? 'subProperty' 
                         : 'dependsOn',
                 };
@@ -165,7 +165,7 @@ export default function PropertyRelationGraphView(props: PropertyRelationGraphVi
             if (!relationshipType || !connectingProperty) return;
             
             // Only process Specializes relationships (superProperties)
-            if (relationshipType === XtdPropertyRelationshipTypeEnum.XtdSpecializes) {
+            if (relationshipType === 'XTD_SPECIALIZES') {
                 const data: RelationData = {
                     id: connectingProperty.id,
                     name: connectingProperty.name ?? 'Unknown',

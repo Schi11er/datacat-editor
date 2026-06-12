@@ -556,9 +556,27 @@
   "dataTemplate": {
     "title": "Datenvorlage",
     "titlePlural": "Datenvorlagen",
+    "object_type": "Objekttyp",
     "edit": "Datenvorlage bearbeiten",
     "loading": "Lade Datenvorlage...",
-    "delete_success": "Datenvorlage gelöscht."
+    "delete_success": "Datenvorlage gelöscht.",
+    "export_xml_button": "XML herunterladen",
+    "export_xml_success": "XML-Datei wurde heruntergeladen.",
+    "export_xml_error": "XML-Datei konnte nicht erstellt werden.",
+    "relations": "Beziehungen",
+    "supertemplates": "Super-Datenvorlagen",
+    "subtemplates": "Sub-Datenvorlagen",
+    "parts": "Hat Teile",
+    "partof": "Teil von",
+    "otherRelations": "Andere",
+    "property_groups": "Merkmalsgruppen",
+    "relation_graph": "Beziehungsgraph",
+    "add_supertemplate": "Super-Datenvorlage hinzufügen",
+    "add_subtemplate": "Sub-Datenvorlage hinzufügen",
+    "add_part": "Teil hinzufügen",
+    "add_partof": "Übergeordnete Datenvorlage hinzufügen",
+    "copy_properties": "Merkmale und Merkmalsgruppen übernehmen",
+    "copying": "Übernehmen"
   },
   "concept": {
     "title": "Konzept",

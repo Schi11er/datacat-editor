@@ -1,138 +1,93 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = T | null | undefined;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-/** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-};
-
-export type AccountFilterInput = {
-  credentialsExpired?: InputMaybe<Scalars['Boolean']['input']>;
-  expired?: InputMaybe<Scalars['Boolean']['input']>;
-  locked?: InputMaybe<Scalars['Boolean']['input']>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  query?: InputMaybe<Scalars['String']['input']>;
-};
-
-export enum AccountStatus {
-  Admin = 'Admin',
-  Unverified = 'Unverified',
-  Verified = 'Verified'
-}
-
-export type AccountStatusUpdateInput = {
-  status: AccountStatus;
-  username: Scalars['ID']['input'];
-};
-
-export type AccountUpdateInput = {
-  email: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  organization: Scalars['String']['input'];
-  username: Scalars['ID']['input'];
-};
-
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type AddCountryOfOriginInput = {
-  catalogEntryId: Scalars['ID']['input'];
-  countryCode: Scalars['String']['input'];
+  catalogEntryId: string | number;
+  countryCode: string;
 };
 
 export type AddTagInput = {
-  catalogEntryId: Scalars['ID']['input'];
-  tagId: Scalars['ID']['input'];
+  catalogEntryId: string | number;
+  tagId: string | number;
 };
 
 export type AddTextInput = {
-  catalogEntryId: Scalars['ID']['input'];
+  catalogEntryId: string | number;
   text: TranslationInput;
 };
 
 export type CatalogEntryFilterInput = {
-  catalogEntryType?: InputMaybe<CatalogEntryTypeFilterInput>;
-  tags?: InputMaybe<TagFilterInput>;
+  catalogEntryType?: CatalogEntryTypeFilterInput | null | undefined;
+  tags?: TagFilterInput | null | undefined;
 };
 
 /**  inputs */
 export type CatalogEntryTypeFilterInput = {
-  in?: InputMaybe<Array<CatalogRecordType>>;
+  in?: Array<CatalogRecordType> | null | undefined;
 };
 
-export enum CatalogRecordType {
-  Country = 'Country',
-  Dictionary = 'Dictionary',
-  Dimension = 'Dimension',
-  ExternalDocument = 'ExternalDocument',
-  Interval = 'Interval',
-  Language = 'Language',
-  MultiLanguageText = 'MultiLanguageText',
-  OrderedValue = 'OrderedValue',
-  Property = 'Property',
-  QuantityKind = 'QuantityKind',
-  Rational = 'Rational',
-  Subdivision = 'Subdivision',
-  Subject = 'Subject',
-  Symbol = 'Symbol',
-  Text = 'Text',
-  Unit = 'Unit',
-  Value = 'Value',
-  ValueList = 'ValueList'
-}
+export type CatalogRecordType =
+  | 'Country'
+  | 'Dictionary'
+  | 'Dimension'
+  | 'ExternalDocument'
+  | 'Interval'
+  | 'Language'
+  | 'MultiLanguageText'
+  | 'OrderedValue'
+  | 'Property'
+  | 'QuantityKind'
+  | 'Rational'
+  | 'Subdivision'
+  | 'Subject'
+  | 'Symbol'
+  | 'Text'
+  | 'Unit'
+  | 'Value'
+  | 'ValueList';
 
 export type CountryInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
+  code?: string | null | undefined;
 };
 
 export type CreateCatalogEntryInput = {
   catalogEntryType: CatalogRecordType;
   properties: PropertiesInput;
-  tags?: InputMaybe<Array<Scalars['ID']['input']>>;
+  tags?: Array<string | number> | null | undefined;
 };
 
 export type CreateRelationshipInput = {
-  fromId: Scalars['ID']['input'];
-  properties?: InputMaybe<RelationshipPropertiesInput>;
+  fromId: string | number;
+  properties?: RelationshipPropertiesInput | null | undefined;
   relationshipType: RelationshipRecordType;
-  toIds: Array<Scalars['ID']['input']>;
+  toIds: Array<string | number>;
 };
 
 export type CreateTagInput = {
-  name: Scalars['String']['input'];
-  tagId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-export type DeleteCatalogEntryInput = {
-  catalogEntryId: Scalars['ID']['input'];
+  name: string;
+  tagId?: string | number | null | undefined;
 };
 
 export type DeleteCountryOfOriginInput = {
-  catalogEntryId: Scalars['ID']['input'];
+  catalogEntryId: string | number;
 };
 
 export type DeleteRelationshipInput = {
-  fromId: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
+  fromId: string | number;
+  name?: string | null | undefined;
   relationshipType: RelationshipRecordType;
-  toId: Scalars['ID']['input'];
+  toId: string | number;
 };
 
 export type DeleteTagInput = {
-  tagId: Scalars['ID']['input'];
+  tagId: string | number;
 };
 
 export type DeleteTextInput = {
-  textId: Scalars['ID']['input'];
+  textId: string | number;
 };
 
 export type DimensionInput = {
@@ -146,200 +101,174 @@ export type DimensionInput = {
 };
 
 export type ExternalDocumentInput = {
-  author?: InputMaybe<Scalars['String']['input']>;
-  dateOfPublication?: InputMaybe<Scalars['String']['input']>;
-  documentUri?: InputMaybe<Scalars['String']['input']>;
-  isbn?: InputMaybe<Scalars['String']['input']>;
-  languageTag?: InputMaybe<Array<Scalars['ID']['input']>>;
-  publisher?: InputMaybe<Scalars['String']['input']>;
+  author?: string | null | undefined;
+  dateOfPublication?: string | null | undefined;
+  documentUri?: string | null | undefined;
+  isbn?: string | null | undefined;
+  languageTag?: Array<string | number> | null | undefined;
+  publisher?: string | null | undefined;
 };
 
 export type FilterInput = {
-  idIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  query?: InputMaybe<Scalars['String']['input']>;
-  tagged?: InputMaybe<Array<Scalars['ID']['input']>>;
-};
-
-export type HierarchyFilterInput = {
-  rootNodeFilter: HierarchyRootNodeFilterInput;
-};
-
-export type HierarchyRootNodeFilterInput = {
-  entityTypeIn?: InputMaybe<Array<CatalogRecordType>>;
-  entityTypeNotIn?: InputMaybe<Array<CatalogRecordType>>;
-  idIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  tagged?: InputMaybe<Array<Scalars['ID']['input']>>;
+  idIn?: Array<string | number> | null | undefined;
+  idNotIn?: Array<string | number> | null | undefined;
+  pageNumber?: number | null | undefined;
+  pageSize?: number | null | undefined;
+  query?: string | null | undefined;
+  tagged?: Array<string | number> | null | undefined;
 };
 
 export type IntervalInput = {
-  maximumIncluded?: InputMaybe<Scalars['Boolean']['input']>;
-  minimumIncluded?: InputMaybe<Scalars['Boolean']['input']>;
+  maximumIncluded?: boolean | null | undefined;
+  minimumIncluded?: boolean | null | undefined;
 };
 
 export type LanguageInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  comments?: InputMaybe<Array<Scalars['String']['input']>>;
-  englishName?: InputMaybe<Scalars['String']['input']>;
-  nativeName?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type LocaleInput = {
-  languageTag: Scalars['ID']['input'];
-};
-
-/**  Query type */
-export type LocalizationInput = {
-  languageTags?: InputMaybe<Array<Scalars['String']['input']>>;
+  code?: string | null | undefined;
+  comments?: Array<string> | null | undefined;
+  englishName?: string | null | undefined;
+  nativeName?: string | null | undefined;
 };
 
 export type LoginInput = {
-  password: Scalars['String']['input'];
-  username: Scalars['ID']['input'];
+  password: string;
+  username: string | number;
 };
 
 export type OrderedValueInput = {
-  order?: InputMaybe<Scalars['Int']['input']>;
+  order?: number | null | undefined;
 };
 
 export type ProfileUpdateInput = {
-  email: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  organization: Scalars['String']['input'];
-  username: Scalars['ID']['input'];
+  email: string;
+  firstName: string;
+  lastName: string;
+  organization: string;
+  username: string | number;
 };
 
 export type PropertiesInput = {
-  comments?: InputMaybe<Array<TranslationInput>>;
+  comments?: Array<TranslationInput> | null | undefined;
   /**  CountryCode */
-  countryOfOrigin?: InputMaybe<Scalars['ID']['input']>;
-  countryProperties?: InputMaybe<CountryInput>;
-  dateOfCreation?: InputMaybe<Scalars['String']['input']>;
-  definition?: InputMaybe<Array<TranslationInput>>;
-  deprecationExplanation?: InputMaybe<Array<TranslationInput>>;
-  descriptions?: InputMaybe<Array<TranslationInput>>;
-  dimensionProperties?: InputMaybe<DimensionInput>;
-  examples?: InputMaybe<Array<TranslationInput>>;
-  externalDocumentProperties?: InputMaybe<ExternalDocumentInput>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  intervalProperties?: InputMaybe<IntervalInput>;
+  countryOfOrigin?: string | number | null | undefined;
+  countryProperties?: CountryInput | null | undefined;
+  dateOfCreation?: string | null | undefined;
+  definition?: Array<TranslationInput> | null | undefined;
+  deprecationExplanation?: Array<TranslationInput> | null | undefined;
+  descriptions?: Array<TranslationInput> | null | undefined;
+  dimensionProperties?: DimensionInput | null | undefined;
+  examples?: Array<TranslationInput> | null | undefined;
+  externalDocumentProperties?: ExternalDocumentInput | null | undefined;
+  id?: string | number | null | undefined;
+  intervalProperties?: IntervalInput | null | undefined;
   /**
    *  
    * LanguageCode 
    */
-  languageOfCreator?: InputMaybe<Scalars['ID']['input']>;
-  languageProperties?: InputMaybe<LanguageInput>;
-  majorVersion?: InputMaybe<Scalars['Int']['input']>;
-  minorVersion?: InputMaybe<Scalars['Int']['input']>;
-  names?: InputMaybe<Array<TranslationInput>>;
-  orderedValueProperties?: InputMaybe<OrderedValueInput>;
-  propertyProperties?: InputMaybe<PropertyInput>;
-  rationalProperties?: InputMaybe<RationalInput>;
-  status?: InputMaybe<XtdStatusOfActivationEnum>;
-  subdivisionProperties?: InputMaybe<CountryInput>;
-  symbolProperties?: InputMaybe<SymbolInput>;
-  textProperties?: InputMaybe<TextInput>;
-  unitProperties?: InputMaybe<UnitInput>;
-  valueListProperties?: InputMaybe<ValueListInput>;
-  valueProperties?: InputMaybe<ValueInput>;
+  languageOfCreator?: string | number | null | undefined;
+  languageProperties?: LanguageInput | null | undefined;
+  majorVersion?: number | null | undefined;
+  minorVersion?: number | null | undefined;
+  names?: Array<TranslationInput> | null | undefined;
+  orderedValueProperties?: OrderedValueInput | null | undefined;
+  propertyProperties?: PropertyInput | null | undefined;
+  rationalProperties?: RationalInput | null | undefined;
+  status?: XtdStatusOfActivationEnum | null | undefined;
+  subdivisionProperties?: CountryInput | null | undefined;
+  symbolProperties?: SymbolInput | null | undefined;
+  textProperties?: TextInput | null | undefined;
+  unitProperties?: UnitInput | null | undefined;
+  valueListProperties?: ValueListInput | null | undefined;
+  valueProperties?: ValueInput | null | undefined;
 };
 
 export type PropertyInput = {
-  dataFormat?: InputMaybe<Scalars['String']['input']>;
-  dataType?: InputMaybe<XtdDataTypeEnum>;
+  dataFormat?: string | null | undefined;
+  dataType?: XtdDataTypeEnum | null | undefined;
 };
 
 export type RationalInput = {
-  denominator?: InputMaybe<Scalars['Int']['input']>;
-  numerator?: InputMaybe<Scalars['Int']['input']>;
+  denominator?: number | null | undefined;
+  numerator?: number | null | undefined;
 };
 
 export type RelationshipPropertiesInput = {
-  comments?: InputMaybe<Array<TranslationInput>>;
-  descriptions?: InputMaybe<Array<TranslationInput>>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  majorVersion?: InputMaybe<Scalars['Int']['input']>;
-  minorVersion?: InputMaybe<Scalars['Int']['input']>;
-  names?: InputMaybe<Array<TranslationInput>>;
-  relationshipToPropertyProperties?: InputMaybe<RelationshipToPropertyInput>;
-  relationshipToSubjectProperties?: InputMaybe<RelationshipToSubjectInput>;
-  status?: InputMaybe<XtdStatusOfActivationEnum>;
-  valueListProperties?: InputMaybe<OrderedValueInput>;
+  comments?: Array<TranslationInput> | null | undefined;
+  descriptions?: Array<TranslationInput> | null | undefined;
+  id?: string | number | null | undefined;
+  majorVersion?: number | null | undefined;
+  minorVersion?: number | null | undefined;
+  names?: Array<TranslationInput> | null | undefined;
+  relationshipToPropertyProperties?: RelationshipToPropertyInput | null | undefined;
+  relationshipToSubjectProperties?: RelationshipToSubjectInput | null | undefined;
+  status?: XtdStatusOfActivationEnum | null | undefined;
+  valueListProperties?: OrderedValueInput | null | undefined;
 };
 
-export enum RelationshipRecordType {
-  BoundaryValues = 'BoundaryValues',
-  CountryOfOrigin = 'CountryOfOrigin',
-  Dictionary = 'Dictionary',
-  Dimension = 'Dimension',
-  Maximum = 'Maximum',
-  Minimum = 'Minimum',
+export type RelationshipRecordType =
+  | 'BoundaryValues'
+  | 'CountryOfOrigin'
+  | 'Dictionary'
+  | 'Dimension'
+  | 'Maximum'
+  | 'Minimum'
   /**  OrderedValue */
-  PossibleValues = 'PossibleValues',
-  Properties = 'Properties',
-  QuantityKinds = 'QuantityKinds',
-  ReferenceDocuments = 'ReferenceDocuments',
-  RelationshipToProperty = 'RelationshipToProperty',
-  RelationshipToSubject = 'RelationshipToSubject',
-  ReplacedObjects = 'ReplacedObjects',
-  ScopeSubjects = 'ScopeSubjects',
-  SimilarTo = 'SimilarTo',
-  Subdivisions = 'Subdivisions',
-  Subject = 'Subject',
-  Symbols = 'Symbols',
-  TargetProperties = 'TargetProperties',
-  TargetSubjects = 'TargetSubjects',
-  Unit = 'Unit',
-  Units = 'Units',
-  Value = 'Value',
-  Values = 'Values'
-}
+  | 'PossibleValues'
+  | 'Properties'
+  | 'QuantityKinds'
+  | 'ReferenceDocuments'
+  | 'RelationshipToProperty'
+  | 'RelationshipToSubject'
+  | 'ReplacedObjects'
+  | 'ScopeSubjects'
+  | 'SimilarTo'
+  | 'Subdivisions'
+  | 'Subject'
+  | 'Symbols'
+  | 'TargetProperties'
+  | 'TargetSubjects'
+  | 'Unit'
+  | 'Units'
+  | 'Value'
+  | 'Values';
 
 export type RelationshipToPropertyInput = {
-  relationshipType?: InputMaybe<XtdPropertyRelationshipTypeEnum>;
-};
-
-export type RelationshipToSubjectFilterInput = {
-  relationshipTypeName?: InputMaybe<Scalars['String']['input']>;
+  relationshipType?: XtdPropertyRelationshipTypeEnum | null | undefined;
 };
 
 export type RelationshipToSubjectInput = {
-  name?: InputMaybe<Scalars['String']['input']>;
-  relationshipType?: InputMaybe<XtdRelationshipKindEnum>;
+  name?: string | null | undefined;
+  relationshipType?: XtdRelationshipKindEnum | null | undefined;
 };
 
 export type RemoveTagInput = {
-  catalogEntryId: Scalars['ID']['input'];
-  tagId: Scalars['ID']['input'];
+  catalogEntryId: string | number;
+  tagId: string | number;
 };
 
 export type SearchInput = {
-  entityTypeIn?: InputMaybe<Array<CatalogRecordType>>;
-  entityTypeNotIn?: InputMaybe<Array<CatalogRecordType>>;
-  filters?: InputMaybe<Array<CatalogEntryFilterInput>>;
-  idIn?: InputMaybe<Array<Scalars['ID']['input']>>;
-  idNotIn?: InputMaybe<Array<Scalars['ID']['input']>>;
+  entityTypeIn?: Array<CatalogRecordType> | null | undefined;
+  entityTypeNotIn?: Array<CatalogRecordType> | null | undefined;
+  filters?: Array<CatalogEntryFilterInput> | null | undefined;
+  idIn?: Array<string | number> | null | undefined;
+  idNotIn?: Array<string | number> | null | undefined;
   /**
    * 
    * Default: 0
    */
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  query?: InputMaybe<Scalars['String']['input']>;
-  tagged?: InputMaybe<Array<Scalars['ID']['input']>>;
+  pageNumber?: number | null | undefined;
+  pageSize?: number | null | undefined;
+  query?: string | null | undefined;
+  tagged?: Array<string | number> | null | undefined;
 };
 
 export type SignupInput = {
-  email: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  organization: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-  username: Scalars['ID']['input'];
+  email: string;
+  firstName: string;
+  lastName: string;
+  organization: string;
+  password: string;
+  username: string | number;
 };
 
 export type SymbolInput = {
@@ -347,121 +276,102 @@ export type SymbolInput = {
 };
 
 export type TagFilterInput = {
-  in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  in?: Array<string | number> | null | undefined;
 };
 
 export type TextInput = {
-  text?: InputMaybe<Scalars['String']['input']>;
+  text?: string | null | undefined;
 };
 
 export type TranslationInput = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageTag: Scalars['ID']['input'];
-  value: Scalars['String']['input'];
-};
-
-export type TranslationUpdateInput = {
-  translationId: Scalars['ID']['input'];
-  value: Scalars['String']['input'];
+  id?: string | number | null | undefined;
+  languageTag: string | number;
+  value: string;
 };
 
 /**  | XtdRelationshipType */
 export type UnitInput = {
-  base?: InputMaybe<XtdUnitBaseEnum>;
-  coefficient?: InputMaybe<RationalInput>;
-  offset?: InputMaybe<RationalInput>;
-  scale?: InputMaybe<XtdUnitScaleEnum>;
-  symbol?: InputMaybe<Array<TranslationInput>>;
+  base?: XtdUnitBaseEnum | null | undefined;
+  coefficient?: RationalInput | null | undefined;
+  offset?: RationalInput | null | undefined;
+  scale?: XtdUnitScaleEnum | null | undefined;
+  symbol?: Array<TranslationInput> | null | undefined;
 };
 
 export type UpdateDataTypeInput = {
-  catalogEntryId: Scalars['ID']['input'];
+  catalogEntryId: string | number;
   dataType: XtdDataTypeEnum;
 };
 
 export type UpdateMajorVersionInput = {
-  catalogEntryId: Scalars['ID']['input'];
-  majorVersion: Scalars['Int']['input'];
+  catalogEntryId: string | number;
+  majorVersion: number;
 };
 
 export type UpdateMinorVersionInput = {
-  catalogEntryId: Scalars['ID']['input'];
-  minorVersion: Scalars['Int']['input'];
+  catalogEntryId: string | number;
+  minorVersion: number;
 };
 
 export type UpdateNominalValueInput = {
-  catalogEntryId: Scalars['ID']['input'];
-  nominalValue: Scalars['String']['input'];
+  catalogEntryId: string | number;
+  nominalValue: string;
 };
 
 export type UpdateStatusInput = {
-  catalogEntryId: Scalars['ID']['input'];
+  catalogEntryId: string | number;
   status: XtdStatusOfActivationEnum;
 };
 
 export type UpdateTagInput = {
-  name: Scalars['String']['input'];
-  tagId: Scalars['ID']['input'];
+  name: string;
+  tagId: string | number;
 };
 
 export type UpdateTextInput = {
-  textId: Scalars['ID']['input'];
-  value: Scalars['String']['input'];
+  textId: string | number;
+  value: string;
 };
 
 export type ValueInput = {
-  nominalValue?: InputMaybe<Scalars['String']['input']>;
+  nominalValue?: string | null | undefined;
 };
 
 export type ValueListInput = {
-  languageTag?: InputMaybe<Scalars['ID']['input']>;
+  languageTag?: string | number | null | undefined;
 };
 
-export type VerificationFilterInput = {
-  nodeTypeFilter: VerificationNodeTypeFilterInput;
-};
+export type XtdDataTypeEnum =
+  | 'XTD_BOOLEAN'
+  | 'XTD_COMPLEX'
+  | 'XTD_DATETIME'
+  | 'XTD_INTEGER'
+  | 'XTD_RATIONAL'
+  | 'XTD_REAL'
+  | 'XTD_STRING';
 
-export type VerificationNodeTypeFilterInput = {
-  entityTypeIn?: InputMaybe<Array<CatalogRecordType>>;
-};
+export type XtdPropertyRelationshipTypeEnum =
+  | 'XTD_DEPENDS'
+  | 'XTD_SPECIALIZES';
 
-export enum XtdDataTypeEnum {
-  XtdBoolean = 'XTD_BOOLEAN',
-  XtdComplex = 'XTD_COMPLEX',
-  XtdDatetime = 'XTD_DATETIME',
-  XtdInteger = 'XTD_INTEGER',
-  XtdRational = 'XTD_RATIONAL',
-  XtdReal = 'XTD_REAL',
-  XtdString = 'XTD_STRING'
-}
+export type XtdRelationshipKindEnum =
+  | 'XTD_INSTANCE_LEVEL'
+  | 'XTD_SCHEMA_LEVEL';
 
-export enum XtdPropertyRelationshipTypeEnum {
-  XtdDepends = 'XTD_DEPENDS',
-  XtdSpecializes = 'XTD_SPECIALIZES'
-}
+export type XtdStatusOfActivationEnum =
+  | 'XTD_ACTIVE'
+  | 'XTD_INACTIVE';
 
-export enum XtdRelationshipKindEnum {
-  XtdInstanceLevel = 'XTD_INSTANCE_LEVEL',
-  XtdSchemaLevel = 'XTD_SCHEMA_LEVEL'
-}
+export type XtdUnitBaseEnum =
+  | 'XTD_E'
+  | 'XTD_ONE'
+  | 'XTD_PI'
+  | 'XTD_TEN'
+  | 'XTD_TWO';
 
-export enum XtdStatusOfActivationEnum {
-  XtdActive = 'XTD_ACTIVE',
-  XtdInactive = 'XTD_INACTIVE'
-}
-
-export enum XtdUnitBaseEnum {
-  XtdE = 'XTD_E',
-  XtdOne = 'XTD_ONE',
-  XtdPi = 'XTD_PI',
-  XtdTen = 'XTD_TEN',
-  XtdTwo = 'XTD_TWO'
-}
-
-export enum XtdUnitScaleEnum {
-  XtdLinear = 'XTD_LINEAR',
-  XtdLogarithmic = 'XTD_LOGARITHMIC'
-}
+export type XtdUnitScaleEnum =
+  | 'XTD_LINEAR'
+  | 'XTD_LOGARITHMIC';
 
 export type UserProfileFragment = { username: string, firstName: string, lastName: string, email: string, organization: string };
 
@@ -469,39 +379,39 @@ export type PagePropsFragment = { totalPages: number, pageNumber: number, hasNex
 
 export type TagPropsFragment = { id: string, name: string };
 
-export type LanguagePropsFragment = { id: string, code: string, englishName: string, nativeName?: string | null };
+export type LanguagePropsFragment = { id: string, code: string, englishName: string, nativeName: string | null };
 
 export type TranslationPropsFragment = { id: string, texts: Array<{ id: string, text: string, language: LanguagePropsFragment }> };
 
 export type TextPropsFragment = { id: string, text: string, language: LanguagePropsFragment };
 
-type ItemProps_XtdCountry_Fragment = { __typename: 'XtdCountry', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdCountry_Fragment = { __typename: 'XtdCountry', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdDimension_Fragment = { __typename: 'XtdDimension', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdDimension_Fragment = { __typename: 'XtdDimension', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdOrderedValue_Fragment = { __typename: 'XtdOrderedValue', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdOrderedValue_Fragment = { __typename: 'XtdOrderedValue', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdQuantityKind_Fragment = { __typename: 'XtdQuantityKind', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdQuantityKind_Fragment = { __typename: 'XtdQuantityKind', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelationshipToProperty_Fragment = { __typename: 'XtdRelationshipToProperty', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelationshipToProperty_Fragment = { __typename: 'XtdRelationshipToProperty', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelationshipToSubject_Fragment = { __typename: 'XtdRelationshipToSubject', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelationshipToSubject_Fragment = { __typename: 'XtdRelationshipToSubject', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdRelationshipType_Fragment = { __typename: 'XtdRelationshipType', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdRelationshipType_Fragment = { __typename: 'XtdRelationshipType', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdSubdivision_Fragment = { __typename: 'XtdSubdivision', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdSubdivision_Fragment = { __typename: 'XtdSubdivision', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
-type ItemProps_XtdValueList_Fragment = { __typename: 'XtdValueList', id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<TagPropsFragment> };
+type ItemProps_XtdValueList_Fragment = { __typename: 'XtdValueList', id: string, recordType: CatalogRecordType, name: string | null, tags: Array<TagPropsFragment> };
 
 export type ItemPropsFragment =
   | ItemProps_XtdCountry_Fragment
@@ -520,35 +430,35 @@ export type ItemPropsFragment =
   | ItemProps_XtdValueList_Fragment
 ;
 
-export type CountryDetailPropsFragment = { id: string, code: string, name?: string | null, names: Array<TranslationPropsFragment> };
+export type CountryDetailPropsFragment = { id: string, code: string, name: string | null, names: Array<TranslationPropsFragment> };
 
-type RelationsProps_XtdCountry_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdCountry_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdDimension_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdDimension_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdExternalDocument_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdExternalDocument_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdOrderedValue_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdOrderedValue_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdProperty_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdProperty_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdQuantityKind_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdQuantityKind_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdRelationshipToProperty_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdRelationshipToProperty_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdRelationshipToSubject_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdRelationshipToSubject_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdRelationshipType_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdRelationshipType_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdSubdivision_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdSubdivision_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdSubject_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdSubject_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdUnit_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdUnit_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdValue_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdValue_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
-type RelationsProps_XtdValueList_Fragment = { id: string, name?: string | null, tags: Array<TagPropsFragment> };
+type RelationsProps_XtdValueList_Fragment = { id: string, name: string | null, tags: Array<TagPropsFragment> };
 
 export type RelationsPropsFragment =
   | RelationsProps_XtdCountry_Fragment
@@ -569,33 +479,33 @@ export type RelationsPropsFragment =
 
 export type RationalPropsFragment = { id: string, numerator: number, denominator: number };
 
-type SearchResultProps_XtdCountry_Fragment = { __typename: 'XtdCountry', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdCountry_Fragment = { __typename: 'XtdCountry', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdDimension_Fragment = { __typename: 'XtdDimension', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdDimension_Fragment = { __typename: 'XtdDimension', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdOrderedValue_Fragment = { __typename: 'XtdOrderedValue', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdOrderedValue_Fragment = { __typename: 'XtdOrderedValue', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdQuantityKind_Fragment = { __typename: 'XtdQuantityKind', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdQuantityKind_Fragment = { __typename: 'XtdQuantityKind', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelationshipToProperty_Fragment = { __typename: 'XtdRelationshipToProperty', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdRelationshipToProperty_Fragment = { __typename: 'XtdRelationshipToProperty', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelationshipToSubject_Fragment = { __typename: 'XtdRelationshipToSubject', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdRelationshipToSubject_Fragment = { __typename: 'XtdRelationshipToSubject', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdRelationshipType_Fragment = { __typename: 'XtdRelationshipType', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdRelationshipType_Fragment = { __typename: 'XtdRelationshipType', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdSubdivision_Fragment = { __typename: 'XtdSubdivision', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdSubdivision_Fragment = { __typename: 'XtdSubdivision', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
-type SearchResultProps_XtdValueList_Fragment = { __typename: 'XtdValueList', id: string, recordType: CatalogRecordType, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
+type SearchResultProps_XtdValueList_Fragment = { __typename: 'XtdValueList', id: string, recordType: CatalogRecordType, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment> };
 
 export type SearchResultPropsFragment =
   | SearchResultProps_XtdCountry_Fragment
@@ -614,7 +524,7 @@ export type SearchResultPropsFragment =
   | SearchResultProps_XtdValueList_Fragment
 ;
 
-export type SearchResultDictionaryPropsFragment = { __typename: 'XtdDictionary', id: string, recordType: CatalogRecordType, dname?: { texts: Array<{ text: string }> } | null, tags: Array<TagPropsFragment> };
+export type SearchResultDictionaryPropsFragment = { __typename: 'XtdDictionary', id: string, recordType: CatalogRecordType, dname: { texts: Array<{ text: string }> } | null, tags: Array<TagPropsFragment> };
 
 type MetaProps_XtdCountry_Fragment = { created: string, createdBy: string, lastModified: string, lastModifiedBy: string };
 
@@ -683,7 +593,7 @@ export type MetaPropsFragment =
 ;
 
 type ObjectProps_XtdCountry_Fragment = (
-  { __typename: 'XtdCountry', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdCountry', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -713,12 +623,12 @@ type ObjectProps_XtdCountry_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdCountry_Fragment
 );
 
 type ObjectProps_XtdDimension_Fragment = (
-  { __typename: 'XtdDimension', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdDimension', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -748,12 +658,12 @@ type ObjectProps_XtdDimension_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdDimension_Fragment
 );
 
 type ObjectProps_XtdExternalDocument_Fragment = (
-  { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdExternalDocument', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -783,12 +693,12 @@ type ObjectProps_XtdExternalDocument_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdExternalDocument_Fragment
 );
 
 type ObjectProps_XtdOrderedValue_Fragment = (
-  { __typename: 'XtdOrderedValue', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdOrderedValue', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -818,12 +728,12 @@ type ObjectProps_XtdOrderedValue_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdOrderedValue_Fragment
 );
 
 type ObjectProps_XtdProperty_Fragment = (
-  { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdProperty', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -853,12 +763,12 @@ type ObjectProps_XtdProperty_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdProperty_Fragment
 );
 
 type ObjectProps_XtdQuantityKind_Fragment = (
-  { __typename: 'XtdQuantityKind', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdQuantityKind', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -888,12 +798,12 @@ type ObjectProps_XtdQuantityKind_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdQuantityKind_Fragment
 );
 
 type ObjectProps_XtdRelationshipToProperty_Fragment = (
-  { __typename: 'XtdRelationshipToProperty', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdRelationshipToProperty', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -923,12 +833,12 @@ type ObjectProps_XtdRelationshipToProperty_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdRelationshipToProperty_Fragment
 );
 
 type ObjectProps_XtdRelationshipToSubject_Fragment = (
-  { __typename: 'XtdRelationshipToSubject', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdRelationshipToSubject', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -958,12 +868,12 @@ type ObjectProps_XtdRelationshipToSubject_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdRelationshipToSubject_Fragment
 );
 
 type ObjectProps_XtdRelationshipType_Fragment = (
-  { __typename: 'XtdRelationshipType', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdRelationshipType', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -993,12 +903,12 @@ type ObjectProps_XtdRelationshipType_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdRelationshipType_Fragment
 );
 
 type ObjectProps_XtdSubdivision_Fragment = (
-  { __typename: 'XtdSubdivision', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdSubdivision', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -1028,12 +938,12 @@ type ObjectProps_XtdSubdivision_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdSubdivision_Fragment
 );
 
 type ObjectProps_XtdSubject_Fragment = (
-  { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdSubject', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -1063,12 +973,12 @@ type ObjectProps_XtdSubject_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdSubject_Fragment
 );
 
 type ObjectProps_XtdUnit_Fragment = (
-  { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdUnit', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -1098,12 +1008,12 @@ type ObjectProps_XtdUnit_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdUnit_Fragment
 );
 
 type ObjectProps_XtdValue_Fragment = (
-  { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdValue', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -1133,12 +1043,12 @@ type ObjectProps_XtdValue_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdValue_Fragment
 );
 
 type ObjectProps_XtdValueList_Fragment = (
-  { __typename: 'XtdValueList', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, replacedObjects: Array<
+  { __typename: 'XtdValueList', id: string, recordType: CatalogRecordType, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null, replacedObjects: Array<
     | { id: string }
     | { id: string }
     | { id: string }
@@ -1168,7 +1078,7 @@ type ObjectProps_XtdValueList_Fragment = (
     | { id: string }
     | { id: string }
     | { id: string }
-  >, deprecationExplanation?: TranslationPropsFragment | null }
+  >, deprecationExplanation: TranslationPropsFragment | null }
   & MetaProps_XtdValueList_Fragment
 );
 
@@ -1190,7 +1100,7 @@ export type ObjectPropsFragment =
 ;
 
 export type ExternalDocumentPropsFragment = (
-  { documentUri?: string | null, author?: string | null, isbn?: string | null, publisher?: string | null, dateOfPublication?: string | null, languages?: Array<LanguagePropsFragment | null> | null }
+  { documentUri: string | null, author: string | null, isbn: string | null, publisher: string | null, dateOfPublication: string | null, languages: Array<LanguagePropsFragment | null> | null }
   & ObjectProps_XtdExternalDocument_Fragment
 );
 
@@ -1213,7 +1123,7 @@ export type ExternalDocumentDetailPropsFragment = (
 );
 
 type ConceptProps_XtdCountry_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1225,7 +1135,7 @@ type ConceptProps_XtdCountry_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1233,7 +1143,7 @@ type ConceptProps_XtdCountry_Fragment = (
 );
 
 type ConceptProps_XtdDimension_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1245,7 +1155,7 @@ type ConceptProps_XtdDimension_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1253,7 +1163,7 @@ type ConceptProps_XtdDimension_Fragment = (
 );
 
 type ConceptProps_XtdExternalDocument_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1265,7 +1175,7 @@ type ConceptProps_XtdExternalDocument_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1273,7 +1183,7 @@ type ConceptProps_XtdExternalDocument_Fragment = (
 );
 
 type ConceptProps_XtdProperty_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1285,7 +1195,7 @@ type ConceptProps_XtdProperty_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1293,7 +1203,7 @@ type ConceptProps_XtdProperty_Fragment = (
 );
 
 type ConceptProps_XtdQuantityKind_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1305,7 +1215,7 @@ type ConceptProps_XtdQuantityKind_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1313,7 +1223,7 @@ type ConceptProps_XtdQuantityKind_Fragment = (
 );
 
 type ConceptProps_XtdRelationshipToProperty_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1325,7 +1235,7 @@ type ConceptProps_XtdRelationshipToProperty_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1333,7 +1243,7 @@ type ConceptProps_XtdRelationshipToProperty_Fragment = (
 );
 
 type ConceptProps_XtdRelationshipType_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1345,7 +1255,7 @@ type ConceptProps_XtdRelationshipType_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1353,7 +1263,7 @@ type ConceptProps_XtdRelationshipType_Fragment = (
 );
 
 type ConceptProps_XtdSubdivision_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1365,7 +1275,7 @@ type ConceptProps_XtdSubdivision_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1373,7 +1283,7 @@ type ConceptProps_XtdSubdivision_Fragment = (
 );
 
 type ConceptProps_XtdSubject_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1385,7 +1295,7 @@ type ConceptProps_XtdSubject_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1393,7 +1303,7 @@ type ConceptProps_XtdSubject_Fragment = (
 );
 
 type ConceptProps_XtdUnit_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1405,7 +1315,7 @@ type ConceptProps_XtdUnit_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1413,7 +1323,7 @@ type ConceptProps_XtdUnit_Fragment = (
 );
 
 type ConceptProps_XtdValueList_Fragment = (
-  { description?: string | null, descriptions: Array<TranslationPropsFragment>, definition?: TranslationPropsFragment | null, examples?: Array<TranslationPropsFragment | null> | null, languageOfCreator?: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
+  { description: string | null, descriptions: Array<TranslationPropsFragment>, definition: TranslationPropsFragment | null, examples: Array<TranslationPropsFragment | null> | null, languageOfCreator: LanguagePropsFragment | null, referenceDocuments: Array<RelationsProps_XtdExternalDocument_Fragment>, similarTo: Array<
     | RelationsProps_XtdCountry_Fragment
     | RelationsProps_XtdDimension_Fragment
     | RelationsProps_XtdExternalDocument_Fragment
@@ -1425,7 +1335,7 @@ type ConceptProps_XtdValueList_Fragment = (
     | RelationsProps_XtdSubject_Fragment
     | RelationsProps_XtdUnit_Fragment
     | RelationsProps_XtdValueList_Fragment
-  >, countryOfOrigin?: (
+  >, countryOfOrigin: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null }
@@ -1447,12 +1357,12 @@ export type ConceptPropsFragment =
 ;
 
 export type ValuePropsFragment = (
-  { nominalValue?: string | null }
+  { nominalValue: string | null }
   & ObjectProps_XtdValue_Fragment
 );
 
 export type ValueDetailPropsFragment = (
-  { orderedValues?: Array<(
+  { orderedValues: Array<(
     { valueLists: Array<RelationsProps_XtdValueList_Fragment> }
     & RelationsProps_XtdOrderedValue_Fragment
   )> | null }
@@ -1460,26 +1370,26 @@ export type ValueDetailPropsFragment = (
 );
 
 export type PropertyPropsFragment = (
-  { dataType?: XtdDataTypeEnum | null, dataFormat?: string | null }
+  { dataType: XtdDataTypeEnum | null, dataFormat: string | null }
   & ConceptProps_XtdProperty_Fragment
 );
 
 export type PropertyDetailPropsFragment = (
-  { connectedProperties: Array<RelationshipToPropertyDetailPropsFragment>, connectingProperties: Array<RelationshipToPropertyDetailPropsFragment>, symbols?: Array<SymbolPropsFragment | null> | null, boundaryValues?: Array<IntervalPropsFragment | null> | null, dimension?: DimensionPropsFragment | null, quantityKinds?: Array<QuantityKindPropsFragment | null> | null, units?: Array<RelationsProps_XtdUnit_Fragment> | null, possibleValues?: Array<RelationsProps_XtdValueList_Fragment> | null, subjects: Array<SubjectDetailPropsFragment> }
+  { connectedProperties: Array<RelationshipToPropertyDetailPropsFragment>, connectingProperties: Array<RelationshipToPropertyDetailPropsFragment>, symbols: Array<SymbolPropsFragment | null> | null, boundaryValues: Array<IntervalPropsFragment | null> | null, dimension: DimensionPropsFragment | null, quantityKinds: Array<QuantityKindPropsFragment | null> | null, units: Array<RelationsProps_XtdUnit_Fragment> | null, possibleValues: Array<RelationsProps_XtdValueList_Fragment> | null, subjects: Array<SubjectDetailPropsFragment> }
   & PropertyPropsFragment
 );
 
 export type SubjectDetailPropsFragment = (
   { properties: Array<(
-    { possibleValues?: Array<{ id: string, name?: string | null }> | null }
+    { possibleValues: Array<{ id: string, name: string | null }> | null }
     & PropertyPropsFragment
-  )>, connectedSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, targetSubjects: Array<{ id: string, name?: string | null, tags: Array<{ id: string, name: string }> }> }>, connectingSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: { id: string, name?: string | null, tags: Array<{ id: string, name: string }> } }> }
+  )>, connectedSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, targetSubjects: Array<{ id: string, name: string | null, tags: Array<{ id: string, name: string }> }> }>, connectingSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: { id: string, name: string | null, tags: Array<{ id: string, name: string }> } }> }
   & ConceptProps_XtdSubject_Fragment
 );
 
 export type SubjectWithPropsAndListsPropsFragment = (
   { names: Array<TranslationPropsFragment>, properties: Array<(
-    { names: Array<TranslationPropsFragment>, possibleValues?: Array<(
+    { names: Array<TranslationPropsFragment>, possibleValues: Array<(
       { names: Array<TranslationPropsFragment> }
       & RelationsProps_XtdValueList_Fragment
     )> | null }
@@ -1490,52 +1400,52 @@ export type SubjectWithPropsAndListsPropsFragment = (
 
 export type SubjectRelationsMinimalPropsFragment = (
   { properties: Array<(
-    { possibleValues?: Array<{ id: string, name?: string | null }> | null }
+    { possibleValues: Array<{ id: string, name: string | null }> | null }
     & PropertyPropsFragment
-  )>, connectedSubjects: Array<{ id: string, relationshipType?: { name?: string | null } | null, targetSubjects: Array<{ id: string, name?: string | null, tags: Array<{ id: string, name: string }> }> }>, connectingSubjects: Array<{ id: string, relationshipType?: { name?: string | null } | null, connectingSubject: { id: string, name?: string | null, tags: Array<{ id: string, name: string }> } }> }
+  )>, connectedSubjects: Array<{ id: string, relationshipType: { name: string | null } | null, targetSubjects: Array<{ id: string, name: string | null, tags: Array<{ id: string, name: string }> }> }>, connectingSubjects: Array<{ id: string, relationshipType: { name: string | null } | null, connectingSubject: { id: string, name: string | null, tags: Array<{ id: string, name: string }> } }> }
   & ConceptProps_XtdSubject_Fragment
 );
 
 export type UnitPropsFragment = (
-  { scale?: XtdUnitScaleEnum | null, base?: XtdUnitBaseEnum | null }
+  { scale: XtdUnitScaleEnum | null, base: XtdUnitBaseEnum | null }
   & ConceptProps_XtdUnit_Fragment
 );
 
 export type UnitDetailPropsFragment = (
-  { symbol?: TranslationPropsFragment | null, offset?: RationalPropsFragment | null, coefficient?: RationalPropsFragment | null, dimension?: DimensionPropsFragment | null, properties?: Array<RelationsProps_XtdProperty_Fragment> | null, valueLists?: Array<RelationsProps_XtdValueList_Fragment> | null }
+  { symbol: TranslationPropsFragment | null, offset: RationalPropsFragment | null, coefficient: RationalPropsFragment | null, dimension: DimensionPropsFragment | null, properties: Array<RelationsProps_XtdProperty_Fragment> | null, valueLists: Array<RelationsProps_XtdValueList_Fragment> | null }
   & UnitPropsFragment
 );
 
 export type ValueListPropsFragment = ConceptProps_XtdValueList_Fragment;
 
 export type ValueListDetailPropsFragment = (
-  { properties?: Array<PropertyPropsFragment> | null, unit?: UnitPropsFragment | null, language?: LanguagePropsFragment | null }
+  { properties: Array<PropertyPropsFragment> | null, unit: UnitPropsFragment | null, language: LanguagePropsFragment | null }
   & ValueListPropsFragment
 );
 
-export type ValueListWithValuesPropsFragment = { id: string, name?: string | null, names: Array<TranslationPropsFragment>, values: { nodes: Array<{ order: number, orderedValue: { id: string, name?: string | null, names: Array<TranslationPropsFragment> } }> } };
+export type ValueListWithValuesPropsFragment = { id: string, name: string | null, names: Array<TranslationPropsFragment>, values: { nodes: Array<{ order: number, orderedValue: { id: string, name: string | null, names: Array<TranslationPropsFragment> } }> } };
 
 export type DimensionPropsFragment = (
-  { amountOfSubstanceExponent?: RationalPropsFragment | null, luminousIntensityExponent?: RationalPropsFragment | null, lengthExponent?: RationalPropsFragment | null, massExponent?: RationalPropsFragment | null, timeExponent?: RationalPropsFragment | null, electricCurrentExponent?: RationalPropsFragment | null, thermodynamicTemperatureExponent?: RationalPropsFragment | null }
+  { amountOfSubstanceExponent: RationalPropsFragment | null, luminousIntensityExponent: RationalPropsFragment | null, lengthExponent: RationalPropsFragment | null, massExponent: RationalPropsFragment | null, timeExponent: RationalPropsFragment | null, electricCurrentExponent: RationalPropsFragment | null, thermodynamicTemperatureExponent: RationalPropsFragment | null }
   & ConceptProps_XtdDimension_Fragment
 );
 
-export type SymbolPropsFragment = { subject?: RelationsProps_XtdSubject_Fragment | null, symbol?: { text: string, language: LanguagePropsFragment } | null };
+export type SymbolPropsFragment = { subject: RelationsProps_XtdSubject_Fragment | null, symbol: { text: string, language: LanguagePropsFragment } | null };
 
-export type IntervalPropsFragment = { id: string, minimumIncluded: boolean, maximumIncluded: boolean, minimum?: RelationsProps_XtdValueList_Fragment | null, maximum?: RelationsProps_XtdValueList_Fragment | null };
+export type IntervalPropsFragment = { id: string, minimumIncluded: boolean, maximumIncluded: boolean, minimum: RelationsProps_XtdValueList_Fragment | null, maximum: RelationsProps_XtdValueList_Fragment | null };
 
 export type RelationshipToSubjectPropsFragment = (
-  { __typename: 'XtdRelationshipToSubject', id: string, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null }
+  { __typename: 'XtdRelationshipToSubject', id: string, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null }
   & MetaProps_XtdRelationshipToSubject_Fragment
 );
 
 export type RelationshipToSubjectDetailPropsFragment = (
-  { scopeSubjects?: Array<RelationsProps_XtdSubject_Fragment> | null, targetSubjects: Array<RelationsProps_XtdSubject_Fragment>, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: RelationsProps_XtdSubject_Fragment }
+  { scopeSubjects: Array<RelationsProps_XtdSubject_Fragment> | null, targetSubjects: Array<RelationsProps_XtdSubject_Fragment>, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: RelationsProps_XtdSubject_Fragment }
   & RelationshipToSubjectPropsFragment
 );
 
 export type RelationshipToPropertyPropsFragment = (
-  { __typename: 'XtdRelationshipToProperty', id: string, majorVersion: number, minorVersion: number, dateOfCreation?: string | null, status?: XtdStatusOfActivationEnum | null, name?: string | null, comment?: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null }
+  { __typename: 'XtdRelationshipToProperty', id: string, majorVersion: number, minorVersion: number, dateOfCreation: string | null, status: XtdStatusOfActivationEnum | null, name: string | null, comment: string | null, names: Array<TranslationPropsFragment>, comments: Array<TranslationPropsFragment>, tags: Array<TagPropsFragment>, dictionary: { id: string, name: TranslationPropsFragment | null } | null }
   & MetaProps_XtdRelationshipToProperty_Fragment
 );
 
@@ -1544,40 +1454,40 @@ export type RelationshipToPropertyDetailPropsFragment = (
   & RelationshipToPropertyPropsFragment
 );
 
-export type RelationshipTypePropsFragment = { name?: string | null, kind: XtdRelationshipKindEnum };
+export type RelationshipTypePropsFragment = { name: string | null, kind: XtdRelationshipKindEnum };
 
 export type QuantityKindPropsFragment = (
-  { units?: Array<RelationsProps_XtdUnit_Fragment | null> | null, dimension?: DimensionPropsFragment | null }
+  { units: Array<RelationsProps_XtdUnit_Fragment | null> | null, dimension: DimensionPropsFragment | null }
   & ConceptProps_XtdQuantityKind_Fragment
 );
 
-type VerificationProps_XtdCountry_Fragment = { __typename: 'XtdCountry', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdCountry_Fragment = { __typename: 'XtdCountry', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdDimension_Fragment = { __typename: 'XtdDimension', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdDimension_Fragment = { __typename: 'XtdDimension', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdExternalDocument_Fragment = { __typename: 'XtdExternalDocument', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdOrderedValue_Fragment = { __typename: 'XtdOrderedValue', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdOrderedValue_Fragment = { __typename: 'XtdOrderedValue', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdProperty_Fragment = { __typename: 'XtdProperty', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdQuantityKind_Fragment = { __typename: 'XtdQuantityKind', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdQuantityKind_Fragment = { __typename: 'XtdQuantityKind', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdRelationshipToProperty_Fragment = { __typename: 'XtdRelationshipToProperty', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdRelationshipToProperty_Fragment = { __typename: 'XtdRelationshipToProperty', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdRelationshipToSubject_Fragment = { __typename: 'XtdRelationshipToSubject', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdRelationshipToSubject_Fragment = { __typename: 'XtdRelationshipToSubject', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdRelationshipType_Fragment = { __typename: 'XtdRelationshipType', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdRelationshipType_Fragment = { __typename: 'XtdRelationshipType', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdSubdivision_Fragment = { __typename: 'XtdSubdivision', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdSubdivision_Fragment = { __typename: 'XtdSubdivision', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdSubject_Fragment = { __typename: 'XtdSubject', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdUnit_Fragment = { __typename: 'XtdUnit', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdValue_Fragment = { __typename: 'XtdValue', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
-type VerificationProps_XtdValueList_Fragment = { __typename: 'XtdValueList', id: string, name?: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
+type VerificationProps_XtdValueList_Fragment = { __typename: 'XtdValueList', id: string, name: string | null, recordType: CatalogRecordType, tags: Array<TagPropsFragment> };
 
 export type VerificationPropsFragment =
   | VerificationProps_XtdCountry_Fragment
@@ -1596,9 +1506,9 @@ export type VerificationPropsFragment =
   | VerificationProps_XtdValueList_Fragment
 ;
 
-export type DictionaryPropsFragment = { id: string, recordType: CatalogRecordType, name?: TranslationPropsFragment | null, tags: Array<TagPropsFragment> };
+export type DictionaryPropsFragment = { id: string, recordType: CatalogRecordType, name: TranslationPropsFragment | null, tags: Array<TagPropsFragment> };
 
-export type ExportCatalogRecordFragment = { id: string, type?: string | null, tags?: Array<string | null> | null, name?: string | null, name_en?: string | null, description?: string | null, majorVersion?: number | null, minorVersion?: number | null, created?: string | null, createdBy?: string | null, lastModified?: string | null, lastModifiedBy?: string | null, status?: XtdStatusOfActivationEnum | null, languageOfCreator?: string | null, countryOfOrigin?: string | null, deprecationExplanation?: string | null, languages?: Array<string | null> | null, examples?: string | null, dataType?: string | null, dataFormat?: string | null, scale?: XtdUnitScaleEnum | null, base?: XtdUnitBaseEnum | null, uri?: string | null, author?: string | null, publisher?: string | null, isbn?: string | null, dateOfPublication?: string | null };
+export type ExportCatalogRecordFragment = { id: string, type: string | null, tags: Array<string | null> | null, name: string | null, name_en: string | null, description: string | null, majorVersion: number | null, minorVersion: number | null, created: string | null, createdBy: string | null, lastModified: string | null, lastModifiedBy: string | null, status: XtdStatusOfActivationEnum | null, languageOfCreator: string | null, countryOfOrigin: string | null, deprecationExplanation: string | null, languages: Array<string | null> | null, examples: string | null, dataType: string | null, dataFormat: string | null, scale: XtdUnitScaleEnum | null, base: XtdUnitBaseEnum | null, uri: string | null, author: string | null, publisher: string | null, isbn: string | null, dateOfPublication: string | null };
 
 export type ExportCatalogRecordRelationshipFragment = { entity1: string, relationship: string, entity2: string };
 
@@ -1609,21 +1519,21 @@ export type SignupFormMutationVariables = Exact<{
 }>;
 
 
-export type SignupFormMutation = { success?: boolean | null };
+export type SignupFormMutation = { success: boolean | null };
 
 export type ConfirmEmailMutationVariables = Exact<{
-  token: Scalars['String']['input'];
+  token: string;
 }>;
 
 
-export type ConfirmEmailMutation = { success?: boolean | null };
+export type ConfirmEmailMutation = { success: boolean | null };
 
 export type LoginFormMutationVariables = Exact<{
   credentials: LoginInput;
 }>;
 
 
-export type LoginFormMutation = { token?: string | null };
+export type LoginFormMutation = { token: string | null };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: ProfileUpdateInput;
@@ -1637,7 +1547,7 @@ export type CreateEntryMutationVariables = Exact<{
 }>;
 
 
-export type CreateEntryMutation = { createCatalogEntry?: { catalogEntry?:
+export type CreateEntryMutation = { createCatalogEntry: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1655,11 +1565,11 @@ export type CreateEntryMutation = { createCatalogEntry?: { catalogEntry?:
      | null } | null };
 
 export type DeleteEntryMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteEntryMutation = { deleteCatalogEntry?: { catalogEntry?:
+export type DeleteEntryMutation = { deleteCatalogEntry: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1681,7 +1591,7 @@ export type UpdateMajorVersionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateMajorVersionMutation = { updateMajorVersion?: { catalogEntry?:
+export type UpdateMajorVersionMutation = { updateMajorVersion: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1703,7 +1613,7 @@ export type UpdateMinorVersionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateMinorVersionMutation = { updateMinorVersion?: { catalogEntry?:
+export type UpdateMinorVersionMutation = { updateMinorVersion: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1725,7 +1635,7 @@ export type UpdateStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpdateStatusMutation = { updateStatus?: { catalogEntry?:
+export type UpdateStatusMutation = { updateStatus: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1747,7 +1657,7 @@ export type UpdateDataTypeMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDataTypeMutation = { updateDataType?: { catalogEntry?:
+export type UpdateDataTypeMutation = { updateDataType: { catalogEntry:
       | PropertyPropsFragment
       | Record<PropertyKey, never>
      | null } | null };
@@ -1757,7 +1667,7 @@ export type UpdateNominalValueMutationVariables = Exact<{
 }>;
 
 
-export type UpdateNominalValueMutation = { updateNominalValue?: { catalogEntry?:
+export type UpdateNominalValueMutation = { updateNominalValue: { catalogEntry:
       | ValuePropsFragment
       | Record<PropertyKey, never>
      | null } | null };
@@ -1767,7 +1677,7 @@ export type AddNameMutationVariables = Exact<{
 }>;
 
 
-export type AddNameMutation = { addName?: { catalogEntry?:
+export type AddNameMutation = { addName: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1789,7 +1699,7 @@ export type UpdateNameMutationVariables = Exact<{
 }>;
 
 
-export type UpdateNameMutation = { updateName?: { catalogEntry?:
+export type UpdateNameMutation = { updateName: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1811,7 +1721,7 @@ export type DeleteNameMutationVariables = Exact<{
 }>;
 
 
-export type DeleteNameMutation = { deleteName?: { catalogEntry?:
+export type DeleteNameMutation = { deleteName: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1833,7 +1743,7 @@ export type AddDescriptionMutationVariables = Exact<{
 }>;
 
 
-export type AddDescriptionMutation = { addDescription?: { catalogEntry?:
+export type AddDescriptionMutation = { addDescription: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1855,7 +1765,7 @@ export type UpdateDescriptionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDescriptionMutation = { updateDescription?: { catalogEntry?:
+export type UpdateDescriptionMutation = { updateDescription: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1877,7 +1787,7 @@ export type DeleteDescriptionMutationVariables = Exact<{
 }>;
 
 
-export type DeleteDescriptionMutation = { deleteDescription?: { catalogEntry?:
+export type DeleteDescriptionMutation = { deleteDescription: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1899,7 +1809,7 @@ export type AddCommentMutationVariables = Exact<{
 }>;
 
 
-export type AddCommentMutation = { addComment?: { catalogEntry?:
+export type AddCommentMutation = { addComment: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1921,7 +1831,7 @@ export type UpdateCommentMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCommentMutation = { updateComment?: { catalogEntry?:
+export type UpdateCommentMutation = { updateComment: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1943,7 +1853,7 @@ export type DeleteCommentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCommentMutation = { deleteComment?: { catalogEntry?:
+export type DeleteCommentMutation = { deleteComment: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1965,7 +1875,7 @@ export type AddDeprecationExplanationMutationVariables = Exact<{
 }>;
 
 
-export type AddDeprecationExplanationMutation = { addDeprecationExplanation?: { catalogEntry?:
+export type AddDeprecationExplanationMutation = { addDeprecationExplanation: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -1987,7 +1897,7 @@ export type UpdateDeprecationExplanationMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDeprecationExplanationMutation = { updateDeprecationExplanation?: { catalogEntry?:
+export type UpdateDeprecationExplanationMutation = { updateDeprecationExplanation: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2009,7 +1919,7 @@ export type DeleteDeprecationExplanationMutationVariables = Exact<{
 }>;
 
 
-export type DeleteDeprecationExplanationMutation = { deleteDeprecationExplanation?: { catalogEntry?:
+export type DeleteDeprecationExplanationMutation = { deleteDeprecationExplanation: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2031,7 +1941,7 @@ export type AddDefinitionMutationVariables = Exact<{
 }>;
 
 
-export type AddDefinitionMutation = { addDefinition?: { catalogEntry?:
+export type AddDefinitionMutation = { addDefinition: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2053,7 +1963,7 @@ export type UpdateDefinitionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDefinitionMutation = { updateDefinition?: { catalogEntry?:
+export type UpdateDefinitionMutation = { updateDefinition: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2075,7 +1985,7 @@ export type DeleteDefinitionMutationVariables = Exact<{
 }>;
 
 
-export type DeleteDefinitionMutation = { deleteDefinition?: { catalogEntry?:
+export type DeleteDefinitionMutation = { deleteDefinition: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2097,7 +2007,7 @@ export type AddExampleMutationVariables = Exact<{
 }>;
 
 
-export type AddExampleMutation = { addExample?: { catalogEntry?:
+export type AddExampleMutation = { addExample: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2119,7 +2029,7 @@ export type UpdateExampleMutationVariables = Exact<{
 }>;
 
 
-export type UpdateExampleMutation = { updateExample?: { catalogEntry?:
+export type UpdateExampleMutation = { updateExample: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2141,7 +2051,7 @@ export type DeleteExampleMutationVariables = Exact<{
 }>;
 
 
-export type DeleteExampleMutation = { deleteExample?: { catalogEntry?:
+export type DeleteExampleMutation = { deleteExample: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2163,7 +2073,7 @@ export type AddCountryOfOriginMutationVariables = Exact<{
 }>;
 
 
-export type AddCountryOfOriginMutation = { addCountryOfOrigin?: { catalogEntry?:
+export type AddCountryOfOriginMutation = { addCountryOfOrigin: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2185,7 +2095,7 @@ export type DeleteCountryOfOriginMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCountryOfOriginMutation = { deleteCountryOfOrigin?: { catalogEntry?:
+export type DeleteCountryOfOriginMutation = { deleteCountryOfOrigin: { catalogEntry:
       | ObjectProps_XtdCountry_Fragment
       | ObjectProps_XtdDimension_Fragment
       | ObjectProps_XtdExternalDocument_Fragment
@@ -2207,14 +2117,14 @@ export type CreateTagMutationVariables = Exact<{
 }>;
 
 
-export type CreateTagMutation = { createTag?: { tag?: { id: string, name: string } | null } | null };
+export type CreateTagMutation = { createTag: { tag: { id: string, name: string } | null } | null };
 
 export type AddTagMutationVariables = Exact<{
   input: AddTagInput;
 }>;
 
 
-export type AddTagMutation = { addTag?: { catalogEntry?:
+export type AddTagMutation = { addTag: { catalogEntry:
       | { __typename: 'XtdCountry' }
       | { __typename: 'XtdDictionary' }
       | { __typename: 'XtdDimension' }
@@ -2242,7 +2152,7 @@ export type RemoveTagMutationVariables = Exact<{
 }>;
 
 
-export type RemoveTagMutation = { removeTag?: { catalogEntry?:
+export type RemoveTagMutation = { removeTag: { catalogEntry:
       | { __typename: 'XtdCountry' }
       | { __typename: 'XtdDictionary' }
       | { __typename: 'XtdDimension' }
@@ -2270,21 +2180,21 @@ export type UpdateTagMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTagMutation = { updateTag?: { tag?: { id: string, name: string } | null } | null };
+export type UpdateTagMutation = { updateTag: { tag: { id: string, name: string } | null } | null };
 
 export type DeleteTagMutationVariables = Exact<{
   input: DeleteTagInput;
 }>;
 
 
-export type DeleteTagMutation = { deleteTag?: { tag?: { id: string, name: string } | null } | null };
+export type DeleteTagMutation = { deleteTag: { tag: { id: string, name: string } | null } | null };
 
 export type CreateRelationshipMutationVariables = Exact<{
   input: CreateRelationshipInput;
 }>;
 
 
-export type CreateRelationshipMutation = { createRelationship?: { catalogEntry?:
+export type CreateRelationshipMutation = { createRelationship: { catalogEntry:
       | { __typename: 'XtdCountry' }
       | { __typename: 'XtdDictionary' }
       | { __typename: 'XtdDimension' }
@@ -2312,7 +2222,7 @@ export type DeleteRelationshipMutationVariables = Exact<{
 }>;
 
 
-export type DeleteRelationshipMutation = { deleteRelationship?: { catalogEntry?:
+export type DeleteRelationshipMutation = { deleteRelationship: { catalogEntry:
       | { __typename: 'XtdCountry' }
       | { __typename: 'XtdDictionary' }
       | { __typename: 'XtdDimension' }
@@ -2344,8 +2254,8 @@ export type FindLanguagesQuery = { findLanguages: { totalElements: number, nodes
 
 export type FindItemQueryVariables = Exact<{
   input: SearchInput;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: number | null | undefined;
+  pageNumber?: number | null | undefined;
 }>;
 
 
@@ -2370,37 +2280,37 @@ export type FindItemQuery = { search: { totalElements: number, nodes: Array<
 
 export type FindConceptsForOntoExportQueryVariables = Exact<{
   input: SearchInput;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: number | null | undefined;
+  pageNumber?: number | null | undefined;
 }>;
 
 
 export type FindConceptsForOntoExportQuery = { search: { nodes: Array<
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { id: string, dname?: { texts: Array<{ text: string }> } | null, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { id: string, dname: { texts: Array<{ text: string }> } | null, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
       | { id: string, tags: Array<{ name: string }> }
       | { id: string, tags: Array<{ name: string }> }
       | { id: string, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
       | { id: string, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
       | { id: string, tags: Array<{ name: string }> }
       | { id: string, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
-      | { name?: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
+      | { name: string | null, majorVersion: number, minorVersion: number, id: string, names: Array<TranslationPropsFragment>, descriptions: Array<TranslationPropsFragment>, tags: Array<{ name: string }> }
     > } };
 
 export type FindTagsQueryVariables = Exact<{
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: number | null | undefined;
 }>;
 
 
@@ -2427,8 +2337,8 @@ export type PropertyTreeQuery = { hierarchy: { paths: Array<Array<string>>, node
     > } };
 
 export type FindPropGroupWithoutPropTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2450,8 +2360,8 @@ export type FindPropGroupWithoutPropTreeQuery = { findPropGroupWithoutProp: { pa
     >, pageInfo: PagePropsFragment } };
 
 export type FindPropWithoutSubjectOrPropGroupTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2473,8 +2383,8 @@ export type FindPropWithoutSubjectOrPropGroupTreeQuery = { findPropWithoutSubjec
     >, pageInfo: PagePropsFragment } };
 
 export type FindThemeWithoutSubjectTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2496,8 +2406,8 @@ export type FindThemeWithoutSubjectTreeQuery = { findThemeWithoutSubject: { path
     >, pageInfo: PagePropsFragment } };
 
 export type FindSubjectWithoutPropTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2519,8 +2429,8 @@ export type FindSubjectWithoutPropTreeQuery = { findSubjectWithoutProp: { paths:
     >, pageInfo: PagePropsFragment } };
 
 export type FindValueListWithoutPropTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2542,8 +2452,8 @@ export type FindValueListWithoutPropTreeQuery = { findValueListWithoutProp: { pa
     >, pageInfo: PagePropsFragment } };
 
 export type FindUnitWithoutValueListTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2565,8 +2475,8 @@ export type FindUnitWithoutValueListTreeQuery = { findUnitWithoutValueList: { pa
     >, pageInfo: PagePropsFragment } };
 
 export type FindValueWithoutValueListTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2588,8 +2498,8 @@ export type FindValueWithoutValueListTreeQuery = { findValueWithoutValueList: { 
     >, pageInfo: PagePropsFragment } };
 
 export type FindMissingTagsTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2611,8 +2521,8 @@ export type FindMissingTagsTreeQuery = { findMissingTags: { paths: Array<string>
     >, pageInfo: PagePropsFragment } };
 
 export type FindMissingEnglishNameTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2634,8 +2544,8 @@ export type FindMissingEnglishNameTreeQuery = { findMissingEnglishName: { paths:
     >, pageInfo: PagePropsFragment } };
 
 export type FindMultipleIDsTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2657,8 +2567,8 @@ export type FindMultipleIDsTreeQuery = { findMultipleIDs: { paths: Array<string>
     >, pageInfo: PagePropsFragment } };
 
 export type FindMissingDescriptionTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2680,8 +2590,8 @@ export type FindMissingDescriptionTreeQuery = { findMissingDescription: { paths:
     >, pageInfo: PagePropsFragment } };
 
 export type FindMissingEnglishDescriptionTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2703,8 +2613,8 @@ export type FindMissingEnglishDescriptionTreeQuery = { findMissingEnglishDescrip
     >, pageInfo: PagePropsFragment } };
 
 export type FindMultipleNamesTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2726,8 +2636,8 @@ export type FindMultipleNamesTreeQuery = { findMultipleNames: { paths: Array<str
     >, pageInfo: PagePropsFragment } };
 
 export type FindMultipleNamesAcrossClassesTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2749,8 +2659,8 @@ export type FindMultipleNamesAcrossClassesTreeQuery = { findMultipleNamesAcrossC
     >, pageInfo: PagePropsFragment } };
 
 export type FindMissingDictionaryTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2772,8 +2682,8 @@ export type FindMissingDictionaryTreeQuery = { findMissingDictionary: { paths: A
     >, pageInfo: PagePropsFragment } };
 
 export type FindMissingReferenceDocumentTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2795,8 +2705,8 @@ export type FindMissingReferenceDocumentTreeQuery = { findMissingReferenceDocume
     >, pageInfo: PagePropsFragment } };
 
 export type FindInactiveConceptsTreeQueryVariables = Exact<{
-  pageSize: Scalars['Int']['input'];
-  pageNumber: Scalars['Int']['input'];
+  pageSize: number;
+  pageNumber: number;
 }>;
 
 
@@ -2837,7 +2747,7 @@ export type FindSubjectsQueryVariables = Exact<{
 
 
 export type FindSubjectsQuery = { findSubjects: { totalElements: number, nodes: Array<(
-      { properties: Array<RelationsProps_XtdProperty_Fragment>, connectedSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, targetSubjects: Array<RelationsProps_XtdSubject_Fragment> }>, connectingSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: RelationsProps_XtdSubject_Fragment }> }
+      { properties: Array<RelationsProps_XtdProperty_Fragment>, connectedSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, targetSubjects: Array<RelationsProps_XtdSubject_Fragment> }>, connectingSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: RelationsProps_XtdSubject_Fragment }> }
       & ConceptProps_XtdSubject_Fragment
     )> } };
 
@@ -2853,51 +2763,58 @@ export type FindSubjectsWithDictAndThemesQueryVariables = Exact<{
 }>;
 
 
-export type FindSubjectsWithDictAndThemesQuery = { findSubjects: { nodes: Array<{ id: string, name?: string | null, dictionary?: { id: string, name?: TranslationPropsFragment | null } | null, connectingSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: { name?: string | null, tags: Array<TagPropsFragment> } }> }> } };
+export type FindSubjectsWithDictAndThemesQuery = { findSubjects: { nodes: Array<{ id: string, name: string | null, dictionary: { id: string, name: TranslationPropsFragment | null } | null, connectingSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: { name: string | null, tags: Array<TagPropsFragment> } }> }> } };
 
 export type FindPropertyGroupsQueryVariables = Exact<{
   input: FilterInput;
 }>;
 
 
-export type FindPropertyGroupsQuery = { findSubjects: { totalElements: number, nodes: Array<{ id: string, name?: string | null, tags: Array<TagPropsFragment> }> } };
+export type FindPropertyGroupsQuery = { findSubjects: { totalElements: number, nodes: Array<{ id: string, name: string | null, tags: Array<TagPropsFragment> }> } };
+
+export type FindDataTemplatesQueryVariables = Exact<{
+  input: FilterInput;
+}>;
+
+
+export type FindDataTemplatesQuery = { findSubjects: { totalElements: number, nodes: Array<{ id: string, name: string | null, tags: Array<TagPropsFragment> }> } };
 
 export type FindSubjectsForIdsQueryVariables = Exact<{
   input: FilterInput;
 }>;
 
 
-export type FindSubjectsForIdsQuery = { findSubjects: { nodes: Array<{ id: string, name?: string | null, tags: Array<{ id: string, name: string }>, dictionary?: { id: string } | null }> } };
+export type FindSubjectsForIdsQuery = { findSubjects: { nodes: Array<{ id: string, name: string | null, tags: Array<{ id: string, name: string }>, dictionary: { id: string } | null }> } };
 
 export type FindClassesForIdsQueryVariables = Exact<{
   input: FilterInput;
 }>;
 
 
-export type FindClassesForIdsQuery = { findSubjects: { nodes: Array<{ id: string, name?: string | null, dictionary?: { id: string, name?: { texts: Array<{ text: string }> } | null } | null }> } };
+export type FindClassesForIdsQuery = { findSubjects: { nodes: Array<{ id: string, name: string | null, dictionary: { id: string, name: { texts: Array<{ text: string }> } | null } | null }> } };
 
 export type FindPropertiesMinimalQueryVariables = Exact<{
   input: SearchInput;
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
+  pageSize?: number | null | undefined;
+  pageNumber?: number | null | undefined;
 }>;
 
 
 export type FindPropertiesMinimalQuery = { search: { totalElements: number, nodes: Array<
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
-      | { id: string, recordType: CatalogRecordType, name?: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
+      | { id: string, recordType: CatalogRecordType, name: string | null, tags: Array<{ id: string, name: string }> }
       | Record<PropertyKey, never>
     > } };
 
@@ -2942,7 +2859,7 @@ export type FindRelationshipToSubjectQueryVariables = Exact<{
 
 
 export type FindRelationshipToSubjectQuery = { findRelationshipToSubjects: { totalElements: number, nodes: Array<(
-      { connectingSubject: SubjectDetailPropsFragment, scopeSubjects?: Array<SubjectDetailPropsFragment> | null, targetSubjects: Array<SubjectDetailPropsFragment> }
+      { connectingSubject: SubjectDetailPropsFragment, scopeSubjects: Array<SubjectDetailPropsFragment> | null, targetSubjects: Array<SubjectDetailPropsFragment> }
       & ObjectProps_XtdRelationshipToSubject_Fragment
     )> } };
 
@@ -2990,7 +2907,7 @@ export type FindDictionariesQueryVariables = Exact<{
 
 
 export type FindDictionariesQuery = { findDictionaries: { totalElements: number, nodes: Array<(
-      { id: string, name?: TranslationPropsFragment | null, tags: Array<TagPropsFragment> }
+      { id: string, name: TranslationPropsFragment | null, tags: Array<TagPropsFragment> }
       & MetaProps_XtdDictionary_Fragment
     )>, pageInfo: PagePropsFragment } };
 
@@ -3012,21 +2929,21 @@ export type FindCountriesQuery = { findCountries: { totalElements: number, nodes
     )> } };
 
 export type GetDocumentEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetDocumentEntryQuery = { node?:
+export type GetDocumentEntryQuery = { node:
     | ExternalDocumentDetailPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetObjectEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetObjectEntryQuery = { node?:
+export type GetObjectEntryQuery = { node:
     | ObjectProps_XtdCountry_Fragment
     | ObjectProps_XtdDimension_Fragment
     | ObjectProps_XtdExternalDocument_Fragment
@@ -3045,195 +2962,202 @@ export type GetObjectEntryQuery = { node?:
    | null };
 
 export type GetSubjectEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetSubjectEntryQuery = { node?: (
-    { properties: Array<RelationsProps_XtdProperty_Fragment>, connectedSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, targetSubjects: Array<{ id: string, name?: string | null, tags: Array<{ id: string, name: string }> }> }>, connectingSubjects: Array<{ id: string, relationshipType?: { name?: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: { id: string, name?: string | null, tags: Array<{ id: string, name: string }> } }> }
+export type GetSubjectEntryQuery = { node: (
+    { properties: Array<RelationsProps_XtdProperty_Fragment>, connectedSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, targetSubjects: Array<{ id: string, name: string | null, tags: Array<{ id: string, name: string }> }> }>, connectingSubjects: Array<{ id: string, relationshipType: { name: string | null, kind: XtdRelationshipKindEnum } | null, connectingSubject: { id: string, name: string | null, tags: Array<{ id: string, name: string }> } }> }
     & ConceptProps_XtdSubject_Fragment
   ) | null };
 
 export type GetSubjectEntryMinimalQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetSubjectEntryMinimalQuery = { node?: SubjectRelationsMinimalPropsFragment | null };
+export type GetSubjectEntryMinimalQuery = { node: SubjectRelationsMinimalPropsFragment | null };
+
+export type GetDataTemplateEntryQueryVariables = Exact<{
+  id: string | number;
+}>;
+
+
+export type GetDataTemplateEntryQuery = { node: SubjectDetailPropsFragment | null };
 
 export type GetPropertyEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetPropertyEntryQuery = { node?: (
+export type GetPropertyEntryQuery = { node: (
     { connectedProperties: Array<(
       { relationshipType: XtdPropertyRelationshipTypeEnum, targetProperties: Array<PropertyPropsFragment>, connectingProperty: PropertyPropsFragment }
       & RelationsProps_XtdRelationshipToProperty_Fragment
     )>, connectingProperties: Array<(
       { relationshipType: XtdPropertyRelationshipTypeEnum, targetProperties: Array<PropertyPropsFragment>, connectingProperty: PropertyPropsFragment }
       & RelationsProps_XtdRelationshipToProperty_Fragment
-    )>, boundaryValues?: Array<IntervalPropsFragment | null> | null, dimension?: DimensionPropsFragment | null, quantityKinds?: Array<QuantityKindPropsFragment | null> | null, units?: Array<RelationsProps_XtdUnit_Fragment> | null, possibleValues?: Array<RelationsProps_XtdValueList_Fragment> | null, subjects: Array<RelationsProps_XtdSubject_Fragment> }
+    )>, boundaryValues: Array<IntervalPropsFragment | null> | null, dimension: DimensionPropsFragment | null, quantityKinds: Array<QuantityKindPropsFragment | null> | null, units: Array<RelationsProps_XtdUnit_Fragment> | null, possibleValues: Array<RelationsProps_XtdValueList_Fragment> | null, subjects: Array<RelationsProps_XtdSubject_Fragment> }
     & PropertyPropsFragment
   ) | null };
 
 export type GetValueListEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetValueListEntryQuery = { node?: (
-    { properties?: Array<PropertyPropsFragment> | null, unit?: UnitPropsFragment | null, values: { nodes: Array<{ order: number, orderedValue: { id: string, recordType: CatalogRecordType, name?: string | null, nominalValue?: string | null, status?: XtdStatusOfActivationEnum | null, tags: Array<{ id: string, name: string }> } }> }, language?: LanguagePropsFragment | null }
+export type GetValueListEntryQuery = { node: (
+    { properties: Array<PropertyPropsFragment> | null, unit: UnitPropsFragment | null, values: { nodes: Array<{ order: number, orderedValue: { id: string, recordType: CatalogRecordType, name: string | null, nominalValue: string | null, status: XtdStatusOfActivationEnum | null, tags: Array<{ id: string, name: string }> } }> }, language: LanguagePropsFragment | null }
     & ValueListPropsFragment
   ) | null };
 
 export type ValuesOfListQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type ValuesOfListQuery = { node?: { values: { nodes: Array<{ order: number, orderedValue: ValuePropsFragment }> } } | null };
+export type ValuesOfListQuery = { node: { values: { nodes: Array<{ order: number, orderedValue: ValuePropsFragment }> } } | null };
 
 export type GetUnitEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetUnitEntryQuery = { node?: UnitDetailPropsFragment | null };
+export type GetUnitEntryQuery = { node: UnitDetailPropsFragment | null };
 
 export type GetValueEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetValueEntryQuery = { node?: ValueDetailPropsFragment | null };
+export type GetValueEntryQuery = { node: ValueDetailPropsFragment | null };
 
 export type GetOrderedValueEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetOrderedValueEntryQuery = { node?:
+export type GetOrderedValueEntryQuery = { node:
     | { order: number, orderedValue: ValuePropsFragment }
     | Record<PropertyKey, never>
    | null };
 
 export type GetRelationshipToSubjectEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetRelationshipToSubjectEntryQuery = { node?:
+export type GetRelationshipToSubjectEntryQuery = { node:
     | RelationshipToSubjectDetailPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetRelationshipToPropertyEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetRelationshipToPropertyEntryQuery = { node?:
+export type GetRelationshipToPropertyEntryQuery = { node:
     | RelationshipToPropertyDetailPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetRelationshipTypeEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetRelationshipTypeEntryQuery = { node?:
+export type GetRelationshipTypeEntryQuery = { node:
     | RelationshipTypePropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetLanguageEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetLanguageEntryQuery = { node?:
+export type GetLanguageEntryQuery = { node:
     | LanguagePropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetLanguageByCodeEntryQueryVariables = Exact<{
-  code: Scalars['String']['input'];
+  code: string;
 }>;
 
 
-export type GetLanguageByCodeEntryQuery = { getLanguageByCode?: LanguagePropsFragment | null };
+export type GetLanguageByCodeEntryQuery = { getLanguageByCode: LanguagePropsFragment | null };
 
 export type GetDimensionEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetDimensionEntryQuery = { node?:
+export type GetDimensionEntryQuery = { node:
     | DimensionPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetRationalEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetRationalEntryQuery = { node?:
+export type GetRationalEntryQuery = { node:
     | RationalPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetMultiLanguageTextEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetMultiLanguageTextEntryQuery = { node?:
+export type GetMultiLanguageTextEntryQuery = { node:
     | TranslationPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetSymbolEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetSymbolEntryQuery = { node?:
+export type GetSymbolEntryQuery = { node:
     | SymbolPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetIntervalEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetIntervalEntryQuery = { node?:
+export type GetIntervalEntryQuery = { node:
     | IntervalPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetDictionaryEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetDictionaryEntryQuery = { node?: (
-    { id: string, name?: TranslationPropsFragment | null, tags: Array<{ id: string, name: string }> }
+export type GetDictionaryEntryQuery = { node: (
+    { id: string, name: TranslationPropsFragment | null, tags: Array<{ id: string, name: string }> }
     & MetaProps_XtdDictionary_Fragment
   ) | null };
 
 export type GetDictionaryEntryWithPaginationQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  pageSize?: InputMaybe<Scalars['Int']['input']>;
-  pageNumber?: InputMaybe<Scalars['Int']['input']>;
+  id: string | number;
+  pageSize?: number | null | undefined;
+  pageNumber?: number | null | undefined;
 }>;
 
 
-export type GetDictionaryEntryWithPaginationQuery = { node?: (
-    { id: string, name?: TranslationPropsFragment | null, tags: Array<{ id: string, name: string }>, concepts: { totalElements: number, nodes: Array<
+export type GetDictionaryEntryWithPaginationQuery = { node: (
+    { id: string, name: TranslationPropsFragment | null, tags: Array<{ id: string, name: string }>, concepts: { totalElements: number, nodes: Array<
         | RelationsProps_XtdCountry_Fragment
         | RelationsProps_XtdDimension_Fragment
         | RelationsProps_XtdExternalDocument_Fragment
@@ -3253,41 +3177,41 @@ export type GetDictionaryEntryWithPaginationQuery = { node?: (
   ) | null };
 
 export type GetCountryEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetCountryEntryQuery = { node?: (
+export type GetCountryEntryQuery = { node: (
     { code: string }
     & RelationsProps_XtdCountry_Fragment
   ) | null };
 
 export type GetSubdivisionEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetSubdivisionEntryQuery = { node?: (
+export type GetSubdivisionEntryQuery = { node: (
     { code: string }
     & ConceptProps_XtdSubdivision_Fragment
   ) | null };
 
 export type GetQuantityKindEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetQuantityKindEntryQuery = { node?:
+export type GetQuantityKindEntryQuery = { node:
     | QuantityKindPropsFragment
     | Record<PropertyKey, never>
    | null };
 
 export type GetConceptEntryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetConceptEntryQuery = { node?:
+export type GetConceptEntryQuery = { node:
     | ConceptProps_XtdCountry_Fragment
     | ConceptProps_XtdDimension_Fragment
     | ConceptProps_XtdExternalDocument_Fragment
@@ -3426,6 +3350,7 @@ export const FindSubjectsDocument = {"kind":"Document","definitions":[{"kind":"O
 export const FindSubjectsWithPropsAndListsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindSubjectsWithPropsAndLists"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FilterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findSubjects"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"SubjectWithPropsAndListsProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RelationsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SubjectWithPropsAndListsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdSubject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"possibleValues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}}]}}]}}]} as unknown as DocumentNode<FindSubjectsWithPropsAndListsQuery, FindSubjectsWithPropsAndListsQueryVariables>;
 export const FindSubjectsWithDictAndThemesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindSubjectsWithDictAndThemes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FilterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findSubjects"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubject"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}}]} as unknown as DocumentNode<FindSubjectsWithDictAndThemesQuery, FindSubjectsWithDictAndThemesQueryVariables>;
 export const FindPropertyGroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindPropertyGroups"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FilterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findSubjects"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalElements"}},{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]} as unknown as DocumentNode<FindPropertyGroupsQuery, FindPropertyGroupsQueryVariables>;
+export const FindDataTemplatesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindDataTemplates"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FilterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findSubjects"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalElements"}},{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]} as unknown as DocumentNode<FindDataTemplatesQuery, FindDataTemplatesQueryVariables>;
 export const FindSubjectsForIdsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindSubjectsForIDS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FilterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findSubjects"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<FindSubjectsForIdsQuery, FindSubjectsForIdsQueryVariables>;
 export const FindClassesForIdsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindClassesForIDS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FilterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findSubjects"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<FindClassesForIdsQuery, FindClassesForIdsQueryVariables>;
 export const FindPropertiesMinimalDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindPropertiesMinimal"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pageSize"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pageNumber"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"search"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"pageSize"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pageSize"}}},{"kind":"Argument","name":{"kind":"Name","value":"pageNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pageNumber"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalElements"}}]}}]}}]} as unknown as DocumentNode<FindPropertiesMinimalQuery, FindPropertiesMinimalQueryVariables>;
@@ -3447,6 +3372,7 @@ export const GetDocumentEntryDocument = {"kind":"Document","definitions":[{"kind
 export const GetObjectEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetObjectEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}}]} as unknown as DocumentNode<GetObjectEntryQuery, GetObjectEntryQueryVariables>;
 export const GetSubjectEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSubjectEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"node"},"name":{"kind":"Name","value":"getSubject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectedSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}}]}},{"kind":"Field","name":{"kind":"Name","value":"targetSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubject"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RelationsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConceptProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdConcept"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}},{"kind":"Field","name":{"kind":"Name","value":"description"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"definition"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"examples"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languageOfCreator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceDocuments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"similarTo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countryOfOrigin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}}]} as unknown as DocumentNode<GetSubjectEntryQuery, GetSubjectEntryQueryVariables>;
 export const GetSubjectEntryMinimalDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSubjectEntryMinimal"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"node"},"name":{"kind":"Name","value":"getSubject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"SubjectRelationsMinimalProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RelationsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConceptProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdConcept"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}},{"kind":"Field","name":{"kind":"Name","value":"description"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"definition"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"examples"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languageOfCreator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceDocuments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"similarTo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countryOfOrigin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PropertyProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdProperty"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"dataType"}},{"kind":"Field","name":{"kind":"Name","value":"dataFormat"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SubjectRelationsMinimalProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdSubject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}},{"kind":"Field","name":{"kind":"Name","value":"possibleValues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectedSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"targetSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubject"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetSubjectEntryMinimalQuery, GetSubjectEntryMinimalQueryVariables>;
+export const GetDataTemplateEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetDataTemplateEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"node"},"name":{"kind":"Name","value":"getSubject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"SubjectDetailProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RelationsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConceptProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdConcept"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}},{"kind":"Field","name":{"kind":"Name","value":"description"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"definition"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"examples"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languageOfCreator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceDocuments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"similarTo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countryOfOrigin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PropertyProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdProperty"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"dataType"}},{"kind":"Field","name":{"kind":"Name","value":"dataFormat"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SubjectDetailProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdSubject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}},{"kind":"Field","name":{"kind":"Name","value":"possibleValues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectedSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}}]}},{"kind":"Field","name":{"kind":"Name","value":"targetSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingSubject"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetDataTemplateEntryQuery, GetDataTemplateEntryQueryVariables>;
 export const GetPropertyEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPropertyEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"node"},"name":{"kind":"Name","value":"getProperty"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}},{"kind":"Field","name":{"kind":"Name","value":"connectedProperties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"}},{"kind":"Field","name":{"kind":"Name","value":"targetProperties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingProperty"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingProperties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}},{"kind":"Field","name":{"kind":"Name","value":"relationshipType"}},{"kind":"Field","name":{"kind":"Name","value":"targetProperties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"connectingProperty"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"boundaryValues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"IntervalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dimension"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"DimensionProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"quantityKinds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"QuantityKindProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"units"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"possibleValues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"subjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RelationsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RationalProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRational"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"numerator"}},{"kind":"Field","name":{"kind":"Name","value":"denominator"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConceptProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdConcept"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}},{"kind":"Field","name":{"kind":"Name","value":"description"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"definition"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"examples"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languageOfCreator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceDocuments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"similarTo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countryOfOrigin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PropertyProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdProperty"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"dataType"}},{"kind":"Field","name":{"kind":"Name","value":"dataFormat"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DimensionProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdDimension"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"amountOfSubstanceExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"luminousIntensityExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"lengthExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"massExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"timeExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"electricCurrentExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thermodynamicTemperatureExponent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RationalProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"IntervalProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdInterval"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"minimumIncluded"}},{"kind":"Field","name":{"kind":"Name","value":"maximumIncluded"}},{"kind":"Field","name":{"kind":"Name","value":"minimum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"maximum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"QuantityKindProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdQuantityKind"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"units"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dimension"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"DimensionProps"}}]}}]}}]} as unknown as DocumentNode<GetPropertyEntryQuery, GetPropertyEntryQueryVariables>;
 export const GetValueListEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetValueListEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"node"},"name":{"kind":"Name","value":"getValueList"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ValueListProps"}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PropertyProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"unit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UnitProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"values"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pageSize"},"value":{"kind":"IntValue","value":"10000"}},{"kind":"Argument","name":{"kind":"Name","value":"pageNumber"},"value":{"kind":"IntValue","value":"0"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"orderedValue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"nominalValue"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"RelationsProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de","block":false},{"kind":"StringValue","value":"en","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ConceptProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdConcept"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}},{"kind":"Field","name":{"kind":"Name","value":"description"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"definition"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"examples"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languageOfCreator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"referenceDocuments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"similarTo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"countryOfOrigin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"RelationsProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PropertyProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdProperty"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"dataType"}},{"kind":"Field","name":{"kind":"Name","value":"dataFormat"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UnitProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdUnit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}},{"kind":"Field","name":{"kind":"Name","value":"scale"}},{"kind":"Field","name":{"kind":"Name","value":"base"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ValueListProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdValueList"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ConceptProps"}}]}}]} as unknown as DocumentNode<GetValueListEntryQuery, GetValueListEntryQueryVariables>;
 export const ValuesOfListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ValuesOfList"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"node"},"name":{"kind":"Name","value":"getValueList"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"values"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"order"}},{"kind":"Field","name":{"kind":"Name","value":"orderedValue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ValueProps"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TagProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tag"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LanguageProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdLanguage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"englishName"}},{"kind":"Field","name":{"kind":"Name","value":"nativeName"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TranslationProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdMultiLanguageText"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"texts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"language"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LanguageProps"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MetaProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdRoot"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"created"}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"}},{"kind":"Field","name":{"kind":"Name","value":"lastModified"}},{"kind":"Field","name":{"kind":"Name","value":"lastModifiedBy"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ObjectProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdObject"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetaProps"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"recordType"}},{"kind":"Field","name":{"kind":"Name","value":"majorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"minorVersion"}},{"kind":"Field","name":{"kind":"Name","value":"dateOfCreation"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"names"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"languageTags"},"value":{"kind":"ListValue","values":[{"kind":"StringValue","value":"de-DE","block":false},{"kind":"StringValue","value":"en-US","block":false}]}}]}}]},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TagProps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dictionary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacedObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"replacingObjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"deprecationExplanation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TranslationProps"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ValueProps"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"XtdValue"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ObjectProps"}},{"kind":"Field","name":{"kind":"Name","value":"nominalValue"}}]}}]} as unknown as DocumentNode<ValuesOfListQuery, ValuesOfListQueryVariables>;

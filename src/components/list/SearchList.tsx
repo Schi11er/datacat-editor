@@ -125,7 +125,7 @@ export default function SearchList(props: SearchListProps) {
     const handleScrollBasedFetchMore = useCallback(async () => {
         if (!pageInfo?.hasNext || isLoadingMore) return;
         
-        console.log("📦 Loading next batch (20 items)...");
+        console.log("Loading next batch (20 items)...");
         
         try {
             if (isDictionary) {

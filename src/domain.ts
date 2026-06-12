@@ -133,7 +133,7 @@ export const ValueEntity: Entity = {
 };
 
 // export const ObjectTypeEntity: Entity = {
-//   tags: ["b7b1cd0b-b515-4252-a083- bb5d-dee073c8"],
+//   tags: ["b7b1cd0b-b515-4252-a083-bb5d-dee073c8"],
 //   get title() { return tolgee.t("objectType.title"); },
 //   get titlePlural() { return tolgee.t("objectType.titlePlural"); },
 //   recordType: 'Subject',

@@ -1,8 +1,7 @@
 import { useQuery } from "@apollo/client/react";
 import {
     SubjectDetailPropsFragment,
-    GetSubjectEntryDocument,
-    RelationshipRecordType
+    GetSubjectEntryDocument
 } from "../../generated/graphql";
 import { useDeleteEntry } from "../../hooks/useDeleteEntry";
 import { Box, Typography } from "@mui/material";

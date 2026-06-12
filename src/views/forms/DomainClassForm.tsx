@@ -96,7 +96,7 @@ export default function DomainClassForm(
   const relatedPropertyGroups = {
     relId: hasPropertyGroupRelation?.id ?? null,
     targetSubjects: allTargetSubjects,
-    relationshipType: XtdRelationshipKindEnum.XtdInstanceLevel,
+    relationshipType: 'XTD_INSTANCE_LEVEL' as unknown as XtdRelationshipKindEnum,
     name: "hasPropertyGroup"
   };
 

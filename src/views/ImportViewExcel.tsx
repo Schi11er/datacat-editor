@@ -52,6 +52,8 @@ export const IMPORT_TAG_ID = "KATALOG-IMPORT";
 // Define the structure for entity data
 interface EntityData {
   name: string;
+  nameEn?: string;
+  description?: string;
   id: string;
 }
 
@@ -1005,6 +1007,10 @@ export function ImportViewExcel() {
         const sheetName = textFieldValues[`sheetField${index}`] || "";
         const useNameTextField = useTextField[`name${index}`];
         const nameColumnLetter = selectedLetters[`selectName${index}`] || "";
+        const nameEnColumnLetter = selectedLetters[`selectNameEn${index}`] || "";
+        const descriptionColumnLetter = selectedLetters[`selectDescription${index}`] || "";
+        const useNameEnTextField = useTextField[`nameEn${index}`];
+        const useDescriptionTextField = useTextField[`description${index}`];
         const useIdTextField = useTextField[`id${index}`];
         let idColumnLetter = selectedLetters[`selectID${index}`] || "";
 
@@ -1020,6 +1026,8 @@ export function ImportViewExcel() {
           // Verwende den Textfeldwert direkt für den Namen
           const name = textFieldValues[`name${index}`] || "";
           let id = textFieldValues[`id${index}`] || "";
+          const nameEn = useNameEnTextField ? textFieldValues[`nameEn${index}`] || "" : "";
+          const description = useDescriptionTextField ? textFieldValues[`description${index}`] || "" : "";
 
           // Check if we have sequential UUIDs for this entity type
           const hasSequentialUUIDs = sequentialUUIDs[entityLabel] && sequentialUUIDs[entityLabel].length > 0;
@@ -1043,7 +1051,7 @@ export function ImportViewExcel() {
             if (
               !isDuplicate(entityExcelDataTemp[entityLabel], name, id)
             ) {
-              entityExcelDataTemp[entityLabel].push({ name, id });
+              entityExcelDataTemp[entityLabel].push({ name, nameEn, description, id });
             }
           } else {
             console.warn(`Kein gültiger Name für ${entityLabel} gefunden.`);
@@ -1055,9 +1063,52 @@ export function ImportViewExcel() {
           if (hasSequentialUUIDs) {
             // Use sequential UUIDs in order
             console.log(`Using sequential UUIDs for ${entityLabel}:`, sequentialUUIDs[entityLabel]);
+            const nameDetails: { [name: string]: { nameEn?: string; description?: string } } = {};
+            const nameEnText = useNameEnTextField ? textFieldValues[`nameEn${index}`] || "" : "";
+            const descriptionText = useDescriptionTextField ? textFieldValues[`description${index}`] || "" : "";
+
+            if (!useNameEnTextField || !useDescriptionTextField) {
+              if (sheetName && (nameEnColumnLetter || descriptionColumnLetter)) {
+              const sheet = workbook.getWorksheet(sheetName);
+              if (sheet) {
+                const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1;
+                const nameEnColumnIndex = nameEnColumnLetter
+                  ? columnLetterToIndex(nameEnColumnLetter) + 1
+                  : 0;
+                const descriptionColumnIndex = descriptionColumnLetter
+                  ? columnLetterToIndex(descriptionColumnLetter) + 1
+                  : 0;
+
+                sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
+                  if (rowNumber === 1) return;
+                  const name = String(row.getCell(nameColumnIndex).value || "").trim();
+                  if (!name || nameDetails[name]) return;
+
+                  const nameEn = nameEnColumnIndex
+                    ? String(row.getCell(nameEnColumnIndex).value || "").trim()
+                    : "";
+                  const description = descriptionColumnIndex
+                    ? String(row.getCell(descriptionColumnIndex).value || "").trim()
+                    : "";
+
+                  nameDetails[name] = {
+                    nameEn: nameEn || undefined,
+                    description: description || undefined
+                  };
+                });
+              }
+            }
+            }
+
             sequentialUUIDs[entityLabel].forEach(entry => {
               if (!isDuplicate(entityExcelDataTemp[entityLabel], entry.name, entry.uuid)) {
-                entityExcelDataTemp[entityLabel].push({ name: entry.name, id: entry.uuid });
+                const details = nameDetails[entry.name] || {};
+                entityExcelDataTemp[entityLabel].push({
+                  name: entry.name,
+                  nameEn: details.nameEn ?? (nameEnText || undefined),
+                  description: details.description ?? (descriptionText || undefined),
+                  id: entry.uuid
+                });
               }
             });
           } else {
@@ -1078,18 +1129,34 @@ export function ImportViewExcel() {
             }
 
             const nameColumnIndex = columnLetterToIndex(nameColumnLetter) + 1; // ExcelJS ist 1-basiert
+            const nameEnColumnIndex = nameEnColumnLetter
+              ? columnLetterToIndex(nameEnColumnLetter) + 1
+              : 0;
+            const descriptionColumnIndex = descriptionColumnLetter
+              ? columnLetterToIndex(descriptionColumnLetter) + 1
+              : 0;
             const idColumnIndex = columnLetterToIndex(idColumnLetter) + 1;
 
             // Überspringe die Kopfzeile und verarbeite die Daten ab Zeile 2
             sheet.eachRow({ includeEmpty: false }, (row: ExcelJS.Row, rowNumber: number) => {
               if (rowNumber === 1) return; // Kopfzeile überspringen
-              const name = row.getCell(nameColumnIndex).value as string;
+              const name = String(row.getCell(nameColumnIndex).value ?? "").trim();
+              const nameEn = useNameEnTextField
+                ? textFieldValues[`nameEn${index}`] || ""
+                : nameEnColumnIndex
+                  ? String(row.getCell(nameEnColumnIndex).value || "").trim()
+                  : "";
+              const description = useDescriptionTextField
+                ? textFieldValues[`description${index}`] || ""
+                : descriptionColumnIndex
+                  ? String(row.getCell(descriptionColumnIndex).value || "").trim()
+                  : "";
               let id: string;
 
               // Check if ID column is provided
               if (idColumnLetter && idColumnLetter !== "") {
                 // Use provided ID column
-                id = row.getCell(idColumnIndex).value as string;
+                id = String(row.getCell(idColumnIndex).value ?? "").trim();
               } else {
                 // Auto-generate UUID based on name
                 id = getOrCreateUUID(entityLabel, name);
@@ -1102,7 +1169,12 @@ export function ImportViewExcel() {
 
               if (name && id) {
                 if (!isDuplicate(entityExcelDataTemp[entityLabel], name, id)) {
-                  entityExcelDataTemp[entityLabel].push({ name, id });
+                  entityExcelDataTemp[entityLabel].push({
+                    name,
+                    nameEn: nameEn || undefined,
+                    description: description || undefined,
+                    id
+                  });
                 }
               } else {
                 console.warn(
@@ -1479,7 +1551,7 @@ export function ImportViewExcel() {
           return;
         }
         
-        const { name, id } = entity;
+        const { name, nameEn, description, id } = entity;
 
         if (!name) {
           console.warn(`Skipping empty name for ${entityKey}`);
@@ -1491,15 +1563,26 @@ export function ImportViewExcel() {
           setCurrentAction(`Erstelle ${entityKey}: ${name}`);
           console.log(`Creating record "${recordType}" with name: ${name}`);
           
+          const names = [{ languageTag: "de", value: name }];
+          if (nameEn) {
+            names.push({ languageTag: "en", value: nameEn });
+          }
+
+          const properties: any = {
+            id: id,
+            names: names
+          };
+
+          if (entityKey !== "Dictionary" && description) {
+            properties.descriptions = [{ languageTag: "de", value: description }];
+          }
+
           await create({
             variables: {
               input: {
                 catalogEntryType: recordType,
                 tags: tagIds,
-                properties: {
-                  id: id,
-                  names: [{ languageTag: "de", value: name }],
-                },
+                properties: properties,
               },
             },
           });
@@ -1610,7 +1693,8 @@ export function ImportViewExcel() {
           if (relationshipType === 'RelationshipToSubject') {
             properties = {
               relationshipToSubjectProperties: {
-                relationshipType: "XTD_SCHEMA_LEVEL"
+                name: relationKey === 'Rel_Klasse_Merkmalsgruppe' ? 'hasPropertyGroup' : undefined,
+                relationshipType: "XTD_INSTANCE_LEVEL"
               }
             }
           }
@@ -1687,6 +1771,8 @@ export function ImportViewExcel() {
             <StyledHeaderCell><T keyName="import_excel.label" /></StyledHeaderCell>
             <StyledHeaderCell><T keyName="import_excel.sheet" /></StyledHeaderCell>
             <StyledHeaderCell><T keyName="import_excel.name" /></StyledHeaderCell>
+            <StyledHeaderCell>Name (EN)</StyledHeaderCell>
+            <StyledHeaderCell>Description</StyledHeaderCell>
             <StyledHeaderCell><T keyName="import_excel.id" /></StyledHeaderCell>
             <StyledHeaderCell>UUID Generation</StyledHeaderCell>
           </TableRow>
@@ -1740,6 +1826,9 @@ export function ImportViewExcel() {
                       disabled={!checkedRows.entities[index]}
                       size="small"
                     >
+                      <MenuItem value="">
+                        <em>...</em>
+                      </MenuItem>
                       {alphabet.map((letter) => (
                         <MenuItem key={letter} value={letter}>
                           {letter}
@@ -1758,6 +1847,84 @@ export function ImportViewExcel() {
                 </FlexBox>
               </StyledTableCell>
               <StyledTableCell>
+                <FlexBox>
+                  {useTextField[`nameEn${index}`] ? (
+                    <TextField
+                      value={textFieldValues[`nameEn${index}`] || ""}
+                      onChange={(e) => handleTextFieldChange(e, `nameEn${index}`)}
+                      fullWidth
+                      placeholder="Name (EN)"
+                      disabled={!checkedRows.entities[index]}
+                      size="small"
+                    />
+                  ) : (
+                    <FullWidthSelect
+                      value={selectedLetters[`selectNameEn${index}`] || ""}
+                      onChange={(e) => handleSelectChange(e, `selectNameEn${index}`)}
+                      displayEmpty
+                      disabled={!checkedRows.entities[index]}
+                      size="small"
+                    >
+                      <MenuItem value="">
+                        <em>...</em>
+                      </MenuItem>
+                      {alphabet.map((letter) => (
+                        <MenuItem key={letter} value={letter}>
+                          {letter}
+                        </MenuItem>
+                      ))}
+                    </FullWidthSelect>
+                  )}
+                {entity.toggle && index <= 3 && (
+                  <Button
+                    size="small"
+                    onClick={() => handleUseTextFieldToggle(`nameEn${index}`)}
+                  >
+                    {useTextField[`nameEn${index}`] ? "Dropdown" : "Text"}
+                  </Button>
+                )}
+                </FlexBox>
+              </StyledTableCell>
+              <StyledTableCell>
+                <FlexBox>
+                  {useTextField[`description${index}`] ? (
+                    <TextField
+                      value={textFieldValues[`description${index}`] || ""}
+                      onChange={(e) => handleTextFieldChange(e, `description${index}`)}
+                      fullWidth
+                      placeholder="Beschreibung"
+                      disabled={!checkedRows.entities[index]}
+                      size="small"
+                    />
+                  ) : (
+                    <FullWidthSelect
+                      value={selectedLetters[`selectDescription${index}`] || ""}
+                      onChange={(e) => handleSelectChange(e, `selectDescription${index}`)}
+                      displayEmpty
+                      disabled={!checkedRows.entities[index]}
+                      size="small"
+                    >
+                      <MenuItem value="">
+                        <em>...</em>
+                      </MenuItem>
+                      {alphabet.map((letter) => (
+                        <MenuItem key={letter} value={letter}>
+                          {letter}
+                        </MenuItem>
+                      ))}
+                    </FullWidthSelect>
+                  )}
+                  {entity.toggle && index <= 3 && (
+                    <Button
+                      size="small"
+                      onClick={() => handleUseTextFieldToggle(`description${index}`)}
+                    >
+                      {useTextField[`description${index}`] ? "Dropdown" : "Text"}
+                    </Button>
+                  )}
+                </FlexBox>
+              </StyledTableCell>
+              <StyledTableCell>
                 <SelectContainer>
                   {!useTextField[`id${index}`] && (
                     <FullWidthSelect
@@ -1767,6 +1934,9 @@ export function ImportViewExcel() {
                       disabled={entity.toggle ? useTextField[`id${index}`] || !checkedRows.entities[index] : !checkedRows.entities[index]}
                       size="small"
                     >
+                      <MenuItem value="">
+                        <em>...</em>
+                      </MenuItem>
                       {alphabet.map((letter) => (
                         <MenuItem key={letter} value={letter}>
                           {letter}
@@ -1908,7 +2078,7 @@ export function ImportViewExcel() {
                   size="small"
                 >
                   <MenuItem value="">
-                    <em>Auswählen...</em>
+                    <em>...</em>
                   </MenuItem>
                   
                   <ListSubheader sx={{ fontWeight: 'bold', color: 'primary.main' }}>
@@ -1941,7 +2111,7 @@ export function ImportViewExcel() {
                   size="small"
                 >
                   <MenuItem value="">
-                    <em>Auswählen...</em>
+                    <em>...</em>
                   </MenuItem>
                   
                   <ListSubheader sx={{ fontWeight: 'bold', color: 'primary.main' }}>

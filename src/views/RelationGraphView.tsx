@@ -17,7 +17,7 @@ import { SubjectDetailPropsFragment } from '../generated/graphql';
 import { Box, Paper, Typography, IconButton, Collapse, Chip, useTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import { getEntityType } from '../domain';
 import { T, useTranslate } from '@tolgee/react';
 import FormSet, { FormSetTitle } from '../components/forms/FormSet';
@@ -187,6 +187,7 @@ const nodeTypes = {
 
 export type RelationGraphViewProps = {
     entry: SubjectDetailPropsFragment;
+    context?: 'class' | 'dataTemplate';
 };
 
 type RelationData = {
@@ -199,11 +200,70 @@ type RelationData = {
 };
 
 export default function RelationGraphView(props: RelationGraphViewProps) {
-    const { entry } = props;
+    const { entry, context = 'class' } = props;
     const navigate = useNavigate();
     const theme = useTheme();
     const { t } = useTranslate();
     const [expanded, setExpanded] = useState(true);
+
+    // Helper to get context-specific labels
+    const getLabel = (key: string): string => {
+        if (context === 'dataTemplate') {
+            const templateLabels: Record<string, string> = {
+                'superClass': 'dataTemplate.supertemplates',
+                'subClass': 'dataTemplate.subtemplates',
+                'superClass_single': 'dataTemplate.supertemplate_single',
+                'subClass_single': 'dataTemplate.subtemplate_single',
+                'part': 'dataTemplate.parts',
+                'partOf': 'dataTemplate.partof',
+                'other': 'dataTemplate.otherRelations',
+                'incoming': 'class.incoming',
+                'property_groups': 'dataTemplate.property_groups',
+                'graph_title': 'dataTemplate.relation_graph',
+                'relations': 'dataTemplate.relations',
+            };
+            return templateLabels[key] || key;
+        }
+        const classLabels: Record<string, string> = {
+            'superClass': 'class.superclasses',
+            'subClass': 'class.subclasses',
+            'superClass_single': 'class.superclass_single',
+            'subClass_single': 'class.subclass_single',
+            'part': 'class.parts',
+            'partOf': 'class.partof',
+            'other': 'class.otherRelations',
+            'incoming': 'class.incoming',
+            'property_groups': 'class.property_groups',
+            'graph_title': 'class.relation_graph',
+            'relations': 'class.relations',
+        };
+        return classLabels[key] || key;
+    };
+
+    const getLabelKey = (key: string): string => {
+        if (context === 'dataTemplate') {
+            const templateKeys: Record<string, string> = {
+                'superClass': 'dataTemplate.supertemplates',
+                'subClass': 'dataTemplate.subtemplates',
+                'part': 'dataTemplate.parts',
+                'partOf': 'dataTemplate.partof',
+                'other': 'dataTemplate.otherRelations',
+                'property_groups': 'dataTemplate.property_groups',
+                'graph_title': 'dataTemplate.relation_graph',
+            };
+            return templateKeys[key] || `class.${key}`;
+        }
+        const classKeys: Record<string, string> = {
+            'superClass': 'class.superclasses',
+            'subClass': 'class.subclasses',
+            'part': 'class.parts',
+            'partOf': 'class.partof',
+            'other': 'class.otherRelations',
+            'property_groups': 'class.property_groups',
+            'graph_title': 'class.relation_graph',
+        };
+        return classKeys[key] || key;
+    };
 
     // Extract all relations from the entry
     const relations = useMemo((): RelationData[] => {
@@ -573,11 +633,11 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
             <FormSetTitle>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <b><T keyName="class.relation_graph">Beziehungsgraph</T></b>
+                        <b><T keyName={getLabelKey('graph_title')}>{getLabel('graph_title')}</T></b>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Chip 
-                            label={`${relationCounts.total} ${t('class.relations', 'Relationen')}`} 
+                            label={`${relationCounts.total} ${getLabel('relations')}`} 
                             size="small" 
                             variant="outlined" 
                         />
@@ -593,36 +653,36 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 <Box sx={{ display: 'flex', gap: 2, mb: 1, flexWrap: 'wrap' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.superClass, borderRadius: 1 }} />
-                        <Typography variant="caption"><T keyName="class.superclasses">Superklassen</T> ({relationCounts.superClasses})</Typography>
+                        <Typography variant="caption"><T keyName={getLabelKey('superClass')}>{getLabel('superClass')}</T> ({relationCounts.superClasses})</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.subClass, borderRadius: 1 }} />
-                        <Typography variant="caption"><T keyName="class.subclasses">Subklassen</T> ({relationCounts.subClasses})</Typography>
+                        <Typography variant="caption"><T keyName={getLabelKey('subClass')}>{getLabel('subClass')}</T> ({relationCounts.subClasses})</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.part, borderRadius: 1 }} />
-                        <Typography variant="caption"><T keyName="class.parts">Hat Teile</T> ({relationCounts.parts})</Typography>
+                        <Typography variant="caption"><T keyName={getLabelKey('part')}>{getLabel('part')}</T> ({relationCounts.parts})</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.partOf, borderRadius: 1 }} />
-                        <Typography variant="caption"><T keyName="class.partof">Teil von</T> ({relationCounts.partOf})</Typography>
+                        <Typography variant="caption"><T keyName={getLabelKey('partOf')}>{getLabel('partOf')}</T> ({relationCounts.partOf})</Typography>
                     </Box>
                     {relationCounts.others > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.other, borderRadius: 1 }} />
-                            <Typography variant="caption"><T keyName="class.otherRelations">Andere</T> ({relationCounts.others})</Typography>
+                            <Typography variant="caption"><T keyName={getLabelKey('other')}>{getLabel('other')}</T> ({relationCounts.others})</Typography>
                         </Box>
                     )}
                     {relationCounts.othersIncoming > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.otherIncoming, borderRadius: 1 }} />
-                            <Typography variant="caption"><T keyName="class.otherRelations">Andere</T> (<T keyName="class.incoming">eingehend</T>: {relationCounts.othersIncoming})</Typography>
+                            <Typography variant="caption"><T keyName={getLabelKey('other')}>{getLabel('other')}</T> ({getLabel('incoming')}: {relationCounts.othersIncoming})</Typography>
                         </Box>
                     )}
                     {relationCounts.hasPropertyGroups > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.hasPropertyGroup, borderRadius: 1 }} />
-                            <Typography variant="caption"><T keyName="class.property_groups">Merkmalsgruppen</T> ({relationCounts.hasPropertyGroups})</Typography>
+                            <Typography variant="caption"><T keyName={getLabelKey('property_groups')}>{getLabel('property_groups')}</T> ({relationCounts.hasPropertyGroups})</Typography>
                         </Box>
                     )}
                 </Box>

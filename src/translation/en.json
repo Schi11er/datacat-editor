@@ -558,9 +558,27 @@
   "dataTemplate": {
     "title": "Data template",
     "titlePlural": "Data templates",
+    "object_type": "Object type",
     "edit": "Edit data template",
     "loading": "Loading data template...",
-    "delete_success": "Data template deleted."
+    "delete_success": "Data template deleted.",
+    "export_xml_button": "Download XML",
+    "export_xml_success": "XML file downloaded.",
+    "export_xml_error": "Failed to generate XML file.",
+    "relations": "Relations",
+    "supertemplates": "Super data templates",
+    "subtemplates": "Sub data templates",
+    "parts": "Has parts",
+    "partof": "Part of",
+    "otherRelations": "Other",
+    "property_groups": "Property groups",
+    "relation_graph": "Data template relation graph",
+    "add_supertemplate": "Add super data template",
+    "add_subtemplate": "Add sub data template",
+    "add_part": "Add part",
+    "add_partof": "Add parent data template",
+    "copy_properties": "Copy properties and property groups",
+    "copying": "Copying"
   },
   "concept": {
     "title": "Concept",

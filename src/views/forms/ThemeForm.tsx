@@ -63,7 +63,7 @@ const ThemeForm: FC<FormProps<SubjectRelationsMinimalPropsFragment>> = (props) =
     const relatedPropertyGroups = {
         relId: relatedRelations[0]?.id ?? null,
         targetSubjects: allTargetSubjects,
-        relationshipType: XtdRelationshipKindEnum.XtdSchemaLevel
+        relationshipType: 'XTD_SCHEMA_LEVEL' as unknown as XtdRelationshipKindEnum
     };
 
     const relatingRelations = entry.connectingSubjects ?? [];
