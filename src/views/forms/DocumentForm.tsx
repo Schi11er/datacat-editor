@@ -74,6 +74,12 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 refetch={refetch}
             />
 
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+                refetch={refetch}
+            />
+
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions?.[0]?.texts ?? []}
@@ -90,12 +96,6 @@ const DocumentForm = (props: FormProps<ExternalDocumentDetailPropsFragment>) => 
                 id={id}
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
-            />
-
-            <DefinitionFormSet
-                catalogEntryId={id}
-                definitions={entry.definition?.texts ?? []}
-                refetch={refetch}
             />
 
             <ExampleFormSet

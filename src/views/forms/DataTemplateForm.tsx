@@ -301,6 +301,12 @@ export default function DataTemplateForm(
           refetch={refetch}
       />
 
+      <DefinitionFormSet
+        catalogEntryId={id}
+        definitions={entry.definition?.texts ?? []}
+        refetch={refetch}
+      />
+
       <DescriptionFormSet
         catalogEntryId={id}
         descriptions={entry.descriptions?.[0]?.texts ?? []}
@@ -317,12 +323,6 @@ export default function DataTemplateForm(
         id={id}
         majorVersion={entry.majorVersion}
         minorVersion={entry.minorVersion}
-      />
-
-      <DefinitionFormSet
-        catalogEntryId={id}
-        definitions={entry.definition?.texts ?? []}
-        refetch={refetch}
       />
 
       <ExampleFormSet

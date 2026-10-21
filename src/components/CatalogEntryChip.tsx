@@ -10,17 +10,15 @@ const StyledConceptChip = styled(ConceptChip)({
 
 type CatalogEntryChipProps = {
     catalogEntry: CatalogRecord
+    label?: string;
 }
 
 export default function CatalogEntryChip(props: CatalogEntryChipProps) {
     const {
-        catalogEntry: {
-            id,
-            recordType,
-            name,
-            tags
-        }
+        catalogEntry,
+        label
     } = props;
+    const { id, recordType, name, tags = [] } = catalogEntry;
     
     const tagIds = tags.map(tag => tag.id);
     const domainEntityType = getEntityType(recordType, tagIds);
@@ -30,7 +28,7 @@ export default function CatalogEntryChip(props: CatalogEntryChipProps) {
             key={id}
             conceptType={domainEntityType!}
             id={id}
-            label={name ?? id}
+            label={label ?? name ?? id}
             title={name ?? undefined}
         />
     );

@@ -6,10 +6,13 @@ import { CatalogRecord } from "../../types";
 import { styled } from "@mui/material/styles";
 
 // Memoized Chip Component für bessere Performance
-const MemoizedChip = React.memo(({ record }: { record: CatalogRecord }) => (
+const MemoizedChip = React.memo(({ record, showVersion }: { record: CatalogRecord; showVersion: boolean }) => (
     <CatalogEntryChip
         key={record.id}
         catalogEntry={record}
+        label={showVersion && record.name
+            ? `${record.name} (${record.majorVersion ?? 0}.${record.minorVersion ?? 0})`
+            : undefined}
     />
 ));
 
@@ -24,6 +27,7 @@ export type MemberFormSetProps = {
     relatingRecords: CatalogRecord[];
     FormSetProps?: FormSetProps;
     tagged?: string;
+    showVersion?: boolean;
 };
 
 export const sortEntries = (left: CatalogRecord, right: CatalogRecord) => {
@@ -38,7 +42,8 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
         emptyMessage,
         relatingRecords,
         FormSetProps,
-        tagged
+        tagged,
+        showVersion = false
     } = props;
 
     const [displayCount, setDisplayCount] = useState(20);
@@ -90,7 +95,7 @@ export default function RelatingRecordsFormSet(props: MemberFormSetProps) {
                 <>
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                         {displayedRecords.map(record => (
-                            <MemoizedChip key={record.id} record={record} />
+                            <MemoizedChip key={record.id} record={record} showVersion={showVersion} />
                         ))}
                     </Box>
                     

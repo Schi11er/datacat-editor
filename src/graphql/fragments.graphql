@@ -164,9 +164,23 @@ fragment ObjectProps on XtdObject {
   }
   replacedObjects {
     id
+    recordType
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    majorVersion
+    minorVersion
+    tags {
+      ...TagProps
+    }
   }
   replacingObjects {
     id
+    recordType
+    name(input: { languageTags: ["de-DE", "en-US"] })
+    majorVersion
+    minorVersion
+    tags {
+      ...TagProps
+    }
   }
   deprecationExplanation {
     ...TranslationProps

@@ -81,6 +81,12 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                 refetch={refetch}
             />
 
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+                refetch={refetch}
+            />
+
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions?.[0]?.texts ?? []}
@@ -97,12 +103,6 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
                 id={id}
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
-            />
-
-            <DefinitionFormSet
-                catalogEntryId={id}
-                definitions={entry.definition?.texts ?? []}
-                refetch={refetch}
             />
 
             <ExampleFormSet

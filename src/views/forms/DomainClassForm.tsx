@@ -127,6 +127,12 @@ export default function DomainClassForm(
         refetch={refetch}
       />
 
+      <DefinitionFormSet
+        catalogEntryId={id}
+        definitions={entry.definition?.texts ?? []}
+        refetch={refetch}
+      />
+
       <DescriptionFormSet
         catalogEntryId={id}
         descriptions={entry.descriptions?.[0]?.texts ?? []}
@@ -143,12 +149,6 @@ export default function DomainClassForm(
         id={id}
         majorVersion={entry.majorVersion}
         minorVersion={entry.minorVersion}
-      />
-
-      <DefinitionFormSet
-        catalogEntryId={id}
-        definitions={entry.definition?.texts ?? []}
-        refetch={refetch}
       />
 
       <ExampleFormSet
@@ -242,6 +242,20 @@ export default function DomainClassForm(
         title={<span><b><T keyName="theme.titlePlural" /></b><T keyName="class.themes_using_class"></T></span>}
         emptyMessage={<T keyName="class.no_themes_using_class" />}
         relatingRecords={allRelatingSubjects}
+      />
+
+      <RelatingRecordsFormSet
+        title={<span><b><T keyName="class.replaced_objects">Ältere Objekte</T></b></span>}
+        emptyMessage={<T keyName="class.no_replaced_objects">Keine älteren Objekte</T>}
+        relatingRecords={entry.replacedObjects}
+        showVersion
+      />
+
+      <RelatingRecordsFormSet
+        title={<span><b><T keyName="class.replacing_objects">Neuere Objekte</T></b></span>}
+        emptyMessage={<T keyName="class.no_replacing_objects">Keine neueren Objekte</T>}
+        relatingRecords={entry.replacingObjects}
+        showVersion
       />
 
       {/* ==================== KOMPAKTE RELATIONS-ANSICHT ==================== */}

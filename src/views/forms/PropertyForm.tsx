@@ -86,6 +86,12 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 refetch={refetch}
             />
 
+            <DefinitionFormSet
+                catalogEntryId={id}
+                definitions={entry.definition?.texts ?? []}
+                refetch={refetch}
+            />
+
             <DescriptionFormSet
                 catalogEntryId={id}
                 descriptions={entry.descriptions?.[0]?.texts ?? []}
@@ -102,12 +108,6 @@ const PropertyForm = (props: FormProps<PropertyDetailPropsFragment>) => {
                 id={id}
                 majorVersion={entry.majorVersion}
                 minorVersion={entry.minorVersion}
-            />
-
-            <DefinitionFormSet
-                catalogEntryId={id}
-                definitions={entry.definition?.texts ?? []}
-                refetch={refetch}
             />
 
             <ExampleFormSet

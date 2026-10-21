@@ -4,6 +4,8 @@ export type CatalogRecord = {
     id: string;
     recordType?: string;
     name?: string | null;
+  majorVersion?: number;
+  minorVersion?: number;
     comment?: string | null;
     tags?: Array<{ id: string; name: string }>;
 };
