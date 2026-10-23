@@ -252,7 +252,7 @@ export default function InferredPropertiesView(props: InferredPropertiesViewProp
                                     key={property.id}
                                     title={
                                         <Box>
-                                            <Typography variant="caption" display="block">
+                                            <Typography variant="caption" sx={{ display: "block" }}>
                                                 <strong>Geerbt von:</strong>
                                             </Typography>
                                             <Typography variant="caption">

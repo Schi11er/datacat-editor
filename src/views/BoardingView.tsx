@@ -39,7 +39,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -73,8 +73,10 @@ export default function BoardingView() {
           <StyledPaper variant="outlined">
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
+              sx={{
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
               <Typography variant="h4">
                 <PetsIcon />{" "}
@@ -95,7 +97,9 @@ export default function BoardingView() {
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={3}
-          alignItems="stretch"
+          sx={{
+            alignItems: "stretch"
+          }}
         >
           {/* Linke Spalte - IntroPanel */}
           <Box sx={{ flex: 7 }}>

@@ -1,0 +1,27 @@
+{
+  "planHash": "222f1c8c81de5fce48ae9612b3ef8bbc492a8eaf91fa99d51b0cb68e40db4c31",
+  "phase": "baseline",
+  "recordedAtUtc": "2026-10-23T12:05:45.5681340Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": false,
+    "setupDurationMs": 39612,
+    "setupFailureOutput": "setup step 0 \u0027npm\u0027 failed (exit=1, timedOut=False)\r\nnpm error code ERESOLVE\r\nnpm error ERESOLVE unable to resolve dependency tree\r\nnpm error\r\nnpm error While resolving: datacat-editor@2.3\r\nnpm error Found: monaco-editor@0.57.0\r\nnpm error node_modules/monaco-editor\r\nnpm error   dev monaco-editor@\u0022^0.57.0\u0022 from the root project\r\nnpm error\r\nnpm error Could not resolve dependency:\r\nnpm error peer monaco-editor@\u0022\u003E= 0.20.0 \u003C 0.53\u0022 from monaco-graphql@1.9.0\r\nnpm error node_modules/monaco-graphql\r\nnpm error   monaco-graphql@\u0022^1.9.0\u0022 from the root project\r\nnpm error\r\nnpm error Fix the upstream dependency conflict, or retry\r\nnpm error this command with --force or --legacy-peer-deps\r\nnpm error to accept an incorrect (and potentially broken) dependency resolution.\r\nnpm error\r\nnpm error\r\nnpm error For a full report see:\r\nnpm error C:\\Users\\aseni402\\AppData\\Local\\npm-cache\\_logs\\2026-10-23T12_05_10_886Z-eresolve-report.txt\r\nnpm error A complete log of this run can be found in: C:\\Users\\aseni402\\AppData\\Local\\npm-cache\\_logs\\2026-10-23T12_05_10_886Z-debug-0.log\r\n",
+    "assertions": [],
+    "executions": [
+      {
+        "source": "setup[0]",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "ci"
+        ],
+        "cwd": "D:\\03_Git_Projekte\\datacat\\editor_aktuell\\datacat-editor",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}

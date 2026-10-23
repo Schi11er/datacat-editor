@@ -10,7 +10,7 @@ import RelationshipIcon from '@mui/icons-material/SettingsEthernet';
 import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
 import { CatalogRecordType } from "./generated/graphql";
 import UnitIcon from '@mui/icons-material/AcUnit';
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import HelpOutlineIcon from "@mui/icons-material/Help";
 import DictionaryIcon from '@mui/icons-material/ImportContacts';
 import MeasureIcon from '@mui/icons-material/FormatListNumbered';
 

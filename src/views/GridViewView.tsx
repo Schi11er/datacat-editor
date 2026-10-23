@@ -244,12 +244,14 @@ const DataGridToolbar = memo(({
                 placeholder={t("grid_view.search_placeholder") || "Suchen..."}
                 value={searchText}
                 onChange={(e) => onSearchChange(e.target.value)}
-                InputProps={{
+                slotProps={{
+                    input: {
                     startAdornment: (
                         <InputAdornment position="start">
                             <SearchIcon />
                         </InputAdornment>
                     ),
+                    },
                 }}
                 sx={{ minWidth: 250 }}
             />

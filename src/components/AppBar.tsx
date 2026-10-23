@@ -5,7 +5,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MaterialUIAppBar from "@mui/material/AppBar";
 import useAuthContext, { useWriteAccess } from "../hooks/useAuthContext";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from '@mui/icons-material/Error';
 import { Tooltip, Box, Typography } from "@mui/material";
 import { useProfile } from "../providers/ProfileProvider";
 import IconButton from "@mui/material/IconButton";

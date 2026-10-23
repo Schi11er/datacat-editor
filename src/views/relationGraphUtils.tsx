@@ -94,10 +94,10 @@ export const GraphNodeBox: React.FC<GraphNodeBoxProps> = ({ data, children }) =>
         >
             {children}
             <Typography 
-                variant="body2" 
-                fontWeight={data.isCenter ? 600 : 400}
+                variant="body2"     
                 noWrap
-                sx={{ maxWidth: 150 }}
+                sx={{ maxWidth: 150, 
+                    fontWeight: data.isCenter ? 600 : 400 }}
             >
                 {data.label}
             </Typography>

@@ -71,7 +71,7 @@ const ThemeForm: FC<FormProps<SubjectRelationsMinimalPropsFragment>> = (props) =
 
     return (
         <FormView>
-            <Box display="flex" gap={2}>
+            <Box sx={{ display: "flex", gap: 2 }}>
                 <StatusFormSet
                     catalogEntryId={id}
                     status={entry.status}

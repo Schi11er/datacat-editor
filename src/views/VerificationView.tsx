@@ -221,7 +221,7 @@ export function VerificationView() {
       <Typography variant="h6">
         <T keyName="verification.title" />
       </Typography>
-      <Stack direction="column" spacing={1} alignItems="stretch">
+      <Stack direction="column" spacing={1} sx={{ alignItems: "stretch" }}>
         {buttonGroups.map(group => (
           <LeftAlignedButton key={group.key} onClick={() => setSelectButton(group.key)}>
             <T keyName={group.label}>{group.key}</T>
@@ -231,7 +231,7 @@ export function VerificationView() {
       <Typography variant="h6" sx={{ mt: 2 }}>
         <T keyName="verification.category_title" />
       </Typography>
-      <Stack direction="column" spacing={1} alignItems="stretch">
+      <Stack direction="column" spacing={1} sx={{ alignItems: "stretch" }}>
         {Object.entries(verificationQueries)
           .filter(([_, cfg]) => cfg.buttonGroup === selectButton)
           .map(([cat, cfg]) => (

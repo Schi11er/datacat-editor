@@ -135,7 +135,7 @@ export default function ItemRow(props: ItemRowComponentProps) {
         <Tooltip title={item.name ?? ""} arrow>
           <StyledListItemText
             primary={item.name}
-            primaryTypographyProps={{
+            sx={{
               style: { fontStyle: item.name ? "italic" : undefined },
             }}
           />

@@ -242,21 +242,28 @@ export default function DataTemplateForm(
             }}
             isOptionEqualToValue={(o, v) => o.id === v.id}
             noOptionsText={searchValue.length < 2 ? <T keyName="search.min_chars">Mindestens 2 Zeichen eingeben</T> : <T keyName="search.no_results">Keine Ergebnisse</T>}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder={`${t('search.search')}...`}
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  )
-                }}
-              />
-            )}
+            renderInput={(params) => {
+              const { slotProps, ...textFieldParams } = params;
+              const inputSlotProps = slotProps?.input;
+              return (
+                <TextField
+                  {...textFieldParams}
+                  placeholder={`${t('search.search')}...`}
+                  slotProps={{
+                    ...slotProps,
+                    input: {
+                      ...inputSlotProps,
+                      endAdornment: (
+                        <>
+                          {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                          {inputSlotProps?.endAdornment}
+                        </>
+                      )
+                    }
+                  }}
+                />
+              );
+            }}
           />
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

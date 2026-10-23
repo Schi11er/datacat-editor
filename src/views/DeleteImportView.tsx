@@ -276,7 +276,7 @@ export function DeleteImportView() {
       const allRecordIds = await fetchAllRecordIds();
       const recordIds = selectAllPages
         ? allRecordIds.filter((id) => !excludedRecordIds.has(id))
-        : Array.from(selectedRows.ids).filter((id) => allRecordIds.includes(id));
+        : Array.from(selectedRows.ids).filter((id) => allRecordIds.includes(String(id)));
 
       if (recordIds.length === 0) {
         enqueueSnackbar(t("delete_import.no_entries_selected"), {
@@ -413,7 +413,7 @@ export function DeleteImportView() {
       </Typography>
 
       <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} sx={{ alignItems: "center" }}>
           <Grid>
             <FormControl fullWidth sx={{ minWidth: 240 }}>
               <InputLabel id="importTag-label">
@@ -462,15 +462,15 @@ export function DeleteImportView() {
           </Box>
         )}
 
-        {output && <Box mt={2}>{output}</Box>}
+        {output && <Box sx={{ mt: 2 }}>{output}</Box>}
 
         {records.length > 0 && (
-          <Box mt={3}>
+          <Box sx={{ mt: 3 }}>
             <Typography variant="h6" gutterBottom>
               <T keyName="delete_import_view.entries_to_delete" />
               {` (${getDeleteCount()} / ${totalElements})`}
             </Typography>
-            <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
               Alle Einträge mit diesem Tag sind ausgewählt, auch Einträge auf nicht geladenen Seiten.
             </Typography>
 

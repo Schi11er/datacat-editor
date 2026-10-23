@@ -151,7 +151,7 @@ const TagView: React.FC = () => {
             variant="outlined"
             value={newTagName}
             onChange={(e) => setNewTagName(e.target.value)}
-            InputLabelProps={{ shrink: true }}
+            slotProps={{ inputLabel: { shrink: true } }}
           />
         </StyledFormControl>
         <StyledButton

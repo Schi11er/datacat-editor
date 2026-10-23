@@ -2560,7 +2560,7 @@ export function ImportViewExcel() {
         value={progress} 
         color={importAborted ? "error" : "primary"}
       />
-      <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
+      <Stack direction="row"  sx={{ mt: 1, justifyContent: "space-between" }}>
         <Typography variant="body2" color={importAborted ? "error" : "inherit"}>
           {currentAction || status}
         </Typography>
@@ -2568,7 +2568,7 @@ export function ImportViewExcel() {
       </Stack>
       
       {isImporting && (
-        <Stack direction="row" spacing={2} sx={{ mt: 2 }} alignItems="center">
+        <Stack direction="row" spacing={2} sx={{ mt: 2, alignItems: "center" }} >
           <Typography variant="caption" color="text.secondary">
             ⏱️ Gestartet: {importStartTime?.toLocaleTimeString()}
           </Typography>
@@ -2597,7 +2597,7 @@ export function ImportViewExcel() {
             <Typography variant="h6" gutterBottom>
               Zusammenfassung
             </Typography>
-            <Typography variant="body2" paragraph>
+            <Typography variant="body2" sx={{ mb: 2 }}>
               Gesamtanzahl zu importierender Elemente: <strong>{previewData.totalItems}</strong>
             </Typography>
             
@@ -2646,7 +2646,7 @@ export function ImportViewExcel() {
   return (
     <View heading={<T keyName="import_excel.heading" />}>
       <Box>
-        <Typography variant="body1" paragraph>
+        <Typography variant="body1" sx={{ mb: 2 }}>
           <T keyName="import_excel.description" />
         </Typography>
 

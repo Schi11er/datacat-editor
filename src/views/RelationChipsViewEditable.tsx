@@ -420,7 +420,7 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                         <Box sx={{ color, display: 'flex', alignItems: 'center' }}>
                             {icon}
                         </Box>
-                        <Typography variant="subtitle2" fontWeight={600}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                             {title}
                         </Typography>
                         <Chip 
@@ -607,14 +607,16 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                                     label={<T keyName="relation.type">Relationstyp</T>}
                                     placeholder="z.B. 'dependsOn', 'pointsTo'..."
                                     helperText={<T keyName="relation.type_helper">Wählen Sie einen bestehenden Relationstyp oder geben Sie einen neuen ein</T>}
-                                    InputProps={{
-                                        ...params.InputProps,
+                                    slotProps={{
+                                        input: {
+                                        ...params.slotProps?.input,
                                         endAdornment: (
                                             <>
                                                 {relationshipTypesLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                {params.InputProps.endAdornment}
+                                                {params.slotProps?.input?.endAdornment}
                                             </>
                                         ),
+                                        },
                                     }}
                                 />
                             )}
@@ -654,14 +656,16 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                                 {...params}
                                 label={<T keyName={config.searchLabelKey}>{config.searchPlaceholder}</T>}
                                 placeholder={selectedItems.length === 0 ? `${config.searchPlaceholder}...` : "Weitere suchen..."}
-                                InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <>
-                                            {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                            {params.InputProps.endAdornment}
-                                        </>
-                                    ),
+                                slotProps={{
+                                    input: {
+                                        ...params.slotProps?.input,
+                                        endAdornment: (
+                                            <>
+                                                {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                {params.slotProps?.input?.endAdornment}
+                                            </>
+                                        ),
+                                    },
                                 }}
                             />
                         )}
@@ -670,10 +674,10 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
                                 <Typography>{option.name}</Typography>
                             </li>
                         )}
-                        renderTags={(value, getTagProps) =>
+                        renderValue={(value, getItemProps) =>
                             value.map((option, index) => (
                                 <Chip
-                                    {...getTagProps({ index })}
+                                    {...getItemProps({ index })}
                                     key={option.id}
                                     label={option.name}
                                     size="small"

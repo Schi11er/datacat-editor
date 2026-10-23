@@ -36,6 +36,7 @@ import FormSet, { FormSetTitle } from "../../components/forms/FormSet";
 import { useNavigate } from "react-router-dom";
 import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 import InferredPropertiesView from "../InferredPropertiesView";
+import IfcReferenceForm from "../../components/forms/IfcReferenceForm";
 
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
@@ -110,7 +111,7 @@ export default function DomainClassForm(
 
   return (
     <FormView>
-      <Box display="flex" gap={2}>
+      <Box sx={{ display: "flex", gap: 2 }}>
         <StatusFormSet
           catalogEntryId={id}
           status={entry.status}
@@ -156,6 +157,8 @@ export default function DomainClassForm(
         examples={entry.examples?.[0]?.texts ?? []}
         refetch={refetch}
       />
+
+      <IfcReferenceForm />
 
       <FormSet>
         <FormSetTitle>

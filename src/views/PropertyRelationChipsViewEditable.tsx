@@ -292,7 +292,7 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                                 {icon}
                             </Box>
                         </Tooltip>
-                        <Typography variant="subtitle2" fontWeight={600}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                             {title}
                         </Typography>
                         <Chip 
@@ -453,14 +453,16 @@ export default function PropertyRelationChipsViewEditable(props: PropertyRelatio
                                 placeholder={t('search.start_typing', 'Beginnen Sie zu tippen...')}
                                 variant="outlined"
                                 fullWidth
-                                InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <>
-                                            {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                            {params.InputProps.endAdornment}
-                                        </>
-                                    ),
+                                slotProps={{
+                                    input: {
+                                        ...params.slotProps?.input,
+                                        endAdornment: (
+                                            <>
+                                                {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                {params.slotProps?.input?.endAdornment}
+                                            </>
+                                        ),
+                                    },
                                 }}
                             />
                         )}

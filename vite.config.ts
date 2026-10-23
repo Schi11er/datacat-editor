@@ -87,11 +87,9 @@ export default defineConfig(({ mode }) => ({
     },
   },
   resolve: {
-    alias: [
-      { find: '@', replacement: resolve(__dirname, 'src') },
-    ],
+    alias: [{ find: '@', replacement: resolve(__dirname, 'src') }],
     // Ensure single instance of Monaco
-    dedupe: ['graphql', 'react', 'react-dom'],
+    dedupe: ['graphql', 'react', 'react-dom', 'monaco-editor', 'monaco-graphql'],
   },
   optimizeDeps: {
     include: [
@@ -102,15 +100,11 @@ export default defineConfig(({ mode }) => ({
       '@apollo/client',
       'react-router-dom',
       'graphiql',
-      'nullthrows',
       '@graphiql/react',
+      'nullthrows',
       'graphql',
     ],
-    exclude: [
-      // Don't pre-bundle Monaco - let plugin handle it
-      'monaco-editor',
-      'monaco-graphql',
-    ],
+    exclude: [],
     esbuildOptions: {
       plugins: [],
     },

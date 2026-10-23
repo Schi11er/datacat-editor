@@ -66,7 +66,7 @@ const ValueForm: FC<FormProps<ValueDetailPropsFragment>> = (props) => {
 
     return (
         <FormView>
-            <Box display="flex" gap={2}>
+            <Box sx={{ display: "flex", gap: 2 }}>
                 <StatusFormSet
                     catalogEntryId={id}
                     status={entry.status}

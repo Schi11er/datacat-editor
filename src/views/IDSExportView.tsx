@@ -1189,7 +1189,7 @@ export const IDSExportView: React.FC = () => {
 
   return (
     <Container>
-      <Box mb={3}>
+      <Box sx={{ mb: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           <T keyName="ids_export.title">Information Delivery Specification</T>
         </Typography>
@@ -1261,27 +1261,21 @@ export const IDSExportView: React.FC = () => {
               placeholder={t("ids_export.placeholders.ifc_versions_select")}
             />
           )}
-          renderTags={(value, getTagProps) =>
+          renderValue={(value, getItemProps) =>
             value.map((option, index) => {
-              const { key, ...tagProps } = getTagProps({ index });
+              const { key, ...itemProps } = getItemProps({ index });
               return (
                 <Chip
                   key={key}
                   label={option}
-                  {...tagProps}
-                  onDelete={() => {
-                    const newVersions = ifcVersions.filter(v => v !== option);
-                    setIfcVersions(newVersions);
-                  }}
+                  size="small"
+                  variant="filled"
+                  color="primary"
+                  {...itemProps}
                 />
               );
             })
           }
-          ChipProps={{
-            size: "small",
-            variant: "filled",
-            color: "primary"
-          }}
         />
       </Box>
 
@@ -1457,27 +1451,21 @@ export const IDSExportView: React.FC = () => {
                       placeholder={t("ids_export.placeholders.ifc_classes_search")}
                     />
                   )}
-                  renderTags={(value, getTagProps) =>
+                  renderValue={(value, getItemProps) =>
                     value.map((option, index) => {
-                      const { key, ...tagProps } = getTagProps({ index });
+                      const { key, ...itemProps } = getItemProps({ index });
                       return (
                         <Chip
                           key={key}
                           label={option}
-                          {...tagProps}
-                          onDelete={() => {
-                            const newClasses = ifcClasses.filter(c => c !== option);
-                            setIfcClasses(newClasses);
-                          }}
+                          size="small"
+                          variant="filled"
+                          color="secondary"
+                          {...itemProps}
                         />
                       );
                     })
                   }
-                  ChipProps={{
-                    size: "small",
-                    variant: "filled",
-                    color: "secondary"
-                  }}
                   filterOptions={(options, { inputValue }) => {
                     return options.filter(option =>
                       option.toLowerCase().includes(inputValue.toLowerCase())

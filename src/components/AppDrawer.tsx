@@ -108,8 +108,8 @@ export const AppDrawerItem: FunctionComponent<
             inset={!icon} 
             primary={primary} 
             secondary={secondary}
-            primaryTypographyProps={{
-              sx: { 
+            sx={{
+              '& .MuiListItemText-primary': {
                 fontWeight: isActive ? 'bold' : 'normal',
                 color: isActive ? 'primary.main' : 'inherit'
               }
