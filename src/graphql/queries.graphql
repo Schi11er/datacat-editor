@@ -676,6 +676,7 @@ query GetSubjectEntry($id: ID!) {
       targetSubjects {
         id
         name(input: { languageTags: ["de", "en"] })
+        referenceUri
         tags {
           id
           name

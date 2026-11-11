@@ -38,6 +38,8 @@ import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 import InferredPropertiesView from "../InferredPropertiesView";
 import IfcReferenceForm from "../../components/forms/IfcReferenceForm";
 
+const IFC_REFERENCE_TAG = "e7c376e9-da92-4cd9-9b28-7ae8086834fb";
+
 export default function DomainClassForm(
   props: FormProps<SubjectDetailPropsFragment>
 ) {
@@ -89,6 +91,30 @@ export default function DomainClassForm(
   };
 
   const relatedRelations = entry.connectedSubjects ?? [];
+  const ifcReferenceRelations = relatedRelations.filter(
+    (rel) =>
+      rel.relationshipType?.name === "hasReference",
+  );
+  const ifcReferences = Array.from(
+    new Map(
+      ifcReferenceRelations
+        .flatMap((relation) => relation.targetSubjects)
+        .filter(
+          (subject) =>
+            subject.referenceUri &&
+            subject.tags.some((tag) => tag.id === IFC_REFERENCE_TAG),
+        )
+        .map((subject) => [
+          subject.id,
+          {
+            id: subject.id,
+            uri: subject.referenceUri as string,
+            code: (subject.name ?? subject.referenceUri) as string,
+          },
+        ]),
+    ).values(),
+  );
+
   // Filter nur hasPropertyGroup Relationen
   const hasPropertyGroupRelation = relatedRelations.find(rel => 
     (rel as any).relationshipType?.name === "hasPropertyGroup"
@@ -158,7 +184,11 @@ export default function DomainClassForm(
         refetch={refetch}
       />
 
-      <IfcReferenceForm />
+      <IfcReferenceForm
+        catalogEntryId={id}
+        references={ifcReferences}
+        onChange={handleOnUpdate}
+      />
 
       <FormSet>
         <FormSetTitle>

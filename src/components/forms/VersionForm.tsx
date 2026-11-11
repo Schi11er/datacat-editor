@@ -79,8 +79,10 @@ const VersionForm = (props: VersionFormProps) => {
               error={!!fieldState.error}
               type="number"
               fullWidth
-              InputProps={{
-                onFocus: !isEditMode ? onEdit : undefined,
+              slotProps={{
+                input: {
+                  onFocus: !isEditMode ? onEdit : undefined,
+                },
               }}
               {...defaultFormFieldOptions}
             />
@@ -100,9 +102,11 @@ const VersionForm = (props: VersionFormProps) => {
               error={!!fieldState.error}
               type="number"
               fullWidth
-              InputProps={{
-                readOnly: !isEditMode,
-                onFocus: !isEditMode ? onEdit : undefined,
+              slotProps={{
+                input: {
+                  readOnly: !isEditMode,
+                  onFocus: !isEditMode ? onEdit : undefined,
+                },
               }}
               {...defaultFormFieldOptions}
             />

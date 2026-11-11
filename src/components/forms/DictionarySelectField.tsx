@@ -1,13 +1,15 @@
 import React, { FC, useState } from "react";
 import { Autocomplete } from "@mui/material";
 import { useQuery } from "@apollo/client/react";
-import { DictionaryPropsFragment, Maybe, FindDictionariesDocument } from "../../generated/graphql";
+import { DictionaryPropsFragment, FindDictionariesDocument } from "../../generated/graphql";
 import { TextField, TextFieldProps } from "@mui/material";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
 
+type DictionaryOption = Pick<DictionaryPropsFragment, "id" | "name" | "tags">;
+
 type DictionarySelectFieldProps = {
-    onChange(value: Maybe<DictionaryPropsFragment>): void,
+    onChange(value: DictionaryOption | null): void,
     TextFieldProps: TextFieldProps
 }
 
@@ -34,7 +36,7 @@ const DictionarySelectField: FC<DictionarySelectFieldProps> = (props) => {
 
     const defaultDictionary = options[0];
 
-    const [selectedDictionary, setSelectedDictionary] = useState<Maybe<DictionaryPropsFragment> | null>(null);
+    const [selectedDictionary, setSelectedDictionary] = useState<DictionaryOption | null>(null);
 
     React.useEffect(() => {
         if (!selectedDictionary && defaultDictionary) {
@@ -44,7 +46,7 @@ const DictionarySelectField: FC<DictionarySelectFieldProps> = (props) => {
     }, [defaultDictionary]);
 
     return (
-        <Autocomplete
+        <Autocomplete<DictionaryOption, false, false, false>
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
@@ -62,17 +64,23 @@ const DictionarySelectField: FC<DictionarySelectFieldProps> = (props) => {
             loading={loading}
             renderInput={(params) => (
                 <TextField
-                    {...params}
+                    id={params.id}
+                    disabled={params.disabled}
+                    fullWidth={params.fullWidth}
+                    size={params.size}
                     {...defaultFormFieldOptions}
                     {...TextFieldProps}
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                        ),
+                    slotProps={{
+                        input: {
+                            ...params.slotProps.input,
+                            endAdornment: (
+                                <React.Fragment>
+                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.slotProps.input.endAdornment}
+                                </React.Fragment>
+                            ),
+                        },
+                        htmlInput: params.slotProps.htmlInput,
                     }}
                 />
             )}

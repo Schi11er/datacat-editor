@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { FindCountriesDocument, CountryDetailPropsFragment } from '../generated/graphql';
+import { FindCountriesDocument, FindCountriesQuery } from '../generated/graphql';
+
+type CountryOption = FindCountriesQuery['findCountries']['nodes'][number];
 
 interface UseCountryDataProps {
     preload?: boolean;
@@ -66,7 +68,7 @@ export const useCountryData = (props: UseCountryDataProps = {}) => {
         const popularCodes = ['DE', 'US', 'GB', 'FR', 'IT', 'ES', 'NL', 'AT', 'CH'];
         return popularCodes
             .map(code => countries.find(country => country.code === code))
-            .filter(Boolean) as CountryDetailPropsFragment[];
+            .filter((country): country is CountryOption => Boolean(country));
     }, [countries]);
 
     return {

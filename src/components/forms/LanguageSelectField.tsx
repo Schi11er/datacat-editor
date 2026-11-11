@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Autocomplete } from "@mui/material";
 import { useQuery } from "@apollo/client/react";
-import { LanguagePropsFragment, Maybe, FindLanguagesDocument } from "../../generated/graphql";
+import { LanguagePropsFragment, FindLanguagesDocument } from "../../generated/graphql";
 import { TextField, TextFieldProps } from "@mui/material";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,7 +10,7 @@ type LanguageSelectFieldProps = {
     filter?: string[],
     multiple?: boolean,
     autoSelectGerman?: boolean, // Neuer Prop für automatische deutsche Auswahl
-    onChange(value: Maybe<LanguagePropsFragment> | Maybe<LanguagePropsFragment[]>): void,
+    onChange(value: LanguagePropsFragment | LanguagePropsFragment[]): void,
     TextFieldProps: TextFieldProps
 }
 
@@ -42,7 +42,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
     const defaultLanguage = options.find(opt => opt.code === "de");
     
     // Nur für Single-Select mit autoSelectGerman einen State verwenden
-    const [selectedValue, setSelectedValue] = useState<Maybe<LanguagePropsFragment> | null>(null);
+    const [selectedValue, setSelectedValue] = useState<LanguagePropsFragment | null>(null);
     const [hasAutoSelected, setHasAutoSelected] = useState(false);
 
     // Automatische deutsche Auswahl nur für Single-Select und wenn explizit gewünscht
@@ -85,14 +85,16 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
                         {...params}
                         {...defaultFormFieldOptions}
                         {...TextFieldProps}
-                        InputProps={{
-                            ...params.InputProps,
+                        slotProps={{
+                            input: {
+                            ...params.slotProps?.input,
                             endAdornment: (
                                 <React.Fragment>
                                     {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                    {params.InputProps.endAdornment}
+                                    {params.slotProps?.input?.endAdornment}
                                 </React.Fragment>
                             ),
+                        },
                         }}
                     />
                 )}
@@ -109,7 +111,7 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
             onClose={() => setOpen(false)}
             value={selectedValue}
             onChange={(event, newValue) => {
-                setSelectedValue(newValue as Maybe<LanguagePropsFragment>);
+                setSelectedValue(newValue as LanguagePropsFragment | null);
                 onChange(newValue);
             }}
             isOptionEqualToValue={(option, value) => {
@@ -134,14 +136,17 @@ const LanguageSelectField: FC<LanguageSelectFieldProps> = (props) => {
                     {...params}
                     {...defaultFormFieldOptions}
                     {...TextFieldProps}
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                        ),
+                    slotProps={{
+                        ...params.slotProps,
+                        input: {
+                            ...params.slotProps?.input,
+                            endAdornment: (
+                                <React.Fragment>
+                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.slotProps?.input?.endAdornment}
+                                </React.Fragment>
+                            ),
+                        },
                     }}
                 />
             )}

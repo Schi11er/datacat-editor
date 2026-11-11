@@ -205,7 +205,7 @@ export default function PagedRelatingRecordsFormSet(props: PagedRelatingRecordsF
                     
                     {/* Pagination Controls */}
                     {totalPages > 1 && (
-                        <Stack spacing={2} alignItems="center">
+                        <Stack spacing={2} sx={{ alignItems: 'center'}}>
                             {/* Material-UI Pagination Component */}
                             <Pagination
                                 count={totalPages}

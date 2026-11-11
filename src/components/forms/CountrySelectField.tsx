@@ -1,27 +1,32 @@
 import React, { FC, useState, useMemo, useCallback } from "react";
 import { Autocomplete } from "@mui/material";
 import { useQuery } from "@apollo/client/react";
-import { CountryDetailPropsFragment, Maybe, FindCountriesDocument } from "../../generated/graphql";
+import {
+    FindCountriesDocument,
+    FindCountriesQuery,
+} from "../../generated/graphql";
 import { TextField, TextFieldProps } from "@mui/material";
 import { defaultFormFieldOptions } from "../../hooks/useFormStyles";
 import CircularProgress from "@mui/material/CircularProgress";
 import useDebounce from "../../hooks/useDebounce";
 
+type CountryOption = FindCountriesQuery["findCountries"]["nodes"][number];
+
 type CountrySelectFieldProps = {
     filter?: string[],
-    onChange(value: Maybe<CountryDetailPropsFragment>): void,
+    onChange(value: CountryOption | null): void,
     TextFieldProps: TextFieldProps,
     // Neue optionale Props für erweiterte Features
     preloadData?: boolean,
     showPopularCountries?: boolean,
     debounceDelay?: number,
     // Optionaler initialer Wert
-    initialValue?: Maybe<CountryDetailPropsFragment>,
+    initialValue?: CountryOption | null,
     // Optionales Deaktivieren des Auto-Default
     autoSelectDefault?: boolean
 }
 
-const sortByName = ({ code: a }: CountryDetailPropsFragment, { code: b }: CountryDetailPropsFragment) => {
+const sortByName = ({ code: a }: { code: string }, { code: b }: { code: string }) => {
     return a.localeCompare(b);
 };
 
@@ -45,48 +50,30 @@ const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
     // Debounce search query to reduce API calls
     const debouncedQuery = useDebounce(query, debounceDelay);
     
-    // Preload query - lädt alle Länder beim ersten Laden
-    const { 
-        data: preloadData_result, 
-        loading: preloadLoading 
-    } = useQuery(FindCountriesDocument, {
-        variables: {
-            input: { query: '', pageSize: 250 }
-        },
-        fetchPolicy: 'cache-first',
-        skip: !preloadData,
-        notifyOnNetworkStatusChange: false
-    });
-
-    // Search query - für gefilterte Suche
-    const { 
-        data: searchData, 
-        loading: searchLoading 
+    const {
+        data,
+        loading,
     } = useQuery(FindCountriesDocument, {
         variables: {
             input: { query: debouncedQuery, pageSize: 250 }
         },
-        fetchPolicy: 'cache-first',
+        fetchPolicy: 'cache-and-network',
         nextFetchPolicy: 'cache-first',
         notifyOnNetworkStatusChange: false,
-        skip: debouncedQuery.length > 0 && debouncedQuery.length < 2
+        skip: !preloadData && debouncedQuery.length === 0,
     });
-
-    // Bestimme welche Daten verwendet werden sollen
-    const activeData = (debouncedQuery && debouncedQuery.length >= 2) ? searchData : preloadData_result;
-    const loading = (debouncedQuery && debouncedQuery.length >= 2) ? searchLoading : preloadLoading;
 
     // Memoize options to prevent unnecessary re-renders
     const options = useMemo(() => {
-        return [...(activeData?.findCountries?.nodes || [])].sort(sortByName);
-    }, [activeData?.findCountries?.nodes]);
-    
+        const countries = data?.findCountries?.nodes ?? [];
+        return [...countries].sort(sortByName);
+    }, [data?.findCountries?.nodes]);
     // Find popular countries if enabled
     const popularCountries = useMemo(() => {
         if (!showPopularCountries) return [];
         return POPULAR_COUNTRY_CODES
             .map(code => options.find(country => country.code === code))
-            .filter(Boolean) as CountryDetailPropsFragment[];
+            .filter((country): country is NonNullable<typeof country> => Boolean(country));
     }, [options, showPopularCountries]);
     
     // Group options: popular countries first, then all others
@@ -107,7 +94,7 @@ const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
         return options.find(opt => opt.code === "DE");
     }, [options]);
 
-    const [selectedCountry, setSelectedCountry] = useState<Maybe<CountryDetailPropsFragment> | null>(initialValue);
+    const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(initialValue);
     const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
     React.useEffect(() => {
@@ -127,26 +114,37 @@ const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
     }, []);
 
     // Memoize change handler
-    const handleChange = useCallback((event: any, value: Maybe<CountryDetailPropsFragment>) => {
+    const handleChange = useCallback((event: any, value: CountryOption | null) => {
         setHasUserInteracted(true); // Markiere als User-Interaktion
         setSelectedCountry(value);
         onChange(value);
     }, [onChange]);
 
     return (
-        <Autocomplete
+        <Autocomplete<CountryOption, false, false, false>
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
             value={selectedCountry}
             onChange={handleChange}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            getOptionLabel={(option) => `${option.name} (${option.code})`}
+            getOptionLabel={(option) => {
+                const name =
+                    typeof option.name === "string" && option.name.length > 0
+                        ? option.name
+                        : option.code;
+                return `${name} (${option.code})`;
+            }}
             onInputChange={handleInputChange}
             filterSelectedOptions={false}
             filterOptions={(options) => options} // Let backend handle filtering
             options={groupedOptions}
             loading={loading}
+            renderOption={(props, option) => (
+                <li {...props} key={option.id}>
+                    {`${option.name || option.code} (${option.code})`}
+                </li>
+            )}
             // Performance optimizations
             disableListWrap
             blurOnSelect
@@ -157,23 +155,30 @@ const CountrySelectField: FC<CountrySelectFieldProps> = (props) => {
                 const isPopular = popularCountries.some(popular => popular.id === option.id);
                 return isPopular ? 'Häufig verwendet' : 'Alle Länder';
             } : undefined}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    {...defaultFormFieldOptions}
-                    {...TextFieldProps}
-                    helperText={preloadData && preloadData_result ? 'Länder vorgeladen' : TextFieldProps.helperText}
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                        ),
-                    }}
-                />
-            )}
+            renderInput={(params) => {
+                return (
+                    <TextField
+                        id={params.id}
+                        disabled={params.disabled}
+                        fullWidth={params.fullWidth}
+                        size={params.size}
+                        {...defaultFormFieldOptions}
+                        {...TextFieldProps}
+                        slotProps={{
+                            input: {
+                                ...params.slotProps.input,
+                                endAdornment: (
+                                    <React.Fragment>
+                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                        {params.slotProps.input.endAdornment}
+                                    </React.Fragment>
+                                ),
+                            },
+                            htmlInput: params.slotProps.htmlInput,
+                        }}
+                    />
+                );
+            }}
         />
     );
 }

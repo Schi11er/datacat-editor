@@ -100,7 +100,7 @@ export default function TranslationFormSet(props: TranslationFormSetProps) {
                 {translationForms.length ? (
                     translationForms
                 ): (
-                    <Box key="no-translation" width="100%">
+                    <Box key="no-translation" sx={{ width: '100%' }} >
                         <Typography
                             variant="body2"
                             color="textSecondary"

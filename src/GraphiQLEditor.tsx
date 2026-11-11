@@ -5,8 +5,8 @@ import useGraphiQLFetcher from "./hooks/useGraphiQLFetcher";
 // Import GraphiQL CSS
 import "graphiql/style.css";
 
-// Import for side effects: registers the GraphQL language mode
-import "monaco-graphql/lite";
+// Import for side effects: registers the graphql language mode
+import 'monaco-graphql/esm/lite';
 
 /**
  * GraphiQL Editor with Monaco support

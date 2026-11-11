@@ -1,6 +1,7 @@
 import React from "react";
-import {Maybe} from "../generated/graphql";
 import useLocalStorage from "../hooks/useLocalStorage";
+
+type Maybe<T> = T | null;
 
 export type JwtToken = string;
 

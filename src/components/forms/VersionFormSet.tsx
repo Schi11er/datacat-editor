@@ -3,7 +3,6 @@ import FormSet, { FormSetDescription, FormSetTitle } from "./FormSet";
 import React, { FC } from "react";
 import { useMutation } from "@apollo/client/react";
 import {
-  Maybe,
   UpdateMajorVersionDocument,
   UpdateMinorVersionDocument,
   UpdateMajorVersionInput,
@@ -15,8 +14,8 @@ import { T } from "@tolgee/react";
 
 type VersionFormSetProps = {
   id: string;
-  majorVersion?: Maybe<number>;
-  minorVersion?: Maybe<number>;
+  majorVersion?: number | null;
+  minorVersion?: number | null;
 };
 
 // Replace makeStyles with styled component

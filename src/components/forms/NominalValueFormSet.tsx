@@ -114,9 +114,7 @@ const NominalValueForm = (props: NominalValueFormProps) => {
                 label={<T keyName="value.nominalValue" />}
                 error={!!fieldState.error}
                 fullWidth
-                InputProps={{
-                  onFocus: !isEditMode ? onEdit : undefined,
-                }}
+                onFocus={!isEditMode ? onEdit : undefined}
                 {...defaultFormFieldOptions}
               />
             )}
