@@ -454,6 +454,7 @@
     "partof": "Teil Von",
     "otherRelations": "Andere Beziehungen",
     "relation_graph": "Beziehungsgraph",
+    "relation": "Beziehung(en)",
     "add_superclass": "Superklasse hinzufügen",
     "add_subclass": "Subklasse hinzufügen",
     "add_part": "Teil hinzufügen",

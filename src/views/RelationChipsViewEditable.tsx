@@ -208,8 +208,8 @@ export default function RelationChipsViewEditable(props: RelationChipsViewEditab
             const relationName = rel.relationshipType?.name;
             if (!relationName) return;
             
-            // Skip hasPropertyGroup relations
-            if (relationName === 'hasPropertyGroup') return;
+            // Skip hasPropertyGroup and hasReference relations
+            if (relationName === 'hasPropertyGroup' || relationName === 'hasReference') return;
             
             ((rel as any).targetSubjects ?? []).forEach((target: any) => {
                 const data: RelationData = {

@@ -235,7 +235,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
             'incoming': 'class.incoming',
             'property_groups': 'class.property_groups',
             'graph_title': 'class.relation_graph',
-            'relations': 'class.relations',
+            'relations': 'class.relation',
         };
         return classLabels[key] || key;
     };
@@ -637,7 +637,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Chip 
-                            label={`${relationCounts.total} ${getLabel('relations')}`} 
+                            label={`${relationCounts.total} ${t(getLabel('relations'))}`} 
                             size="small" 
                             variant="outlined" 
                         />
@@ -676,7 +676,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                     {relationCounts.othersIncoming > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <Box sx={{ width: 20, height: 3, backgroundColor: RELATION_COLORS.otherIncoming, borderRadius: 1 }} />
-                            <Typography variant="caption"><T keyName={getLabelKey('other')}>{getLabel('other')}</T> ({getLabel('incoming')}: {relationCounts.othersIncoming})</Typography>
+                            <Typography variant="caption"><T keyName={getLabelKey('other')}>{getLabel('other')}</T> (<T keyName={getLabel('incoming')}/>: {relationCounts.othersIncoming})</Typography>
                         </Box>
                     )}
                     {relationCounts.hasPropertyGroups > 0 && (
