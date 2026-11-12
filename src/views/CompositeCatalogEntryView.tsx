@@ -97,11 +97,6 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
     setTotalCount(count);
   }, []);
 
-  const handleItemCountChange = useCallback((count: number) => {
-    // Use filtered item count instead of total DB count for display
-    setTotalCount(count);
-  }, []);
-
   return (
     <Stack 
       direction={{ xs: 'column', md: 'row' }}
@@ -145,7 +140,6 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
               showDictionaryFilter={showDictionaryFilter}
               selectedDictionaryId={selectedDictionaryId}
               onDictionaryFilterChange={handleDictionaryFilterChange}
-              onItemCountChange={handleItemCountChange}
               onTotalCountChange={handleTotalCountChange}
             />
           </Box>
@@ -193,4 +187,3 @@ const CompositeCatalogEntryView = (props: CompositeCatalogEntryViewProps) => {
 };
 
 export default CompositeCatalogEntryView;
-

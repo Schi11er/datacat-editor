@@ -3,6 +3,7 @@
 export type CatalogRecord = {
     id: string;
     recordType?: string;
+    status?: "XTD_ACTIVE" | "XTD_INACTIVE" | null;
     name?: string | null;
   majorVersion?: number;
   minorVersion?: number;

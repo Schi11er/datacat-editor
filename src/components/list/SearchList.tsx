@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client/react";
-import { CatalogRecordType, SearchInput, FindItemDocument, FindDictionariesDocument } from "../../generated/graphql";
+import { CatalogRecordType, SearchInput, FindItemDocument, FindDictionariesDocument, XtdStatusOfActivationEnum } from "../../generated/graphql";
 import { NetworkStatus } from "@apollo/client";
 import useDebounce from "../../hooks/useDebounce";
 import ItemList, { ItemListProps } from "./ItemList";
@@ -7,7 +7,7 @@ import { T } from "@tolgee/react";
 import { Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField, InputAdornment, IconButton } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { useMemo, useEffect, useCallback, useRef } from "react";
+import { useMemo, useEffect, useCallback, useRef, useState } from "react";
 import React from "react";
 
 // Type für react-window v2.x onRowsRendered callback
@@ -29,7 +29,6 @@ type SearchListProps = Omit<ItemListProps, "items"> & {
     showDictionaryFilter?: boolean;
     selectedDictionaryId?: string | null;
     onDictionaryFilterChange?: (dictionaryId: string | null) => void;
-    onItemCountChange?: (count: number) => void;
     onTotalCountChange?: (totalCount: number) => void;
 };
 
@@ -45,7 +44,6 @@ export default function SearchList(props: SearchListProps) {
         showDictionaryFilter = false,
         selectedDictionaryId = null,
         onDictionaryFilterChange,
-        onItemCountChange,
         onTotalCountChange,
         onSearch,
         height,
@@ -54,6 +52,7 @@ export default function SearchList(props: SearchListProps) {
     } = props;
     
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const [selectedStatus, setSelectedStatus] = useState<XtdStatusOfActivationEnum | null>(null);
     
     // Stabilize the search callback to prevent endless re-renders
     const stableOnSearch = useCallback((term: string) => {
@@ -67,6 +66,10 @@ export default function SearchList(props: SearchListProps) {
     }), [searchInput, debouncedSearchTerm]);
 
     const isDictionary = searchInput?.entityTypeIn?.includes('Dictionary');
+
+    useEffect(() => {
+        setSelectedStatus(null);
+    }, [searchInput]);
     
     // Load available Dictionaries for filter dropdown ONLY when needed
     const { data: dictionariesData } = useQuery(FindDictionariesDocument, {
@@ -186,6 +189,7 @@ export default function SearchList(props: SearchListProps) {
 
     // Check if dictionary filter is active
     const isDictionaryFilterActive = shouldShowDictionaryFilter && selectedDictionaryId !== null;
+    const isStatusFilterActive = shouldShowDictionaryFilter && selectedStatus !== null;
 
     // Map items with proper name formatting and apply dictionary filter
     const mappedItems = useMemo(() => {
@@ -209,24 +213,35 @@ export default function SearchList(props: SearchListProps) {
             }
         }
 
-        return processedItems;
-    }, [items, isDictionaryFilterActive, selectedDictionaryId]);
-
-    // Update counts when data changes
-    useEffect(() => {
-        if (onItemCountChange) {
-            onItemCountChange(mappedItems.length);
+        if (isStatusFilterActive) {
+            processedItems = processedItems.filter(item => item.status === selectedStatus);
         }
-    }, [mappedItems.length, onItemCountChange]);
-    
+
+        return processedItems;
+    }, [items, isDictionaryFilterActive, selectedDictionaryId, isStatusFilterActive, selectedStatus]);
+
+    // Keep the displayed count based on the server total, not the currently loaded page.
     useEffect(() => {
         if (onTotalCountChange && data) {
-            const totalCount = isDictionary 
+            if (isDictionaryFilterActive || isStatusFilterActive) {
+                // Local filters can only count records that have been loaded so far.
+                onTotalCountChange(mappedItems.length);
+                return;
+            }
+
+            const totalCount = isDictionary
                 ? data.findDictionaries?.totalElements ?? 0
                 : data.search?.totalElements ?? 0;
             onTotalCountChange(totalCount);
         }
-    }, [data, isDictionary, onTotalCountChange]);
+    }, [
+        data,
+        isDictionary,
+        isDictionaryFilterActive,
+        isStatusFilterActive,
+        mappedItems.length,
+        onTotalCountChange,
+    ]);
 
     // Intersection Observer für echte Scroll-Erkennung
     const observerTarget = useRef<HTMLDivElement>(null);
@@ -282,7 +297,7 @@ export default function SearchList(props: SearchListProps) {
             minHeight: 0 // Wichtig für flex overflow
         }}>
             {shouldShowDictionaryFilter && (
-                <Box sx={{ mb: 1, flexShrink: 0 }}>
+                <Box sx={{ mb: 1, flexShrink: 0, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <FormControl size="small" sx={{ minWidth: 200 }}>
                         <InputLabel><T keyName="dictionary.filter_label">Filter by Dictionary</T></InputLabel>
                         <Select
@@ -305,6 +320,27 @@ export default function SearchList(props: SearchListProps) {
                             ))}
                         </Select>
                     </FormControl>
+                    <FormControl size="small" sx={{ minWidth: 160 }}>
+                        <InputLabel><T keyName="status.filter_label">Filter by Status</T></InputLabel>
+                        <Select
+                            value={selectedStatus || ""}
+                            onChange={(event: SelectChangeEvent<string>) => {
+                                const value = event.target.value;
+                                setSelectedStatus(value === "" ? null : value as XtdStatusOfActivationEnum);
+                            }}
+                            label={<T keyName="status.filter_label">Filter by Status</T>}
+                        >
+                            <MenuItem value="">
+                                <em><T keyName="status.all_items">All Items</T></em>
+                            </MenuItem>
+                            <MenuItem value="XTD_ACTIVE">
+                                <T keyName="status.active">Active</T>
+                            </MenuItem>
+                            <MenuItem value="XTD_INACTIVE">
+                                <T keyName="status.inactive">Inactive</T>
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
                 </Box>
             )}
             
@@ -316,7 +352,8 @@ export default function SearchList(props: SearchListProps) {
                     label={searchLabel || <T keyName="search.search_placeholder"/>}
                     value={searchTerm}
                     onChange={(e) => stableOnSearch(e.target.value)}
-                    InputProps={{
+                    slotProps={{
+                        input: {
                         startAdornment: (
                             <InputAdornment position="start">
                                 <SearchIcon/>
@@ -333,7 +370,8 @@ export default function SearchList(props: SearchListProps) {
                                 </IconButton>
                             </InputAdornment>
                         )
-                    }}
+                    }
+                }}   
                 />
             </Box>
 

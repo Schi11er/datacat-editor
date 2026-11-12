@@ -95,6 +95,7 @@ fragment SearchResultProps on XtdObject {
   __typename
   id
   recordType
+  status
   name(input: { languageTags: ["de-DE", "en-US"] })
   names {
     ...TranslationProps

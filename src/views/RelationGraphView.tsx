@@ -398,6 +398,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -426,6 +427,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -455,6 +457,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -484,6 +487,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -513,6 +517,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -542,6 +547,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -571,6 +577,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
                 data: { 
                     label: rel.name,
                     isCenter: false,
+                    relationId: rel.id,
                     recordType: rel.recordType,
                     tags: rel.tags,
                 },
@@ -598,13 +605,7 @@ export default function RelationGraphView(props: RelationGraphViewProps) {
     // Handle node click for navigation
     const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
         if (node.id !== entry.id && node.data) {
-            // Find the relation data for this node
-            const relation = relations.find(r => 
-                r.id === node.id || 
-                `other-${r.id}` === node.id.split('-').slice(0, 2).join('-') ||
-                `other-in-${r.id}` === node.id.split('-').slice(0, 3).join('-') ||
-                `prop-group-${r.id}` === node.id.split('-').slice(0, 3).join('-')
-            );
+            const relation = relations.find(r => r.id === node.data.relationId);
             if (relation) {
                 const definition = getEntityType(relation.recordType, relation.tags.map(t => t.id));
                 navigate(`/${definition.path}/${relation.id}`);

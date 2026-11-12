@@ -101,12 +101,13 @@ export default function ItemList(props: ItemListProps) {
                         value={searchTerm}
                         onChange={(e) => onSearch(e.target.value)}
                         sx={{ mb: 1, flexShrink: 0 }}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon/>
-                                </InputAdornment>
-                            ),
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon/>
+                                    </InputAdornment>
+                                ),
                             endAdornment: searchTerm && (
                                 <InputAdornment position="end">
                                     <IconButton
@@ -118,6 +119,7 @@ export default function ItemList(props: ItemListProps) {
                                     </IconButton>
                                 </InputAdornment>
                             )
+                        }
                         }}
                     />
                 )}
@@ -156,7 +158,8 @@ export default function ItemList(props: ItemListProps) {
                     value={searchTerm}
                     onChange={(e) => onSearch(e.target.value)}
                     sx={{ mb: 1 }} // Margin unten für besseres Layout
-                    InputProps={{
+                    slotProps={{
+                        input: {
                         startAdornment: (
                             <InputAdornment position="start">
                                 <SearchIcon/>
@@ -173,6 +176,7 @@ export default function ItemList(props: ItemListProps) {
                                 </IconButton>
                             </InputAdornment>
                         )
+                        }
                     }}
                 />
             )}

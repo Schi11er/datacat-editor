@@ -61,6 +61,7 @@ export const renderSimpleHandles = () => (
 export type GraphNodeData = {
     label: string;
     isCenter: boolean;
+    relationId?: string;
     recordType?: string;
     tags?: Array<{ id: string }>;
 };
