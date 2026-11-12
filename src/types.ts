@@ -12,7 +12,7 @@ export type CatalogRecord = {
 };
 
 // Runtime Environment Configuration Types
-export interface RuntimeEnvironmentConfig {
+interface RuntimeEnvironmentConfig {
   MINIO_ENDPOINT: string;
   MINIO_PORT: string;
   MINIO_USE_SSL: string;

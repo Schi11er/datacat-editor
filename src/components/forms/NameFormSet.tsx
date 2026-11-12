@@ -18,7 +18,7 @@ const StyledFormSetDescription = styled(FormSetDescription)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-export type NameFormSetProps = {
+type NameFormSetProps = {
   catalogEntryId: string;
   names: TextPropsFragment[];
   refetch: () => Promise<any>;

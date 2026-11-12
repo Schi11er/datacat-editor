@@ -15,12 +15,12 @@ const StyledForm = styled('form')(({ theme }) => ({
 }));
 
 // Define default form field options
-export const defaultFormFieldOptions = {
+const defaultFormFieldOptions = {
   fullWidth: true,
   variant: "outlined" as const,
 };
 
-export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export type ProfileFormValues = {
   firstName: string;

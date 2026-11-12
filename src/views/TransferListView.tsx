@@ -32,19 +32,13 @@ export type TransferListViewProps = {
     onDelete?(): void;
 };
 
-// Replace makeStyles with styled components
-const TitleContainer = styled('div')({
-    display: "flex",
-    alignContent: "space-between"
-});
-
 const ButtonRow = styled('div')(({ theme }) => ({
     display: "flex",
     justifyContent: "end",
     marginTop: theme.spacing(1)
 }));
 
-export const sortItems = (a: CatalogRecord, b: CatalogRecord) => {
+const sortItems = (a: CatalogRecord, b: CatalogRecord) => {
     const x = a.name ?? a.id;
     const y = b.name ?? b.id;
     return x.localeCompare(y);

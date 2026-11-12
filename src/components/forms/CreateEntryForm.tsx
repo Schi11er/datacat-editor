@@ -67,7 +67,7 @@ const baseOptions = [
   { value: "XTD_TEN", label: "10" }
 ];
 
-export type CreateEntryFormProps = {
+type CreateEntryFormProps = {
   defaultValues: CreateEntryFormValues;
   onSubmit(values: CreateEntryFormValues): void;
   entityType: Entity;

@@ -21,7 +21,7 @@ const StyledListItemText = styled(ListItemText)({
   textOverflow: "ellipsis",
 });
 
-export type ItemRowProps = {
+type ItemRowProps = {
   items: CatalogRecord[];
   disabledItems: string[];
   showRecordIcons: boolean;

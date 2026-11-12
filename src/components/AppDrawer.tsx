@@ -59,7 +59,7 @@ type AppDrawerItemProps = {
 };
 
 // Enhanced AppDrawerItem with active state handling
-export const AppDrawerItem: FunctionComponent<
+const AppDrawerItem: FunctionComponent<
   AppDrawerItemProps & ListItemProps
 > = (props) => {
   const {

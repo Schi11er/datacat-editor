@@ -47,7 +47,7 @@ import { T, useTranslate } from '@tolgee/react';
 // Typ für Tag-Ergebnisse
 type TagResult = { id: string; name: string };
 
-export const IMPORT_TAG_ID = "KATALOG-IMPORT";
+const IMPORT_TAG_ID = "KATALOG-IMPORT";
 
 // Define the structure for entity data
 interface EntityData {

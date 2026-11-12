@@ -6,27 +6,22 @@ import PropertyGroupIcon from "@mui/icons-material/AccountTree";
 import { SvgIconComponent } from "@mui/icons-material";
 import PropertyIcon from "@mui/icons-material/Palette";
 import ValueIcon from "@mui/icons-material/LocalOffer";
-import RelationshipIcon from '@mui/icons-material/SettingsEthernet';
 import DataTemplateIcon from '@mui/icons-material/DynamicFeed';
 import { CatalogRecordType } from "./generated/graphql";
 import UnitIcon from '@mui/icons-material/AcUnit';
-import HelpOutlineIcon from "@mui/icons-material/Help";
 import DictionaryIcon from '@mui/icons-material/ImportContacts';
 import MeasureIcon from '@mui/icons-material/FormatListNumbered';
 
 
 export {
-  DataTemplateIcon,
   DomainClassIcon,
   ThemeIcon,
   MeasureIcon,
   PropertyGroupIcon,
   PropertyIcon,
   ReferenceDocumentIcon,
-  RelationshipIcon,
   UnitIcon,
   ValueIcon,
-  HelpOutlineIcon,
   DictionaryIcon
 };
 

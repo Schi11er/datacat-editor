@@ -53,8 +53,6 @@ import { AttributeRequirement } from "../components/requirements/AttributeRequir
 import { ClassificationRequirement } from "../components/requirements/ClassificationRequirement";
 import { useIDSData } from "../hooks/useIDSData";
 import { useIDSUtilities } from "../hooks/useIDSUtilities";
-import { DATA_TYPE_OPTIONS } from "../constants/idsConstants";
-
 
 const Container = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -63,7 +61,25 @@ const Container = styled(Paper)(({ theme }) => ({
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
 }));
 
-export const IDSExportView: React.FC = () => {
+const DATA_TYPE_OPTIONS = [
+  "IFCBOOLEAN",
+  "IFCINTEGER", 
+  "IFCNUMBER",
+  "IFCLABEL",
+  "IFCTEXT",
+  "IFCDATE",
+  "IFCTIME",
+  "IFCDATETIME",
+  "IFCIDENTIFIER",
+  "IFCREAL",
+  "IFCPOSITIVELENGTHMEASURE",
+  "IFCLENGTHMEASURE",
+  "IFCAREAMEASURE",
+  "IFCVOLUMEMEASURE",
+  "IFCPLANEANGLEMEASURE",
+];
+
+  const IDSExportView: React.FC = () => {
   const { profile } = useProfile();
   const { t } = useTranslate();
 

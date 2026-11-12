@@ -22,7 +22,7 @@ import { styled } from "@mui/material/styles";
 // Typ für Tag-Ergebnisse
 type TagResult = { id: string; name: string };
 
-export const IMPORT_TAG_ID = "KATALOG-IMPORT";
+const IMPORT_TAG_ID = "KATALOG-IMPORT";
 type entity = {
   id: string;
   typ: string;

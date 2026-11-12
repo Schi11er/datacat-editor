@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { getEntityType } from "../domain";
 import { T } from "@tolgee/react";
 
-export type ValueProps = {
+type ValueProps = {
     order: number;
     orderedValue: CatalogRecord;
 };

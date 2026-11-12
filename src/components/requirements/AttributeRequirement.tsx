@@ -85,7 +85,11 @@ export const AttributeRequirement: React.FC<AttributeRequirementProps> = ({
           }
           fullWidth
           sx={{ mb: 1 }}
-          InputProps={{ readOnly: true }}
+          slotProps={{
+            input: {
+              readOnly: true
+            }
+          }}
         />
       )}
       

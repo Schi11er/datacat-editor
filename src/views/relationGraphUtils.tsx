@@ -3,13 +3,13 @@ import { Position, Handle } from '@xyflow/react';
 import { Box, Typography, useTheme } from '@mui/material';
 
 // Node dimensions (approximate)
-export const NODE_WIDTH = 150;  // Approximate width of a node
-export const CENTER_NODE_HALF_WIDTH = 75; // Half width of center node (for spacing calculation)
+const NODE_WIDTH = 150;  // Approximate width of a node
+const CENTER_NODE_HALF_WIDTH = 75; // Half width of center node (for spacing calculation)
 
 /**
  * Helper to estimate text width in pixels (approximate)
  */
-export const estimateTextWidth = (text: string, fontSize: number = 10): number => {
+const estimateTextWidth = (text: string, fontSize: number = 10): number => {
     // Average character width is approximately 0.6 * fontSize for most fonts
     return text.length * fontSize * 0.6;
 };

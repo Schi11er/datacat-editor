@@ -118,7 +118,10 @@ const EXCLUDED_TAGS = [
     "Maßeinheit",
     "Werteliste",
     "Merkmalsgruppe",
-    "Referenzdokument"
+    "Referenzdokument",
+    "Objekttyp",
+    "Datenvorlage",
+    "IFC"
 ] as const;
 
 // Replace makeStyles with styled components

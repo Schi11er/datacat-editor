@@ -1,10 +1,3 @@
-/**
- * DomainClassForm - Formular für Domänenklassen
- * 
- * Zeigt die Relationen als kompakte Chips in Kacheln an.
- * Für die Legacy-Version mit TransferList-Ansichten siehe deprecated/DomainClassFormLegacy.tsx
- */
-
 import { useQuery } from "@apollo/client/react";
 import {
   XtdRelationshipKindEnum,

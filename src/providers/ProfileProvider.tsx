@@ -9,7 +9,7 @@ type ProfileContextState = {
     profile?: UserProfileFragment
 }
 
-export const ProfileContext = React.createContext<ProfileContextState>({loading: false});
+const ProfileContext = React.createContext<ProfileContextState>({loading: false});
 
 export function useProfile() {
     return useContext(ProfileContext);

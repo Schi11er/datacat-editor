@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { ItemPropsFragment } from "../generated/graphql";
 
-export type PropertyTreeRootNode = {
+type PropertyTreeRootNode = {
     children: PropertyTreeNode[]
 }
 
-export type PropertyTreeNode = {
+type PropertyTreeNode = {
     id: string;
     nodeId: string;
     data: ItemPropsFragment;

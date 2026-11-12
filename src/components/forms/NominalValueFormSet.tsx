@@ -33,7 +33,7 @@ type NominalValueFormValues = {
   nominalValue: string;
 };
 
-export type NominalValueFormProps = {
+type NominalValueFormProps = {
   catalogEntryId: string;
   nominalValue?: string;
   refetch: () => Promise<any>;

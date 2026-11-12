@@ -344,14 +344,14 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
                   helperText={allPropertiesLoading ? "Lade Merkmale..." : `${allProperties.length} Merkmale verfügbar`}
                 />
               )}
-              renderTags={(value, getTagProps) =>
+              renderValue={(value, getItemProps) =>
                 value.map((option: any, index: number) => {
-                  const { key, onDelete, ...otherTagProps } = getTagProps({ index });
+                  const { key, ...otherItemProps } = getItemProps({ index });
                   return (
                     <Chip
                       key={key}
                       label={option.name}
-                      {...otherTagProps}
+                      {...otherItemProps}
                       onDelete={() => handleRemoveProperty(option)}
                       deleteIcon={<CloseIcon />}
                       color="primary"
@@ -408,7 +408,7 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
                           </span>
                         )}
                       </Typography>
-                      <Autocomplete
+                      <Autocomplete<any, true, false, false>
                         multiple
                         options={allAvailableValues}
                         getOptionLabel={(option: any) => option.name}
@@ -435,9 +435,9 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
                             placeholder={t("create_property_set.placeholders.select_values_from_datacat")}
                           />
                         )}
-                        renderTags={(value, getTagProps) =>
+                        renderValue={(value, getItemProps) =>
                           value.map((option: any, index: number) => {
-                            const { key, onDelete, ...otherTagProps } = getTagProps({ index });
+                            const { key, onDelete, ...otherTagProps } = getItemProps({ index });
                             const isPropertySpecific = propertySpecificValues.some(pv => pv.name === option.name);
                             return (
                               <Chip
@@ -575,4 +575,3 @@ export const CreatePropertySetDialog: React.FC<CreatePropertySetDialogProps> = (
   );
 };
 
-export default CreatePropertySetDialog;

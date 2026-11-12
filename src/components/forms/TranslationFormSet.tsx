@@ -47,7 +47,7 @@ export type TranslationFormSetProps = {
     TextFieldProps?: TextFieldProps;
 };
 
-export const sortByLanguage = ({language: a}: TextPropsFragment, {language: b}: TextPropsFragment) => {
+const sortByLanguage = ({language: a}: TextPropsFragment, {language: b}: TextPropsFragment) => {
     return a.code.localeCompare(b.code);
 };
 

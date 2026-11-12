@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { analyzer } from 'vite-bundle-analyzer';
 import { resolve } from 'path';
-import monacoEditorPlugin from 'vite-plugin-monaco-editor';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const monacoEditorPlugin = require('vite-plugin-monaco-editor').default;
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -88,7 +91,7 @@ export default defineConfig(({ mode }) => ({
   },
   resolve: {
     alias: [
-      { find: '@', replacement: resolve(__dirname, 'src') },
+      { find: '@', replacement: resolve(import.meta.dirname, 'src') },
     ],
     // Ensure single instance of Monaco
     dedupe: ['graphql', 'react', 'react-dom'],
@@ -111,7 +114,7 @@ export default defineConfig(({ mode }) => ({
       'monaco-editor',
       'monaco-graphql',
     ],
-    esbuildOptions: {
+    rolldownOptions: {
       plugins: [],
     },
   },

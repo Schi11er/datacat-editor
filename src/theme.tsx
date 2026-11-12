@@ -6,9 +6,3 @@ import { darkTheme } from './themes/darkTheme';
 export const getTheme = (darkMode: boolean): Theme => {
   return darkMode ? darkTheme : lightTheme;
 };
-
-// Export individual themes
-export { lightTheme, darkTheme };
-
-// Default export for backward compatibility
-export default lightTheme;

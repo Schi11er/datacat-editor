@@ -10,7 +10,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --only=production=false
 
 # Copy source files
-COPY tsconfig.json vite.config.ts index.html ./
+COPY tsconfig.json vite.config.mjs index.html ./
 COPY src ./src
 COPY public ./public
 

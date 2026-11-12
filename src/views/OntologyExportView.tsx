@@ -220,7 +220,7 @@ export const OntologyExportView: React.FC = () => {
   );
 };
 
-export function createConcept(concept: SearchResultPropsFragment | SubjectWithPropsAndListsPropsFragment | ValueListWithValuesPropsFragment, type: string, lang?: string): [DataFactory.NamedNode] {
+function createConcept(concept: SearchResultPropsFragment | SubjectWithPropsAndListsPropsFragment | ValueListWithValuesPropsFragment, type: string, lang?: string): [DataFactory.NamedNode] {
   var name = formText(concept.name || "");
   if (lang === "en")
     concept.names.forEach((n) => {

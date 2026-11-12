@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { getEntityType } from "../domain";
 import { T } from "@tolgee/react";
 
-export type RelationshipProps = {
+type RelationshipProps = {
     relId: string;
     targetSubjects: CatalogRecord[];
     relationshipType: XtdRelationshipKindEnum;

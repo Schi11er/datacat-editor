@@ -36,7 +36,7 @@ export type TranslationFormValues = {
     text: string;
 };
 
-export type TranslationFormProps = {
+type TranslationFormProps = {
     translation: TextPropsFragment;
     onSubmit(values: TranslationFormValues): void;
     onDelete?(): void;
