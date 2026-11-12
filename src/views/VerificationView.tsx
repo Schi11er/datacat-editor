@@ -92,6 +92,98 @@ const LeftAlignedButton = styled(ButtonComponent)(({ theme }) => ({
   textAlign: 'left',
 }));
 
+type VerificationQueryProps = {
+  document: any;
+  dataPath: string;
+  onSelect: (concept: ObjectPropsFragment) => void;
+};
+
+function GenericVerificationQuery({ document, dataPath, onSelect }: VerificationQueryProps) {
+  const pageSize = 20;
+  const { loading, error, data, fetchMore } = useQuery(document, { variables: { pageNumber: 0, pageSize } });
+  const [allItems, setAllItems] = React.useState<ObjectPropsFragment[]>([]);
+  const [lastPage, setLastPage] = React.useState<number>(-1);
+  const isFetchingMore = React.useRef(false);
+  const items: ObjectPropsFragment[] = (data?.[dataPath]?.nodes ?? []).slice().sort((a: { name: string; }, b: { name: any; }) => {
+    if (!a.name || !b.name) return 0;
+    return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+  });
+  const pageInfo = data?.[dataPath]?.pageInfo;
+  const totalElements = data?.[dataPath]?.totalElements ?? 0;
+
+  React.useEffect(() => {
+    if (!pageInfo) return;
+    if (pageInfo.pageNumber === 0) {
+      setAllItems(items);
+      setLastPage(0);
+    } else if (pageInfo.pageNumber > lastPage) {
+      setAllItems(prev => {
+        const existingIds = new Set(prev.map(item => item.id));
+        const newUniqueItems = items.filter(item => !existingIds.has(item.id));
+        return [...prev, ...newUniqueItems];
+      });
+      setLastPage(pageInfo.pageNumber);
+    }
+  }, [data]);
+
+  const handleScroll = async (visibleRows: OnRowsRenderedProps['visibleRows']) => {
+    const { stopIndex } = visibleRows;
+    if (
+      isFetchingMore.current ||
+      loading ||
+      !pageInfo?.hasNext ||
+      stopIndex < allItems.length - 5
+    ) {
+      return;
+    }
+
+    isFetchingMore.current = true;
+    try {
+      await fetchMore({
+        variables: { pageSize, pageNumber: pageInfo.pageNumber + 1 },
+        updateQuery: (prev: any, { fetchMoreResult }: { fetchMoreResult?: any }) => {
+          if (!fetchMoreResult) return prev;
+          const prevNodes = prev[dataPath].nodes;
+          const newNodes = fetchMoreResult[dataPath].nodes;
+          const allNodes = [
+            ...prevNodes,
+            ...newNodes.filter((item: any) => !prevNodes.some((p: any) => p.id === item.id))
+          ];
+          return {
+            ...fetchMoreResult,
+            [dataPath]: {
+              ...fetchMoreResult[dataPath],
+              nodes: allNodes,
+              pageInfo: fetchMoreResult[dataPath].pageInfo
+            }
+          };
+        }
+      });
+    } finally {
+      isFetchingMore.current = false;
+    }
+  };
+
+  if (loading && !data) return <LinearProgress />;
+  if (error) return <p><T keyName="verification.error" /></p>;
+  if (!loading && allItems.length === 0) return <p><T keyName="verification.no_data" /></p>;
+  return (
+    <Box>
+      <Typography variant="body2" sx={{ mb: 1 }}>
+        <T keyName="verification.total_count" />: {totalElements}
+      </Typography>
+      <ItemList
+        loading={loading && allItems.length > 0}
+        items={allItems}
+        searchLabel={<T keyName="search.search_placeholder" />}
+        onItemsRendered={handleScroll}
+        height={Math.min(totalElements * 40, 600)}
+        onSelect={onSelect}
+      />
+    </Box>
+  );
+}
+
 const verificationQueries = {
   "Themen ohne Klasse": {
     document: FindThemeWithoutSubjectTreeDocument,
@@ -344,97 +436,6 @@ export function VerificationView() {
       </>
     );
   };
-
-  type VerificationQueryProps = {
-    document: any;
-    dataPath: string;
-    onSelect: (concept: ObjectPropsFragment) => void;
-  };
-
-  function GenericVerificationQuery({ document, dataPath, onSelect }: VerificationQueryProps) {
-    const pageSize = 20;
-    const { loading, error, data, fetchMore } = useQuery(document, { variables: { pageNumber: 0, pageSize } });
-
-    // Lokaler State für alle geladenen Items
-    const [allItems, setAllItems] = React.useState<ObjectPropsFragment[]>([]);
-    const [lastPage, setLastPage] = React.useState<number>(-1);
-
-    // Items aus aktueller Page holen
-    const items: ObjectPropsFragment[] = (data?.[dataPath]?.nodes ?? []).slice().sort((a: { name: string; }, b: { name: any; }) => {
-      if (!a.name || !b.name) return 0;
-      return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
-    });
-    const pageInfo = data?.[dataPath]?.pageInfo;
-    const totalElements = data?.[dataPath]?.totalElements ?? 0;
-
-    // Items im State zusammenführen, wenn neue Daten kommen
-    React.useEffect(() => {
-      if (!pageInfo) return;
-      if (pageInfo.pageNumber === 0) {
-        setAllItems(items);
-        setLastPage(0);
-      } else if (pageInfo.pageNumber > lastPage) {
-        // Duplikate anhand der ID herausfiltern
-        setAllItems(prev => {
-          const existingIds = new Set(prev.map(item => item.id));
-          const newUniqueItems = items.filter(item => !existingIds.has(item.id));
-          return [...prev, ...newUniqueItems];
-        });
-        setLastPage(pageInfo.pageNumber);
-      }
-    }, [data]);
-
-    const handleScroll = async (visibleRows: OnRowsRenderedProps['visibleRows'], allRows: OnRowsRenderedProps['allRows']) => {
-      const { stopIndex } = visibleRows;
-      if (pageInfo?.hasNext && stopIndex >= allItems.length - 5) {
-        await fetchMore({
-          variables: {
-            pageSize,
-            pageNumber: pageInfo.pageNumber + 1
-          },
-          updateQuery: (prev: any, { fetchMoreResult }: { fetchMoreResult?: any }) => {
-            if (!fetchMoreResult) return prev;
-            const prevNodes = prev[dataPath].nodes;
-            const newNodes = fetchMoreResult[dataPath].nodes;
-            // Nur eindeutige Items (nach id)
-            const allNodes = [
-              ...prevNodes,
-              ...newNodes.filter((item: any) => !prevNodes.some((p: any) => p.id === item.id))
-            ];
-            return {
-              ...fetchMoreResult,
-              [dataPath]: {
-                ...fetchMoreResult[dataPath],
-                nodes: allNodes,
-                pageInfo: fetchMoreResult[dataPath].pageInfo
-              }
-            };
-          }
-        });
-      }
-    }
-console.log(totalElements, " Total Elements");
-    if (loading && pageInfo?.pageNumber === 0) return <LinearProgress />;
-    if (error) return <p><T keyName="verification.error" /></p>;
-    if (!loading && (!allItems || allItems.length === 0)) {
-      return <p><T keyName="verification.no_data" /></p>;
-    }
-    return (
-      <Box>
-        <Typography variant="body2" sx={{ mb: 1 }}>
-          <T keyName="verification.total_count" />: {totalElements}
-        </Typography>
-        <ItemList
-          loading={loading}
-          items={allItems}
-          searchLabel={<T keyName="search.search_placeholder" />}
-          onItemsRendered={handleScroll}
-          height={Math.min(totalElements * 40, 600)}
-          onSelect={onSelect}
-        />
-      </Box>
-    );
-  }
 
   return (
     <Stack

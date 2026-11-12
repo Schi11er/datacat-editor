@@ -20,6 +20,7 @@ import { RelationshipRecordType } from "../../generated/graphql";
 import DefinitionFormSet from "../../components/forms/DefinitionFormSet";
 import ExampleFormSet from "../../components/forms/ExampleFormSet";
 import { useNavigate } from "react-router-dom";
+import DictionaryFormSet from "../../components/forms/DictionaryFormSet";
 
 const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
     const { id } = props;
@@ -70,10 +71,16 @@ const UnitForm = (props: FormProps<UnitDetailPropsFragment>) => {
 
     return (
         <FormView>
-            <StatusFormSet
-                catalogEntryId={id}
-                status={entry.status}
-            />
+            <Box sx={{ display: "flex", gap: 2 }}>
+                <StatusFormSet
+                    catalogEntryId={id}
+                    status={entry.status}
+                />
+                <DictionaryFormSet
+                    catalogEntryId={id}
+                    dictionaryId={entry.dictionary?.id ?? ""}
+                />
+            </Box>
 
             <NameFormSet
                 catalogEntryId={id}
